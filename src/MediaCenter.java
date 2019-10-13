@@ -16,7 +16,10 @@ public class MediaCenter extends Application {
         Image image = new Image("/images/icon.png");
         stage.getIcons().add(image);
 
-        stage.setScene( new Scene(FXMLLoader.load(getClass().getResource("Views/FirstMenu.fxml")),600,400));
+        //stage.setScene( new Scene(FXMLLoader.load(getClass().getResource("Views/FirstMenu.fxml")),600,400));
+        //stage.setScene( new Scene(FXMLLoader.load(getClass().getResource("Views/Login.fxml")),600,400));
+        //stage.setScene( new Scene(FXMLLoader.load(getClass().getResource("Views/AdminLogin.fxml")),600,400));
+        //stage.setScene( new Scene(FXMLLoader.load(getClass().getResource("Views/ErrorBox.fxml")),400,200));
 
         stage.show();
     }
