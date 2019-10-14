@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="672.0" prefWidth="982.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <VBox prefHeight="25.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="Media Center">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Listas">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Conta">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/MCsmall.png" />
+                     </image>
+                  </ImageView>
+                  <Region prefHeight="0.0" prefWidth="400.0" HBox.hgrow="ALWAYS" />
+                  <VBox prefHeight="50.0" prefWidth="40.0">
+                     <children>
+                        <Region prefHeight="200.0" prefWidth="200.0" />
+                        <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/play.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <Region prefHeight="200.0" prefWidth="200.0" />
+                     </children>
+                  </VBox>
+                  <Region prefHeight="50.0" prefWidth="25.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <TableView prefHeight="304.0" prefWidth="460.0" BorderPane.alignment="CENTER">
+        <columns>
+            <TableColumn text="#" />
+            <TableColumn text="✓" />
+            <TableColumn text="Nome" />
+            <TableColumn text="Duração" />
+            <TableColumn text="Album" />
+            <TableColumn text="Categoria" />
+            <TableColumn text="Ficheiro" />
+        </columns>
+      </TableView>
+   </center>
+   <left>
+      <TreeView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Region prefHeight="320.0" prefWidth="21.0" BorderPane.alignment="CENTER" />
+   </right>
+   <bottom>
+      <HBox spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <Region prefHeight="40.0" HBox.hgrow="ALWAYS" />
+            <VBox prefHeight="0.0" prefWidth="100.0">
+               <children>
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                     <children>
+                        <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/download.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/upload.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>
