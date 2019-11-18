@@ -18,9 +18,12 @@ public class MediaCenter extends Application {
 
         Scene FirstMenu = new Scene(FXMLLoader.load(getClass().getResource("Views/FirstMenu.fxml")),600,400);
         Scene Login = new Scene(FXMLLoader.load(getClass().getResource("Views/Login.fxml")),600,400);
-        Scene AdminLogin = new Scene(FXMLLoader.load(getClass().getResource("Views/AdminLogin.fxml")),600,400);
-        Scene ErrorBox = new Scene(FXMLLoader.load(getClass().getResource("Views/ErrorBox.fxml")),400,200);
+        Scene ErrorBox = new Scene(FXMLLoader.load(getClass().getResource("Views/ErrorBox.fxml")));
+        Scene SuccessBox = new Scene(FXMLLoader.load(getClass().getResource("Views/SuccessBox.fxml")));
         Scene MainPage = new Scene(FXMLLoader.load(getClass().getResource("Views/MainPage.fxml")));
+        Scene CreateAccount = new Scene(FXMLLoader.load(getClass().getResource("Views/CreateAccount.fxml")));
+        Scene PathPage = new Scene(FXMLLoader.load(getClass().getResource("Views/PathPage.fxml")));
+        Scene AddFriend = new Scene(FXMLLoader.load(getClass().getResource("Views/AddFriend.fxml")));
 
 
         stage.setScene(MainPage);
