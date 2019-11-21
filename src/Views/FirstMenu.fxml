@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="374.0" prefWidth="444.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="374.0" prefWidth="444.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ControllerFirstMenu">
    <children>
       <Region prefHeight="94.0" prefWidth="600.0" />
       <HBox prefHeight="100.0" prefWidth="200.0">
@@ -27,9 +27,9 @@
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <VBox prefHeight="110.0" prefWidth="250.0" spacing="30.0">
                <children>
-                  <Button mnemonicParsing="false" prefWidth="200.0" text="Entrar como residente" />
-                  <Button mnemonicParsing="false" prefWidth="200.0" text="Entrar como convidado" />
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Entrar como administrador" />
+                  <Button id="residente" fx:id="residente" mnemonicParsing="false" prefWidth="200.0" text="Entrar como residente" />
+                  <Button fx:id="convidado" mnemonicParsing="false" prefWidth="200.0" text="Entrar como convidado" />
+                  <Button fx:id="administrador" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Entrar como administrador" />
                </children>
             </VBox>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />

@@ -4,14 +4,14 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Multimedia {
+public class Media {
     private SimpleIntegerProperty numeroMedia;
     private SimpleStringProperty nomeMedia;
     private SimpleDoubleProperty duracaoMedia;
     private SimpleStringProperty albumMedia;
     private SimpleStringProperty categoriaMedia;
 
-    public Multimedia (int numeroMedia, String nomeMedia, double duracaoMedia, String albumMedia,
+    public Media (int numeroMedia, String nomeMedia, double duracaoMedia, String albumMedia,
                 String categoriaMedia){
         this.numeroMedia = new SimpleIntegerProperty(numeroMedia);
         this.nomeMedia = new SimpleStringProperty(nomeMedia);
