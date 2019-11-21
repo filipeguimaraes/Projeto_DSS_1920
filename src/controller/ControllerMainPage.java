@@ -1,6 +1,6 @@
-package Controller;
+package controller;
 
-import Model.Media;
+import model.Media;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

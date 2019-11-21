@@ -16,18 +16,18 @@ public class Main extends Application {
         Image image = new Image("/images/icon.png");
         stage.getIcons().add(image);
 
-        Scene FirstMenu = new Scene( FXMLLoader.load( getClass().getResource("Views/FirstMenu.fxml") ) );
+        Scene FirstMenu = new Scene( FXMLLoader.load( getClass().getResource("views/FirstMenu.fxml") ) );
+        Scene MainPage = new Scene(FXMLLoader.load(getClass().getResource("views/MainPage.fxml")));
         /*
-        Scene Login = new Scene(FXMLLoader.load(getClass().getResource("Views/Login.fxml")),600,400);
-        Scene ErrorBox = new Scene(FXMLLoader.load(getClass().getResource("Views/ErrorBox.fxml")));
-        Scene SuccessBox = new Scene(FXMLLoader.load(getClass().getResource("Views/SuccessBox.fxml")));
-        Scene MainPage = new Scene(FXMLLoader.load(getClass().getResource("Views/MainPage.fxml")));
-        Scene CreateAccount = new Scene(FXMLLoader.load(getClass().getResource("Views/CreateAccount.fxml")));
-        Scene PathPage = new Scene(FXMLLoader.load(getClass().getResource("Views/PathPage.fxml")));
-        Scene AddFriend = new Scene(FXMLLoader.load(getClass().getResource("Views/AddFriend.fxml")));
+        Scene Login = new Scene(FXMLLoader.load(getClass().getResource("views/Login.fxml")),600,400);
+        Scene ErrorBox = new Scene(FXMLLoader.load(getClass().getResource("views/ErrorBox.fxml")));
+        Scene SuccessBox = new Scene(FXMLLoader.load(getClass().getResource("views/SuccessBox.fxml")));
+        Scene CreateAccount = new Scene(FXMLLoader.load(getClass().getResource("views/CreateAccount.fxml")));
+        Scene PathPage = new Scene(FXMLLoader.load(getClass().getResource("views/PathPage.fxml")));
+        Scene AddFriend = new Scene(FXMLLoader.load(getClass().getResource("views/AddFriend.fxml")));
         if(stage.getScene().equals(MainPage)) stage.setMaximized(true);
          */
-        stage.setScene(FirstMenu);
+        stage.setScene(MainPage);
         stage.show();
     }
 }
