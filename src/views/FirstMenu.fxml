@@ -27,7 +27,7 @@
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <VBox prefHeight="110.0" prefWidth="250.0" spacing="30.0">
                <children>
-                  <Button id="residente" fx:id="residente" mnemonicParsing="false" prefWidth="200.0" text="Entrar como residente" />
+                  <Button id="residente" fx:id="residente" mnemonicParsing="false" onAction="#handleResidenteButton" prefWidth="200.0" text="Entrar como residente" />
                   <Button fx:id="convidado" mnemonicParsing="false" prefWidth="200.0" text="Entrar como convidado" />
                   <Button fx:id="administrador" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Entrar como administrador" />
                </children>

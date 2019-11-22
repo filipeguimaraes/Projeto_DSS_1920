@@ -17,7 +17,7 @@ public class Main extends Application {
         stage.getIcons().add(image);
 
         Scene FirstMenu = new Scene( FXMLLoader.load( getClass().getResource("views/FirstMenu.fxml") ) );
-        Scene MainPage = new Scene(FXMLLoader.load(getClass().getResource("views/MainPage.fxml")));
+        //Scene MainPage = new Scene(FXMLLoader.load(getClass().getResource("views/MainPage.fxml")));
         /*
         Scene Login = new Scene(FXMLLoader.load(getClass().getResource("views/Login.fxml")),600,400);
         Scene ErrorBox = new Scene(FXMLLoader.load(getClass().getResource("views/ErrorBox.fxml")));
@@ -27,7 +27,7 @@ public class Main extends Application {
         Scene AddFriend = new Scene(FXMLLoader.load(getClass().getResource("views/AddFriend.fxml")));
         if(stage.getScene().equals(MainPage)) stage.setMaximized(true);
          */
-        stage.setScene(MainPage);
+        stage.setScene(FirstMenu);
         stage.show();
     }
 }
