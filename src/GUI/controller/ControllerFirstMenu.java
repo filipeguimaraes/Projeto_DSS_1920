@@ -24,68 +24,29 @@ public class ControllerFirstMenu {
 
     @FXML
     void handleResidenteButton(ActionEvent event) throws IOException {
-        if (event.getSource() == residente) {
-            Parent proximoMenu = FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/Login.fxml"));
-            System.out.println("chegou aqui");
-            Scene scene = new Scene(proximoMenu);
-            Stage menu = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            menu.setScene(scene);
-            menu.show();
-        } else {
-            System.out.println("FUDEU");
-        }
+        Parent loginMenu = FXMLLoader.load(getClass().getResource("/GUI/views/Login.fxml"));
+        Scene login = new Scene(loginMenu);
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setScene(login);
+        window.show();
+    }
+
+    @FXML
+    void handleAdminButton(ActionEvent event) throws IOException {
+        Parent loginMenu = FXMLLoader.load(getClass().getResource("/GUI/views/Login.fxml"));
+        Scene login = new Scene(loginMenu);
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setScene(login);
+        window.show();
+    }
+
+    @FXML
+    void handleConvButton(ActionEvent event) throws IOException {
+        Parent loginMenu = FXMLLoader.load(getClass().getResource("/GUI/views/MainPage.fxml"));
+        Scene login = new Scene(loginMenu);
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setScene(login);
+        window.show();
     }
 
 }
-/*
-    @FXML
-    private Button residente;
-    @FXML
-    private Button convidado;
-    @FXML
-    private Button administrador;
-
-
-    private void handleResidenteButton(ActionEvent event) {
-        Stage stage = new Stage();
-        Parent proximoMenu = null;
-        try {
-            proximoMenu = FXMLLoader.load( getClass().getResource("GUI.GUI.views.views/Login.fxml") );
-        } catch (IOException e) {
-            System.out.println("Deu merda"+ e);
-        }
-        Scene scene = new Scene(proximoMenu);
-        stage.setScene(scene);
-        stage.setTitle("Login");
-        stage.show();
-
-    }
-
-
-    @FXML
-    private void handleMenuButtonAction (ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        Parent proximoMenu = FXMLLoader.load( getClass().getResource("GUI.GUI.views.views/FirstMenu.fxml") );
-
-        if (event.getSource() == residente ){
-            stage = (Stage) residente.getScene().getWindow();
-            proximoMenu = FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/Login.fxml"));
-        } else if (event.getSource() == convidado){
-            stage = (Stage) convidado.getScene().getWindow();
-            proximoMenu = FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/MainPage.fxml"));
-        } else if (event.getSource() == administrador) {
-            stage = (Stage) administrador.getScene().getWindow();
-            proximoMenu = FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/Login.fxml"));
-        }
-
-        Scene scene = new Scene(proximoMenu);
-        stage.setScene(scene);
-        stage.setTitle("MediaCenter");
-        stage.show();
-    }
-
-
-}
-
-
- */

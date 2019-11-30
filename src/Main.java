@@ -1,5 +1,6 @@
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -14,7 +15,9 @@ public class Main extends Application {
         stage.setTitle("Media Center");
         Image image = new Image("/images/icon.png");
         stage.getIcons().add(image);
-        Scene FirstMenu = new Scene( FXMLLoader.load( getClass().getResource("GUI/views/FirstMenu.fxml") ) );
+
+        Parent FirstMenu = FXMLLoader.load( getClass().getResource("GUI/views/FirstMenu.fxml") );
+        Scene start = new Scene(FirstMenu);
         //Scene MainPage = new Scene(FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/MainPage.fxml")));
 
         /*
@@ -22,11 +25,11 @@ public class Main extends Application {
         Scene ErrorBox = new Scene(FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/ErrorBox.fxml")));
         Scene SuccessBox = new Scene(FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/SuccessBox.fxml")));
         Scene CreateAccount = new Scene(FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/CreateAccount.fxml")));
-        Scene PathPage = new Scene(FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/PathPage.fxml")));
+        Scene PathPage = new Scene(FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/PathPage.bak")));
         Scene AddFriend = new Scene(FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/AddFriend.fxml")));
         if(stage.getScene().equals(MainPage)) stage.setMaximized(true);
          */
-        stage.setScene(FirstMenu);
+        stage.setScene(start);
         stage.show();
     }
 }

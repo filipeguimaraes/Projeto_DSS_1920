@@ -63,7 +63,6 @@
                         <Region prefHeight="200.0" prefWidth="200.0" />
                      </children>
                   </VBox>
-                  <Region prefHeight="50.0" prefWidth="25.0" />
                </children>
             </HBox>
          </children>
@@ -114,15 +113,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../images/download.png" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="upload" fitHeight="30.0" onMouseClicked="#handleUploadButton" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../images/upload.png" />
                      </image>
