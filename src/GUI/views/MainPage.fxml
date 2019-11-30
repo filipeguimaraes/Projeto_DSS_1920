@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="672.0" prefWidth="982.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.controller.ControllerMainPage">
+   <top>
+      <VBox prefHeight="25.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="229.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/MCsmall.png" />
+                     </image>
+                  </ImageView>
+                  <Region prefHeight="50.0" prefWidth="520.0" HBox.hgrow="ALWAYS" />
+                  <ImageView fitHeight="41.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/user.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="15.0" left="15.0" right="5.0" top="15.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <VBox prefHeight="58.0" prefWidth="372.0">
+                     <children>
+                        <Region prefHeight="200.0" prefWidth="200.0" />
+                        <HBox spacing="5.0">
+                           <VBox.margin>
+                              <Insets bottom="5.0" right="5.0" top="5.0" />
+                           </VBox.margin>
+                           <children>
+                              <MenuButton mnemonicParsing="false" prefHeight="27.0" prefWidth="144.0" text="Alterações de Conta">
+                                <items>
+                                  <MenuItem mnemonicParsing="false" text="Nome" />
+                                  <MenuItem mnemonicParsing="false" text="Email" />
+                                    <MenuItem mnemonicParsing="false" text="Password" />
+                                </items>
+                              </MenuButton>
+                              <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="109.0" text="Terminar sessão">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <Region prefHeight="200.0" prefWidth="200.0" />
+                     </children>
+                  </VBox>
+                  <Region prefHeight="50.0" prefWidth="25.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <TableView fx:id="myTable" prefHeight="304.0" prefWidth="460.0" BorderPane.alignment="CENTER">
+        <columns>
+            <TableColumn id="numeroMedia" fx:id="numeroC" prefWidth="35.0" text="#" />
+            <TableColumn id="nomeMedia" fx:id="NomeC" prefWidth="200.0" text="Nome" />
+            <TableColumn id="duracaoMedia" fx:id="duracaoC" minWidth="0.0" prefWidth="60.0" text="Duração" />
+            <TableColumn id="albumMedia" fx:id="AlbumC" minWidth="0.0" prefWidth="100.0" text="Album" />
+            <TableColumn id="CategoriaMedia" fx:id="CategoriaC" prefWidth="100.0" text="Categoria" />
+        </columns>
+      </TableView>
+   </center>
+   <left>
+      <VBox prefHeight="557.0" prefWidth="195.0" BorderPane.alignment="CENTER">
+         <children>
+            <TreeView fx:id="bibliotecaCascata" prefHeight="349.0" prefWidth="270.0" />
+            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="270.0" text="Criar Coleção" VBox.vgrow="ALWAYS" />
+            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="270.0" text="Alterar Coleção" />
+            <Region prefHeight="52.0" prefWidth="270.0" />
+            <HBox prefHeight="30.0" prefWidth="243.0" spacing="20.0">
+               <children>
+                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/shuffle.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/pause.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/play.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/download.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/upload.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </left>
+   <bottom>
+      <Region prefHeight="44.0" prefWidth="982.0" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>
