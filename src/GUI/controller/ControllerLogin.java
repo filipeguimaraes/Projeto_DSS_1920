@@ -39,7 +39,6 @@ public class ControllerLogin {
     @FXML
     void handleLoginButton(ActionEvent event) {
         try {
-            System.out.println("HEY");
             model.iniciarSessao(email.getText(), password.getText());
             int permissao = model.getPermissao();
             if(permissao == 1) {
@@ -51,8 +50,9 @@ public class ControllerLogin {
             } else if (permissao == 2){
                 Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 window.setScene(
-                        new Scene(FXMLLoader.load(getClass().getResource("/GUI/views/MediaCenter.fxml")))
+                        new Scene(FXMLLoader.load(getClass().getResource("/GUI/views/MainPage.fxml")))
                 );
+                window.setMaximized(true);
                 window.show();
             }
 

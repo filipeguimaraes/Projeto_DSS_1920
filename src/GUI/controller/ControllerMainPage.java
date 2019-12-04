@@ -11,10 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -57,14 +54,11 @@ public class ControllerMainPage implements Initializable {
         try {
             System.out.println(selectedFile.getPath());
             } catch (Exception e){
-                Parent error = FXMLLoader.load(getClass().getResource("/GUI/views/ErrorBox.fxml"));
-                Scene errorScene = new Scene(error);
-                Stage newWindow = new Stage();
                 Image image = new Image("/images/error.png");
-                newWindow.getIcons().add(image);
-                newWindow.setTitle("Não selecionou nenhum ficheiro!");
-                newWindow.setScene(errorScene);
-                newWindow.show();
+                //newWindow.getIcons().add(image);
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setContentText("Não selecionou nenhum ficheiro!");
+                alert.showAndWait();
             }
     }
 

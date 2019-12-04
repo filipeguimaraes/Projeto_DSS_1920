@@ -260,7 +260,6 @@ public class MediaCenter {
                     throw new AdminException("A password que introduziu está incorreta.");
                 }
 
-                System.out.println("ola3");
 
             } else throw new PermissaoException("Não tem permissões");
             setEmailOn(email);
