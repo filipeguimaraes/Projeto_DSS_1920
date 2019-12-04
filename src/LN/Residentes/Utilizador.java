@@ -1,3 +1,10 @@
+/**
+ *
+ *
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
+ */
 package LN.Residentes;
 
 import LN.Biblioteca;
@@ -8,6 +15,14 @@ public class Utilizador {
     private String nome;
     private String email;
     private String password;
+
+
+    public Utilizador(Biblioteca biblioteca, String nome, String email, String password) {
+        this.biblioteca = biblioteca;
+        this.nome = nome;
+        this.email = email;
+        this.password = password;
+    }
 
     /**
      *
@@ -42,9 +57,23 @@ public class Utilizador {
         this.password = pass;
     }
 
-    public void getPassword() {
-        // TODO - implement Utilizador.getPassword
-        throw new UnsupportedOperationException();
+    public String getPassword() {
+        return this.password;
     }
 
+    public Biblioteca getBiblioteca() {
+        return biblioteca;
+    }
+
+    public void setBiblioteca(Biblioteca biblioteca) {
+        this.biblioteca = biblioteca;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }

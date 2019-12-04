@@ -1,5 +1,15 @@
+/**
+ *
+ *
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçanlo Ferreira A84073
+ */
 package LN;
 
+import LN.Exceptions.AdminException;
+import LN.Exceptions.PermissaoException;
+import LN.Exceptions.UtilizadorException;
 import LN.Residentes.*;
 
 import java.io.IOException;
@@ -9,19 +19,19 @@ import java.util.Map;
 public class MediaCenter {
 
     private Administrador admin;
-    private Map<String,Biblioteca> bibliotecas;//map
-    private Map<String,Utilizador> utilizadores;//map
+    private Map<String,Biblioteca> bibliotecas;
+    private Map<String, Utilizador> utilizadorDAO;
     private Map<String,Media> medias;//map
     private String emailOn;
     private Integer permissao;
     private static Integer administrador=1;
-    private static Integer convidado=3;
     private static Integer utilizador=2;
+    private static Integer convidado=3;
 
     public MediaCenter() {
         this.admin = new Administrador();
         this.bibliotecas = new HashMap<>();
-        this.utilizadores = new HashMap<>();
+        this.utilizadorDAO = new HashMap<>();
         this.medias = new HashMap<>();
         this.emailOn = null;
         this.permissao = 0;
@@ -197,8 +207,7 @@ public class MediaCenter {
     }
 
     public void removePermissao() {
-        // TODO - implement MediaCenter.removePermissao
-        throw new UnsupportedOperationException();
+        this.permissao=null;
     }
 
     public void apagaConta() {
@@ -206,29 +215,56 @@ public class MediaCenter {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Metodo para definir a permissão para residente
+     */
     public void setPermissaoResidente() {
-        // TODO - implement MediaCenter.setPermissaoResidente
-        throw new UnsupportedOperationException();
-    }
-
-    public void setPermissaoAdministrador() {
-        // TODO - implement MediaCenter.setPermissaoAdministrador
-        throw new UnsupportedOperationException();
+        this.permissao = utilizador;
     }
 
     /**
-     *
-     * @param email
-     * @param password
+     * Metodo para definir a permissão para administrador
      */
-    public void iniciarSessao(String email, String password) {
-        // TODO - implement MediaCenter.iniciarSessao
-        throw new UnsupportedOperationException();
+    public void setPermissaoAdministrador() {
+        this.permissao = administrador;
     }
 
-    public void setPremissaoConvidado() {
-        // TODO - implement MediaCenter.setPremissaoConvidado
-        throw new UnsupportedOperationException();
+    /**
+     * Metodo para definir a permissão para convidado
+     */
+    public void setPremissaoConvidado() { this.permissao = convidado; }
+
+    /**
+     * Metodo que recebendo o email e a password, se corretos coloca o emailOn com o email do utilizador
+     * @param email email fornecida
+     * @param password password fornecida
+     */
+    public void iniciarSessao(String email, String password)
+            throws UtilizadorException, AdminException, PermissaoException {
+        if (!this.permissao.equals(convidado)) {
+            if (this.permissao.equals(utilizador)) {
+                Utilizador u = utilizadorDAO.get(email);
+                if (u == null) {
+                    throw new UtilizadorException("O email que introduziu não se encontra registado no sistema," +
+                                " contacte o administrador para criar a sua conta.");
+                }
+
+                if (!u.getPassword().equals(password)) {
+                    throw new UtilizadorException("A password que introduziu está incorreta.");
+                }
+            } else if (this.permissao.equals(administrador)){
+                if (!admin.getEmail().equals(email))
+                    throw new AdminException("O email que introduziu está incorreto");
+
+                if (!admin.getPassAdmin().equals(password)) {
+                    throw new AdminException("A password que introduziu está incorreta.");
+                }
+
+                System.out.println("ola3");
+
+            } else throw new PermissaoException("Não tem permissões");
+            setEmailOn(email);
+        }
     }
 
     /**
@@ -238,8 +274,8 @@ public class MediaCenter {
      * @param password
      */
     public void registaUtilizador(String nome, String email, String password) {
-        // TODO - implement MediaCenter.registaUtilizador
-        throw new UnsupportedOperationException();
+        Utilizador u = new Utilizador(null,nome,email,password);
+        utilizadorDAO.put(email,u);
     }
 
     /**
@@ -251,4 +287,7 @@ public class MediaCenter {
         throw new UnsupportedOperationException();
     }
 
+    public Integer getPermissao() {
+        return permissao;
+    }
 }

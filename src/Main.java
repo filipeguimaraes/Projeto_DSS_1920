@@ -1,3 +1,8 @@
+import GUI.controller.ControllerFirstMenu;
+import GUI.controller.ControllerLogin;
+import GUI.controller.ControllerMainPage;
+import LN.Media;
+import LN.MediaCenter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,28 +12,30 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application {
+    private static MediaCenter model = new MediaCenter();
 
-    public static void main(String[] args){ launch(args);}
+    public static void main(String[] args){ launch(args); }
+
+    public void init(){
+        //teste de media
+        Media m = new Media();
+        m.setNome("Hello");
+        m.setPath("c:\\Media\\Adele - Hello.mp3");
+        model.adicionaMedia(m);
+        model.registaUtilizador("ola","ola","ola");
+        ControllerFirstMenu.init(model);
+        ControllerLogin.init(model);
+        ControllerMainPage.init(model);
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
+        init();
         stage.setTitle("Media Center");
         Image image = new Image("/images/icon.png");
         stage.getIcons().add(image);
-
-        Parent FirstMenu = FXMLLoader.load( getClass().getResource("GUI/views/FirstMenu.fxml") );
+        Parent FirstMenu = FXMLLoader.load( getClass().getResource("/GUI/views/FirstMenu.fxml") );
         Scene start = new Scene(FirstMenu);
-        //Scene MainPage = new Scene(FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/MainPage.fxml")));
-
-        /*
-        Scene Login = new Scene(FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/Login.fxml")),600,400);
-        Scene ErrorBox = new Scene(FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/ErrorBox.fxml")));
-        Scene SuccessBox = new Scene(FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/SuccessBox.fxml")));
-        Scene CreateAccount = new Scene(FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/CreateAccount.fxml")));
-        Scene PathPage = new Scene(FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/PathPage.bak")));
-        Scene AddFriend = new Scene(FXMLLoader.load(getClass().getResource("GUI.GUI.views.views/AddFriend.fxml")));
-        if(stage.getScene().equals(MainPage)) stage.setMaximized(true);
-         */
         stage.setScene(start);
         stage.show();
     }
