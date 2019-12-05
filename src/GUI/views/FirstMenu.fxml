@@ -12,13 +12,17 @@
       <Region prefHeight="94.0" prefWidth="600.0" />
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <ImageView fitHeight="125.0" fitWidth="444.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../images/MC.png" />
-               </image>
-            </ImageView>
-            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Region HBox.hgrow="ALWAYS" />
+            <VBox>
+               <children>
+                  <ImageView fitHeight="84.0" fitWidth="348.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/MC.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <Region prefHeight="68.0" prefWidth="600.0" />
@@ -35,6 +39,10 @@
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
-      <Region prefHeight="84.0" prefWidth="544.0" />
+      <HBox>
+         <children>
+            <Region prefHeight="95.0" prefWidth="444.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
    </children>
 </VBox>

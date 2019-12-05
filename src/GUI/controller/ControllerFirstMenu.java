@@ -59,7 +59,6 @@ public class ControllerFirstMenu {
         Scene login = new Scene(loginMenu);
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(login);
-        window.setMaximized(true);
         window.show();
     }
 

@@ -8,11 +8,13 @@
 package LN;
 
 import LN.Exceptions.AdminException;
+import LN.Exceptions.MediaException;
 import LN.Exceptions.PermissaoException;
 import LN.Exceptions.UtilizadorException;
 import LN.Residentes.*;
 
 import java.io.IOException;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +23,7 @@ public class MediaCenter {
     private Administrador admin;
     private Map<String,Biblioteca> bibliotecas;
     private Map<String, Utilizador> utilizadorDAO;
-    private Map<String,Media> medias;//map
+    private Map<String,Media> mediaDAO;//map
     private String emailOn;
     private Integer permissao;
     private static Integer administrador=1;
@@ -32,13 +34,13 @@ public class MediaCenter {
         this.admin = new Administrador();
         this.bibliotecas = new HashMap<>();
         this.utilizadorDAO = new HashMap<>();
-        this.medias = new HashMap<>();
+        this.mediaDAO = new HashMap<>();
         this.emailOn = null;
         this.permissao = 0;
     }
 
     public void adicionaMedia(Media m){
-        medias.put(m.getNomeMedia(),m);
+        mediaDAO.put(m.getNomeMedia(),m);
     }
 
     public void setAdministrador() {
@@ -137,27 +139,31 @@ public class MediaCenter {
      * @param artista
      * @param cat
      */
-    public void upload(String path, String nome, String col, String artista, String cat) {
-        // TODO - implement MediaCenter.upload
-        throw new UnsupportedOperationException();
+    public void upload(String path, String nome, String col, String artista, String cat) throws MediaException {
+        if(!validaFich(path)) throw new MediaException("Formato de ficheiro invalido");
+        boolean existe = mediaDAO.containsKey("nome");
     }
 
     /**
      *
      * @param path
      */
-    public void validaPath(String path) {
-        // TODO - implement MediaCenter.validaPath
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     *
-     * @param path
-     */
-    public void validaFich(String path) {
-        // TODO - implement MediaCenter.validaFich
-        throw new UnsupportedOperationException();
+    public boolean validaFich(String path) {
+        String[] aux = path.split("\\.");
+        String ext = aux[1];
+        return ext.equals("mp3")
+                || ext.equals("mp4")
+                || ext.equals("wav")
+                || ext.equals("mov")
+                || ext.equals("flv")
+                || ext.equals("wmv")
+                || ext.equals("mp2")
+                || ext.equals("mkv")
+                || ext.equals("dts")
+                || ext.equals("asf")
+                || ext.equals("nut")
+                || ext.equals("avi")
+                || ext.equals("mpg");
     }
 
     /**
@@ -174,7 +180,7 @@ public class MediaCenter {
      * @param nomeMedia nome da media a reproduzer
      */
     public void reproduzirMedia(String nomeMedia) {
-        reproduz(medias.get(nomeMedia).getPath());
+        reproduz(mediaDAO.get(nomeMedia).getPath());
     }
 
     public void reproduz(String path){
@@ -273,7 +279,8 @@ public class MediaCenter {
      * @param password
      */
     public void registaUtilizador(String nome, String email, String password) {
-        Utilizador u = new Utilizador(null,nome,email,password);
+        Biblioteca b = new Biblioteca(null,"0","Geral");
+        Utilizador u = new Utilizador(b,nome,email,password);
         utilizadorDAO.put(email,u);
     }
 
@@ -286,7 +293,16 @@ public class MediaCenter {
         throw new UnsupportedOperationException();
     }
 
-    public Integer getPermissao() {
-        return permissao;
+    public boolean eAdmin() {
+        return permissao.equals(administrador);
     }
+
+    public boolean eUtilizador() {
+        return permissao.equals(utilizador);
+    }
+
+    public boolean eConvidado() {
+        return permissao.equals(convidado);
+    }
+
 }

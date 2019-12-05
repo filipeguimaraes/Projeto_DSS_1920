@@ -48,18 +48,13 @@ public class ControllerMainPage implements Initializable {
 
     @FXML
     void handleUploadButton(MouseEvent event) throws IOException {
-        FileChooser fc = new FileChooser();
-        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        File selectedFile = fc.showOpenDialog(stage);
-        try {
-            System.out.println(selectedFile.getPath());
-            } catch (Exception e){
-                Image image = new Image("/images/error.png");
-                //newWindow.getIcons().add(image);
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("Não selecionou nenhum ficheiro!");
-                alert.showAndWait();
-            }
+        Stage newWindow = new Stage();
+        newWindow.setTitle("Fazer Upload");
+        Image image = new Image("/images/upload.png");
+        newWindow.getIcons().add(image);
+        Scene start = new Scene(FXMLLoader.load( getClass().getResource("/GUI/views/MediaUpload.fxml") ));
+        newWindow.setScene(start);
+        newWindow.show();
     }
 
     @FXML

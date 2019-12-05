@@ -34,8 +34,8 @@ public class Main extends Application {
         stage.setTitle("Media Center");
         Image image = new Image("/images/icon.png");
         stage.getIcons().add(image);
-        Parent FirstMenu = FXMLLoader.load( getClass().getResource("/GUI/views/FirstMenu.fxml") );
-        Scene start = new Scene(FirstMenu);
+        Scene start = new Scene(FXMLLoader.load( getClass().getResource("/GUI/views/FirstMenu.fxml") ));
+        start.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
         stage.setScene(start);
         stage.show();
     }

@@ -8,6 +8,12 @@ public class Biblioteca {
     private String cod;
     private String nomeBiblio;
 
+    public Biblioteca(Collection<Set> colecoes, String cod, String nomeBiblio) {
+        this.colecoes = colecoes;
+        this.cod = cod;
+        this.nomeBiblio = nomeBiblio;
+    }
+
     /**
      *
      * @param cd

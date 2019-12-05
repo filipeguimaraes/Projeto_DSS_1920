@@ -41,7 +41,7 @@
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="login" mnemonicParsing="false" onAction="#handleLoginButton" prefHeight="25.0" prefWidth="133.0" text="Login" />
+            <Button fx:id="login" defaultButton="true" mnemonicParsing="false" onAction="#handleLoginButton" prefHeight="25.0" prefWidth="133.0" text="Login" />
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
