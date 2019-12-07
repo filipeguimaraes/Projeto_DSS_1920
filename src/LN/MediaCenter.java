@@ -12,9 +12,7 @@ import LN.Exceptions.MediaException;
 import LN.Exceptions.PermissaoException;
 import LN.Exceptions.UtilizadorException;
 import LN.Residentes.*;
-
 import java.io.IOException;
-import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -149,8 +147,7 @@ public class MediaCenter {
      * @param path
      */
     public boolean validaFich(String path) {
-        String[] aux = path.split("\\.");
-        String ext = aux[1];
+        String ext = path.split("\\.")[1];
         return ext.equals("mp3")
                 || ext.equals("mp4")
                 || ext.equals("wav")

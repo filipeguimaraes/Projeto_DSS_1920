@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="426.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.controller.ControllerMediaUpload">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="426.0" prefWidth="426.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.controller.ControllerMediaUpload">
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
@@ -59,6 +59,8 @@
                   <Region prefHeight="200.0" prefWidth="200.0" />
                   <TextField fx:id="album" alignment="CENTER" promptText="Album" />
                   <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="NEVER" />
+                  <TextField fx:id="col" alignment="CENTER" promptText="Coleção" />
+                  <Region prefHeight="200.0" prefWidth="200.0" />
                   <HBox>
                      <children>
                         <Region prefHeight="25.0" prefWidth="69.0" HBox.hgrow="ALWAYS" />

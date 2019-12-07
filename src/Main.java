@@ -1,6 +1,7 @@
 import GUI.controller.ControllerFirstMenu;
 import GUI.controller.ControllerLogin;
 import GUI.controller.ControllerMainPage;
+import GUI.controller.ControllerMediaUpload;
 import LN.Media;
 import LN.MediaCenter;
 import javafx.application.Application;
@@ -26,6 +27,7 @@ public class Main extends Application {
         ControllerFirstMenu.init(model);
         ControllerLogin.init(model);
         ControllerMainPage.init(model);
+        ControllerMediaUpload.init(model);
     }
 
     @Override
