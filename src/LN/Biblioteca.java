@@ -1,14 +1,21 @@
+/**
+ *
+ *
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçalo Ferreira A84073
+ */
 package LN;
 
 import java.util.*;
 
 public class Biblioteca {
 
-    private Collection<Set> colecoes;
+    private Map<String,Colecao> colecoes;
     private String cod;
     private String nomeBiblio;
 
-    public Biblioteca(Collection<Set> colecoes, String cod, String nomeBiblio) {
+    public Biblioteca(Map<String,Colecao> colecoes, String cod, String nomeBiblio) {
         this.colecoes = colecoes;
         this.cod = cod;
         this.nomeBiblio = nomeBiblio;
@@ -23,9 +30,8 @@ public class Biblioteca {
         throw new UnsupportedOperationException();
     }
 
-    public void getColecoes() {
-        // TODO - implement Biblioteca.getColecoes
-        throw new UnsupportedOperationException();
+    public Map<String,Colecao> getColecoes() {
+        return this.colecoes;
     }
 
     public void operation() {

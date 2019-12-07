@@ -1,3 +1,10 @@
+/**
+ *
+ *
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçalo Ferreira A84073
+ */
 package LN;
 
 import java.util.*;
@@ -54,4 +61,7 @@ public class Colecao {
         throw new UnsupportedOperationException();
     }
 
+    public void setNomeCol(String nomeCol) {
+        this.nomeCol = nomeCol;
+    }
 }

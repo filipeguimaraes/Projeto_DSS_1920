@@ -22,6 +22,8 @@ public class Main extends Application {
         Media m = new Media();
         m.setNome("Hello");
         m.setPath("c:\\Media\\Adele - Hello.mp3");
+        m.setArtista("Adelle");
+        m.setCategoria("Pop");
         model.adicionaMedia(m);
         model.registaUtilizador("ola","ola","ola");
         ControllerFirstMenu.init(model);

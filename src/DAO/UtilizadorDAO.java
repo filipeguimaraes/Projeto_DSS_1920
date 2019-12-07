@@ -3,9 +3,9 @@
  *
  * @author Beatriz Rocha A84003
  * @author Filipe Guimarães A85308
- * @author Gonçanlo Ferreira A84073
+ * @author Gonçalo Ferreira A84073
  */
-package LN;
+package DAO;
 
 import LN.Residentes.Utilizador;
 import java.sql.*;

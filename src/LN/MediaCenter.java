@@ -3,25 +3,37 @@
  *
  * @author Beatriz Rocha A84003
  * @author Filipe Guimarães A85308
- * @author Gonçanlo Ferreira A84073
+ * @author Gonçalo Ferreira A84073
  */
 package LN;
-
+/**
+ *
+ *
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçalo Ferreira A84073
+ */
 import LN.Exceptions.AdminException;
 import LN.Exceptions.MediaException;
 import LN.Exceptions.PermissaoException;
 import LN.Exceptions.UtilizadorException;
 import LN.Residentes.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MediaCenter {
 
     private Administrador admin;
+    private String pathParaMedia;
     private Map<String,Biblioteca> bibliotecas;
     private Map<String, Utilizador> utilizadorDAO;
-    private Map<String,Media> mediaDAO;//map
+    private Map<String,Media> mediaDAO;
     private String emailOn;
     private Integer permissao;
     private static Integer administrador=1;
@@ -30,6 +42,7 @@ public class MediaCenter {
 
     public MediaCenter() {
         this.admin = new Administrador();
+        this.pathParaMedia = "c:\\Media\\";
         this.bibliotecas = new HashMap<>();
         this.utilizadorDAO = new HashMap<>();
         this.mediaDAO = new HashMap<>();
@@ -137,9 +150,32 @@ public class MediaCenter {
      * @param artista
      * @param cat
      */
-    public void upload(String path, String nome, String col, String artista, String cat) throws MediaException {
+    public void upload(String path, String nome, String col, String artista, String cat) throws MediaException, IOException {
         if(!validaFich(path)) throw new MediaException("Formato de ficheiro invalido");
         boolean existe = mediaDAO.containsKey("nome");
+        if(existe) {
+            mediaDAO.get("nome").getProprietarios().add(emailOn);
+        } else{
+            String pathNovo = copiaFicheiro(path);
+            Media m = new Media();
+            m.setNome(nome);
+            m.setCategoria(cat);
+            m.setArtista(artista);
+            m.setPath(pathNovo);
+            Utilizador u = utilizadorDAO.get(emailOn);
+            Biblioteca b = u.getBiblioteca();
+            //help o mediacenter tambem tem biblio e medias tipo wtf
+            Map<String,Colecao> colecoes = b.getColecoes();
+            boolean existecol = colecoes.containsKey(col);
+            if (existecol){
+                Colecao c = colecoes.get(col);
+                c.add(m);
+            }else {
+                Colecao c = new Colecao();
+                c.setNomeCol(col);
+                c.add(m);
+            }
+        }
     }
 
     /**
@@ -285,9 +321,30 @@ public class MediaCenter {
      *
      * @param path
      */
-    public void copiaFicheiro(String path) {
-        // TODO - implement MediaCenter.copiaFicheiro
-        throw new UnsupportedOperationException();
+    public String copiaFicheiro(String path) throws IOException {
+        File origem = new File(path);
+        String nome = origem.getName();
+        File destino = new File(pathParaMedia+nome);
+        /*
+        if (destino.exists())
+                throw new MediaException("O ficheiro já existe no sistema");
+
+
+         */
+        FileChannel entrada = null;
+        FileChannel saida = null;
+
+        try {
+            entrada = new FileInputStream(origem).getChannel();
+            saida = new FileOutputStream(destino).getChannel();
+            entrada.transferTo(0, entrada.size(), saida);
+        } finally {
+            if (entrada != null && entrada.isOpen())
+                entrada.close();
+            if (saida != null && saida.isOpen())
+                saida.close();
+        }
+        return destino.getPath();
     }
 
     public boolean eAdmin() {
@@ -302,4 +359,11 @@ public class MediaCenter {
         return permissao.equals(convidado);
     }
 
+
+    //apagar
+
+
+    public Map<String, Media> getMediaDAO() {
+        return mediaDAO;
+    }
 }

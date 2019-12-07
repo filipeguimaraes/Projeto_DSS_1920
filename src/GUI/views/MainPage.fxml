@@ -38,9 +38,9 @@
                               <Region prefHeight="27.0" prefWidth="99.0" />
                               <MenuButton mnemonicParsing="false" prefHeight="27.0" prefWidth="144.0" text="Alterações de Conta">
                                 <items>
-                                  <MenuItem mnemonicParsing="false" text="Nome" />
-                                  <MenuItem mnemonicParsing="false" text="Email" />
-                                    <MenuItem mnemonicParsing="false" text="Password" />
+                                  <MenuItem disable="true" mnemonicParsing="false" text="Nome" />
+                                  <MenuItem disable="true" mnemonicParsing="false" text="Email" />
+                                    <MenuItem disable="true" mnemonicParsing="false" text="Password" />
                                 </items>
                               </MenuButton>
                               <Button fx:id="logout" mnemonicParsing="false" onAction="#handleLogoutButton" prefHeight="27.0" prefWidth="109.0" text="Terminar sessão">
@@ -62,13 +62,12 @@
       </VBox>
    </top>
    <center>
-      <TableView fx:id="myTable" prefHeight="304.0" prefWidth="460.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tabelaMedias" prefHeight="304.0" prefWidth="460.0" BorderPane.alignment="CENTER">
         <columns>
             <TableColumn id="numeroMedia" fx:id="numeroC" prefWidth="35.0" text="#" />
-            <TableColumn id="nomeMedia" fx:id="NomeC" prefWidth="200.0" text="Nome" />
-            <TableColumn id="duracaoMedia" fx:id="duracaoC" minWidth="0.0" prefWidth="60.0" text="Duração" />
-            <TableColumn id="albumMedia" fx:id="AlbumC" minWidth="0.0" prefWidth="100.0" text="Album" />
-            <TableColumn id="CategoriaMedia" fx:id="CategoriaC" prefWidth="100.0" text="Categoria" />
+            <TableColumn id="nomeMedia" fx:id="nomeMedia" prefWidth="322.0" text="Nome" />
+            <TableColumn id="nomeMedia" fx:id="artista" maxWidth="329.0" minWidth="-1.0" prefWidth="261.0" text="Artista" />
+            <TableColumn id="CategoriaMedia" fx:id="categoria" minWidth="0.0" prefWidth="150.0" text="Categoria" />
         </columns>
       </TableView>
    </center>
@@ -78,33 +77,17 @@
             <TreeView fx:id="bibliotecaCascata" prefHeight="437.0" prefWidth="220.0" />
             <MenuButton alignment="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="220.0" text="Criar Coleção">
               <items>
-                <MenuItem mnemonicParsing="false" text="Default" />
-                  <MenuItem mnemonicParsing="false" text="Aleatória" />
-                <MenuItem mnemonicParsing="false" text="Por autor" />
-                  <MenuItem mnemonicParsing="false" text="Por categoria" />
+                <MenuItem disable="true" mnemonicParsing="false" text="Default" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Aleatória" />
+                <MenuItem disable="true" mnemonicParsing="false" text="Por autor" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Por categoria" />
               </items>
             </MenuButton>
             <Region prefHeight="36.0" prefWidth="220.0" />
             <HBox prefHeight="30.0" prefWidth="243.0" spacing="20.0">
                <children>
                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../images/shuffle.png" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </ImageView>
-                  <ImageView fitHeight="30.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../images/pause.png" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </ImageView>
-                  <ImageView fx:id="play" fitHeight="30.0" onMouseClicked="#handlePlayButton" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="play" fitHeight="41.0" onMouseClicked="#handlePlayButton" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../images/play.png" />
                      </image>
@@ -112,7 +95,8 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <ImageView fx:id="upload" fitHeight="30.0" onMouseClicked="#handleUploadButton" pickOnBounds="true" preserveRatio="true">
+                  <Region prefHeight="41.0" prefWidth="57.0" />
+                  <ImageView fx:id="upload" fitHeight="41.0" onMouseClicked="#handleUploadButton" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../images/upload.png" />
                      </image>

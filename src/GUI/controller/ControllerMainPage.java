@@ -4,6 +4,9 @@ package GUI.controller;
 
 import LN.Media;
 import LN.MediaCenter;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,31 +24,39 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class ControllerMainPage implements Initializable {
 
     private static MediaCenter model;
 
-    @FXML private TableView<Media> myTable;
+    @FXML
+    private TableView<Media> tabelaMedias;
 
-    @FXML private TableColumn<Media, Integer> numeroC;
+    @FXML
+    private TableColumn<Media, Integer> numeroC;
 
-    @FXML private TableColumn<Media, String> NomeC;
+    @FXML
+    private TableColumn<Media, String> nomeMedia;
 
-    @FXML private TableColumn<Media, Double> duracaoC;
+    @FXML
+    private TableColumn<Media, String> artista;
 
-    @FXML private TableColumn<Media, String> AlbumC;
+    @FXML
+    private TableColumn<Media, String> categoria;
 
-    @FXML private TableColumn<Media, String> CategoriaC;
 
-    @FXML private TreeView<String> bibliotecaCascata;
+    @FXML
+    private ImageView upload;
 
-    @FXML private ImageView upload;
+    @FXML
+    private Button logout;
 
-    @FXML private Button logout;
-
-    @FXML private ImageView play;
+    @FXML
+    private ImageView play;
 
     @FXML
     void handleUploadButton(MouseEvent event) throws IOException {
@@ -74,7 +86,14 @@ public class ControllerMainPage implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //TODO
+        nomeMedia.setCellValueFactory(new PropertyValueFactory<>("nomeMedia"));
+        artista.setCellValueFactory(new PropertyValueFactory<>("artista"));
+        categoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+        ObservableList<Media> l = FXCollections.observableArrayList();
+        Map<String,Media> map = model.getMediaDAO();
+        List<Media> list = new ArrayList<>(map.values());
+        l.addAll(list);
+        tabelaMedias.setItems(l);
     }
 
     public static void init(MediaCenter model){

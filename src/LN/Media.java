@@ -1,3 +1,10 @@
+/**
+ *
+ *
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçalo Ferreira A84073
+ */
 package LN;
 
 import java.util.Set;
@@ -18,7 +25,7 @@ public class Media {
         this.categoria = categoria;
     }
 
-    public void getProprietarios() {
+    public Set<String> getProprietarios() {
         // TODO - implement Media.getProprietarios
         throw new UnsupportedOperationException();
     }
@@ -58,5 +65,21 @@ public class Media {
 
     public String getPath() {
         return path;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setNomeMedia(String nomeMedia) {
+        this.nomeMedia = nomeMedia;
+    }
+
+    public String getArtista() {
+        return artista;
+    }
+
+    public void setProprietarios(Set<String> proprietarios) {
+        this.proprietarios = proprietarios;
     }
 }

@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 
 public class ControllerMediaUpload {
 
@@ -25,9 +26,6 @@ public class ControllerMediaUpload {
 
     @FXML
     private TextField artista;
-
-    @FXML
-    private TextField album;
 
     @FXML
     private TextField col;
@@ -44,7 +42,7 @@ public class ControllerMediaUpload {
             String path = selectedFile.getPath();
             model.validaFich(path);
             model.upload(path,nome.getText(),col.getText(),artista.getText(),categoria.getText());
-        } catch (MediaException m){
+        } catch (IOException|MediaException m){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(m.getMessage());
             alert.showAndWait();
