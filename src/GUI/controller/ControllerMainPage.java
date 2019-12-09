@@ -1,10 +1,14 @@
+/**
+ *
+ *
+ * @author Beatriz Rocha A84003
+ * @author Filipe Guimarães A85308
+ * @author Gonçalo Ferreira A84073
+ */
 package GUI.controller;
-
-
 
 import LN.Media;
 import LN.MediaCenter;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,9 +23,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,9 +37,6 @@ public class ControllerMainPage implements Initializable {
 
     @FXML
     private TableView<Media> tabelaMedias;
-
-    @FXML
-    private TableColumn<Media, Integer> numeroC;
 
     @FXML
     private TableColumn<Media, String> nomeMedia;

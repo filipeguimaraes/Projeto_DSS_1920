@@ -64,7 +64,6 @@
    <center>
       <TableView fx:id="tabelaMedias" prefHeight="304.0" prefWidth="460.0" BorderPane.alignment="CENTER">
         <columns>
-            <TableColumn id="numeroMedia" fx:id="numeroC" prefWidth="35.0" text="#" />
             <TableColumn id="nomeMedia" fx:id="nomeMedia" prefWidth="322.0" text="Nome" />
             <TableColumn id="nomeMedia" fx:id="artista" maxWidth="329.0" minWidth="-1.0" prefWidth="261.0" text="Artista" />
             <TableColumn id="CategoriaMedia" fx:id="categoria" minWidth="0.0" prefWidth="150.0" text="Categoria" />

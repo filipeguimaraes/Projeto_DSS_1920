@@ -6,7 +6,6 @@ import LN.Media;
 import LN.MediaCenter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -24,7 +23,15 @@ public class Main extends Application {
         m.setPath("c:\\Media\\Adele - Hello.mp3");
         m.setArtista("Adelle");
         m.setCategoria("Pop");
+
+        Media b = new Media();
+        b.setNome("Beatriz");
+        b.setPath("c:\\Media\\bea.mp3");
+        b.setArtista("Rocha");
+        b.setCategoria("Popzão");
+
         model.adicionaMedia(m);
+        model.adicionaMedia(b);
         model.registaUtilizador("ola","ola","ola");
         ControllerFirstMenu.init(model);
         ControllerLogin.init(model);

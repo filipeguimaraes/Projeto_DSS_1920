@@ -1,10 +1,3 @@
-/**
- *
- *
- * @author Beatriz Rocha A84003
- * @author Filipe Guimarães A85308
- * @author Gonçalo Ferreira A84073
- */
 package LN;
 /**
  *
@@ -13,12 +6,8 @@ package LN;
  * @author Filipe Guimarães A85308
  * @author Gonçalo Ferreira A84073
  */
-import LN.Exceptions.AdminException;
-import LN.Exceptions.MediaException;
-import LN.Exceptions.PermissaoException;
-import LN.Exceptions.UtilizadorException;
+import LN.Exceptions.*;
 import LN.Residentes.*;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -164,10 +153,8 @@ public class MediaCenter {
             m.setPath(pathNovo);
             Utilizador u = utilizadorDAO.get(emailOn);
             Biblioteca b = u.getBiblioteca();
-            //help o mediacenter tambem tem biblio e medias tipo wtf
             Map<String,Colecao> colecoes = b.getColecoes();
-            boolean existecol = colecoes.containsKey(col);
-            if (existecol){
+            if (colecoes.containsKey(col)){
                 Colecao c = colecoes.get(col);
                 c.add(m);
             }else {
