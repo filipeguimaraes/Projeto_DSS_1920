@@ -7,7 +7,9 @@
  */
 package LN.Residentes;
 
+import DAO.BibliotecaDAO;
 import LN.Biblioteca;
+
 
 public class Utilizador {
 
@@ -17,8 +19,8 @@ public class Utilizador {
     private String password;
 
 
-    public Utilizador(Biblioteca biblioteca, String nome, String email, String password) {
-        this.biblioteca = biblioteca;
+    public Utilizador(String codBiblioteca, String nome, String email, String password) {
+        this.biblioteca = BibliotecaDAO.getInstance().get(codBiblioteca);
         this.nome = nome;
         this.email = email;
         this.password = password;

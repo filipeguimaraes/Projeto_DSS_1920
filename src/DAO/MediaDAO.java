@@ -1,4 +1,4 @@
-/*
+/**
  *
  *
  * @author Beatriz Rocha A84003
@@ -7,21 +7,24 @@
  */
 package DAO;
 
-import LN.Residentes.Utilizador;
-import java.sql.*;
+import LN.Media;
+import UTILITIES.MediaKey;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class UtilizadorDAO implements Map<String, Utilizador> {
-
-    private static UtilizadorDAO inst = null;
-
+public class MediaDAO implements Map<MediaKey, Media> {
+    private static MediaDAO inst = null;
     private String url = "jdbc:mysql://localhost/mediacenter?" +
             "serverTimezone=UTC&user=root&password=bolinhosdeatum";
 
-    public UtilizadorDAO() {
+    public MediaDAO() {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
         }catch (ClassNotFoundException e){
@@ -29,9 +32,9 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
         }
     }
 
-    public static UtilizadorDAO getInstance(){
+    public static MediaDAO getInstance(){
         if (inst==null){
-            inst = new UtilizadorDAO();
+            inst = new MediaDAO();
         }
         return inst;
     }
@@ -45,8 +48,8 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
         try (Connection conn = DriverManager.getConnection(url)) {
             int i = 0;
             Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT mediacenter.utilizador FROM Utilizador");
-            while(rs.next()) i++;
+            ResultSet rs = stm.executeQuery("SELECT nomeMedia FROM mediacenter.media");
+            for (;rs.next();i++);
             return i;
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}
@@ -56,18 +59,22 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
     public boolean isEmpty() {
         try(Connection con = DriverManager.getConnection(url)){
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT mediacenter.utilizador FROM Utilizador");
+            ResultSet rs = st.executeQuery("SELECT nomeMedia FROM mediacenter.media");
             return !rs.next();
         }catch(Exception e){
             throw new NullPointerException(e.getMessage());
         }
     }
 
+
     @Override
     public boolean containsKey(Object key) throws NullPointerException{
         try(Connection con = DriverManager.getConnection(url)){
             Statement st = con.createStatement();
-            String sql = "SELECT nome FROM mediacenter.utilizador where email='"+key+"'";
+            MediaKey chave = (MediaKey)key;
+            String sql = "SELECT nomeMedia FROM mediacenter.media " +
+                    "where nomeMedia='"+chave.getNome()+"' " +
+                    "and artista='"+chave.getArtista()+"'";
             ResultSet rs = st.executeQuery(sql);
             return rs.next();
         }catch(Exception e){
@@ -78,86 +85,92 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
     @Override
     public boolean containsValue(Object value){ throw new UnsupportedOperationException(); }
 
+
     @Override
-    public Utilizador get(Object key) {
+    public Media get(Object key) {
         try (Connection conn = DriverManager.getConnection(url)) {
-            Utilizador ut = null;
+            Media m = null;
             Statement stm = conn.createStatement();
-            String sql = "SELECT * FROM mediacenter.utilizador WHERE email='"+key+"'";
+            MediaKey chave = (MediaKey)key;
+            String sql = "SELECT * FROM mediacenter.media " +
+                    "where nomeMedia='"+chave.getNome()+"' " +
+                    "and artista='"+chave.getNome()+"'";
             ResultSet rs = stm.executeQuery(sql);
             if (rs.next())
-                ut = new Utilizador(rs.getString(4),
+                m = new Media(rs.getString(1),
                         rs.getString(2),
-                        rs.getString(1),
                         rs.getString(3));
-            return ut;
+            return m;
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
+
+
     @Override
-    public Utilizador put(String key, Utilizador value) {
+    public Media put(MediaKey key, Media value) {
         try (Connection conn = DriverManager.getConnection(url)) {
             Statement stm = conn.createStatement();
-            stm.executeUpdate("DELETE FROM mediacenter.utilizador WHERE email='"+key+"'");
-            String sql = "INSERT INTO Utilizador VALUES ('"+
-                    value.getNome()+"','"+
-                    key+"',"+
-                    value.getPassword()+","+
-                    "biblioteca"+")";
-            stm.executeUpdate(sql);
-            return new Utilizador(
-                    value.getBiblioteca().getCod(),
-                    value.getNome(),
-                    value.getEmail(),
-                    value.getPassword());
+            stm.executeUpdate("DELETE FROM mediacenter.media  " +
+                    "where nomeMedia='"+key.getNome()+"' and artista='"+key.getNome()+"'");
+            String sql = "INSERT INTO mediacenter.media VALUES ('"+
+                    value.getNomeMedia()+"','"+
+                    value.getPath()+"','"+
+                    value.getArtista()+"')";
+            int i  = stm.executeUpdate(sql);
+            return new Media(
+                    value.getNomeMedia(),
+                    value.getPath(),
+                    value.getArtista());
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
-    public Utilizador remove(Object key) {
+    public Media remove(Object key) {
         try (Connection conn = DriverManager.getConnection(url)) {
-            Utilizador ut = this.get(key);
+            Media m = this.get(key);
+            MediaKey chave = (MediaKey)key;
             Statement stm = conn.createStatement();
-            String sql = "DELETE '"+key+"' FROM Utilizador";
+            String sql = "DELETE FROM mediacenter.media  " +
+                    "where nomeMedia='"+chave.getNome()+"' and artista='"+chave.getNome()+"'";
             stm.executeUpdate(sql);
-            return ut;
+            return m;
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
-    public void putAll(Map<? extends String, ? extends Utilizador> m) {
+    public void putAll(Map<? extends MediaKey, ? extends Media> m) {
         throw new UnsupportedOperationException();
     }
+
 
     @Override
     public void clear() {
         try(Connection conn = DriverManager.getConnection(url)){
             Statement st = conn.createStatement();
-            st.executeUpdate("DELETE FROM mediacenter.utilizador");
+            st.executeUpdate("DELETE FROM mediacenter.media");
         } catch(Exception e){
             throw new NullPointerException(e.getMessage());
         }
     }
 
     @Override
-    public Set<String> keySet() {
-        throw new UnsupportedOperationException();
+    public Set<MediaKey> keySet() {
+        return null;
     }
 
     @Override
-    public Collection<Utilizador> values() {
+    public Collection<Media> values() {
         try (Connection conn = DriverManager.getConnection(url)) {
-            Collection<Utilizador> col = new HashSet<>();
+            Collection<Media> col = new HashSet<>();
             Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.utilizador");
+            ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.media");
             for (;rs.next();) {
-                col.add(new Utilizador(
-                        rs.getString(4),
-                        rs.getString(2),
+                col.add(new Media(
                         rs.getString(1),
+                        rs.getString(2),
                         rs.getString(3)));
             }
             return col;
@@ -166,7 +179,8 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
     }
 
     @Override
-    public Set<Entry<String, Utilizador>> entrySet() {
+    public Set<Entry<MediaKey, Media>> entrySet() {
         throw new UnsupportedOperationException();
     }
 }
+

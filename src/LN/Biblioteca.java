@@ -7,6 +7,8 @@
  */
 package LN;
 
+import DAO.ColecaoDAO;
+
 import java.util.*;
 
 public class Biblioteca {
@@ -15,28 +17,41 @@ public class Biblioteca {
     private String cod;
     private String nomeBiblio;
 
-    public Biblioteca(Map<String,Colecao> colecoes, String cod, String nomeBiblio) {
-        this.colecoes = colecoes;
+    public Biblioteca(String colecao, String cod, String nomeBiblio) {
+        this.colecoes = ColecaoDAO.getInstance().get()
         this.cod = cod;
         this.nomeBiblio = nomeBiblio;
     }
 
     /**
      *
-     * @param cd
+     * @param colecao
      */
-    public void addColecaoNaBiblioteca(Set cd) {
-        // TODO - implement Biblioteca.addColecaoNaBiblioteca
-        throw new UnsupportedOperationException();
+    public void addColecaoNaBiblioteca(Colecao colecao) {
+        colecoes.put(colecao.getNomeCol(),colecao);
     }
 
     public Map<String,Colecao> getColecoes() {
         return this.colecoes;
     }
 
-    public void operation() {
-        // TODO - implement Biblioteca.operation
-        throw new UnsupportedOperationException();
+    public void setColecoes(Map<String, Colecao> colecoes) {
+        this.colecoes = colecoes;
     }
 
+    public String getCod() {
+        return cod;
+    }
+
+    public void setCod(String cod) {
+        this.cod = cod;
+    }
+
+    public String getNomeBiblio() {
+        return nomeBiblio;
+    }
+
+    public void setNomeBiblio(String nomeBiblio) {
+        this.nomeBiblio = nomeBiblio;
+    }
 }

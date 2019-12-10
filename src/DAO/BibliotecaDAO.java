@@ -1,27 +1,26 @@
-/*
- *
- *
+/**
  * @author Beatriz Rocha A84003
  * @author Filipe Guimarães A85308
  * @author Gonçalo Ferreira A84073
  */
 package DAO;
 
-import LN.Residentes.Utilizador;
-import java.sql.*;
+import LN.Biblioteca;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class UtilizadorDAO implements Map<String, Utilizador> {
-
-    private static UtilizadorDAO inst = null;
-
+public class BibliotecaDAO implements Map<String, Biblioteca> {
+    private static BibliotecaDAO inst = null;
     private String url = "jdbc:mysql://localhost/mediacenter?" +
             "serverTimezone=UTC&user=root&password=bolinhosdeatum";
 
-    public UtilizadorDAO() {
+    public BibliotecaDAO() {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
         }catch (ClassNotFoundException e){
@@ -29,9 +28,9 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
         }
     }
 
-    public static UtilizadorDAO getInstance(){
+    public static BibliotecaDAO getInstance(){
         if (inst==null){
-            inst = new UtilizadorDAO();
+            inst = new BibliotecaDAO();
         }
         return inst;
     }
@@ -45,8 +44,8 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
         try (Connection conn = DriverManager.getConnection(url)) {
             int i = 0;
             Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT mediacenter.utilizador FROM Utilizador");
-            while(rs.next()) i++;
+            ResultSet rs = stm.executeQuery("SELECT cod FROM mediacenter.biblioteca");
+            while (rs.next()) i++;
             return i;
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}
@@ -56,18 +55,20 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
     public boolean isEmpty() {
         try(Connection con = DriverManager.getConnection(url)){
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT mediacenter.utilizador FROM Utilizador");
+            ResultSet rs = st.executeQuery("SELECT cod FROM mediacenter.biblioteca");
             return !rs.next();
         }catch(Exception e){
             throw new NullPointerException(e.getMessage());
         }
     }
 
+
     @Override
     public boolean containsKey(Object key) throws NullPointerException{
         try(Connection con = DriverManager.getConnection(url)){
             Statement st = con.createStatement();
-            String sql = "SELECT nome FROM mediacenter.utilizador where email='"+key+"'";
+            String sql = "SELECT cod FROM mediacenter.biblioteca " +
+                    "where cod='"+key+"' ";
             ResultSet rs = st.executeQuery(sql);
             return rs.next();
         }catch(Exception e){
@@ -78,65 +79,68 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
     @Override
     public boolean containsValue(Object value){ throw new UnsupportedOperationException(); }
 
+
     @Override
-    public Utilizador get(Object key) {
+    public Biblioteca get(Object key) {
         try (Connection conn = DriverManager.getConnection(url)) {
-            Utilizador ut = null;
+            Biblioteca b = null;
             Statement stm = conn.createStatement();
-            String sql = "SELECT * FROM mediacenter.utilizador WHERE email='"+key+"'";
+            String sql = "SELECT * FROM mediacenter.biblioteca " +
+                    "where cod='"+key+"'";
             ResultSet rs = stm.executeQuery(sql);
             if (rs.next())
-                ut = new Utilizador(rs.getString(4),
-                        rs.getString(2),
+                b = new Biblioteca(null,
                         rs.getString(1),
-                        rs.getString(3));
-            return ut;
+                        rs.getString(2));
+            return b;
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
+
+
     @Override
-    public Utilizador put(String key, Utilizador value) {
+    public Biblioteca put(String key, Biblioteca value) {
         try (Connection conn = DriverManager.getConnection(url)) {
             Statement stm = conn.createStatement();
-            stm.executeUpdate("DELETE FROM mediacenter.utilizador WHERE email='"+key+"'");
-            String sql = "INSERT INTO Utilizador VALUES ('"+
-                    value.getNome()+"','"+
-                    key+"',"+
-                    value.getPassword()+","+
-                    "biblioteca"+")";
-            stm.executeUpdate(sql);
-            return new Utilizador(
-                    value.getBiblioteca().getCod(),
-                    value.getNome(),
-                    value.getEmail(),
-                    value.getPassword());
+            stm.executeUpdate("DELETE FROM mediacenter.biblioteca " +
+                    "where cod='"+key+"'");
+            String sql = "INSERT INTO mediacenter.biblioteca VALUES ('"+
+                    value.getCod()+"','"+
+                    value.getNomeBiblio()+"')";
+            int i  = stm.executeUpdate(sql);
+            return new Biblioteca(
+                    null,
+                    value.getNomeBiblio(),
+                    value.getCod());
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
-    public Utilizador remove(Object key) {
+    public Biblioteca remove(Object key) {
         try (Connection conn = DriverManager.getConnection(url)) {
-            Utilizador ut = this.get(key);
+            Biblioteca m = this.get(key);
             Statement stm = conn.createStatement();
-            String sql = "DELETE '"+key+"' FROM Utilizador";
+            String sql = "DELETE FROM mediacenter.biblioteca  " +
+                    "where cod='"+key+"'";
             stm.executeUpdate(sql);
-            return ut;
+            return m;
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
-    public void putAll(Map<? extends String, ? extends Utilizador> m) {
+    public void putAll(Map<? extends String, ? extends Biblioteca> m) {
         throw new UnsupportedOperationException();
     }
+
 
     @Override
     public void clear() {
         try(Connection conn = DriverManager.getConnection(url)){
             Statement st = conn.createStatement();
-            st.executeUpdate("DELETE FROM mediacenter.utilizador");
+            st.executeUpdate("DELETE FROM mediacenter.media");
         } catch(Exception e){
             throw new NullPointerException(e.getMessage());
         }
@@ -148,17 +152,15 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
     }
 
     @Override
-    public Collection<Utilizador> values() {
+    public Collection<Biblioteca> values() {
         try (Connection conn = DriverManager.getConnection(url)) {
-            Collection<Utilizador> col = new HashSet<>();
+            Collection<Biblioteca> col = new HashSet<>();
             Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.utilizador");
+            ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.biblioteca");
             for (;rs.next();) {
-                col.add(new Utilizador(
-                        rs.getString(4),
-                        rs.getString(2),
+                col.add(new Biblioteca(null,
                         rs.getString(1),
-                        rs.getString(3)));
+                        rs.getString(2)));
             }
             return col;
         }
@@ -166,7 +168,8 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
     }
 
     @Override
-    public Set<Entry<String, Utilizador>> entrySet() {
+    public Set<Entry<String,Biblioteca>> entrySet() {
         throw new UnsupportedOperationException();
     }
 }
+

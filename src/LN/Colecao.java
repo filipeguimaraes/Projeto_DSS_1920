@@ -11,8 +11,14 @@ import java.util.*;
 
 public class Colecao {
 
-    private Collection<Media> mediasCol;
+    private String codCol;
+    private List<Media> mediasCol;
     private String nomeCol;
+
+    public Colecao(List<Media> mediasCol, String nomeCol) {
+        this.mediasCol = mediasCol;
+        this.nomeCol = nomeCol;
+    }
 
     /**
      *
@@ -63,5 +69,25 @@ public class Colecao {
 
     public void setNomeCol(String nomeCol) {
         this.nomeCol = nomeCol;
+    }
+
+    public List<Media> getMediasCol() {
+        return mediasCol;
+    }
+
+    public void setMediasCol(List<Media> mediasCol) {
+        this.mediasCol = mediasCol;
+    }
+
+    public String getNomeCol() {
+        return nomeCol;
+    }
+
+    public String getCodCol() {
+        return codCol;
+    }
+
+    public void setCodCol(String codCol) {
+        this.codCol = codCol;
     }
 }

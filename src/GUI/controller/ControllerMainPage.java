@@ -79,19 +79,30 @@ public class ControllerMainPage implements Initializable {
 
     @FXML
     void handlePlayButton(MouseEvent event) {
-        model.reproduzirMedia("Hello");
+        try {
+            Media m = tabelaMedias.getSelectionModel().getSelectedItem();
+            model.reproduzirMedia(m.getNomeMedia());
+        }catch (Exception e){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         nomeMedia.setCellValueFactory(new PropertyValueFactory<>("nomeMedia"));
         artista.setCellValueFactory(new PropertyValueFactory<>("artista"));
-        categoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
-        ObservableList<Media> l = FXCollections.observableArrayList();
+        //categoria.setCellValueFactory(new PropertyValueFactory<>("categoria")); dar a colta ao problema
+
         Map<String,Media> map = model.getMediaDAO();
         List<Media> list = new ArrayList<>(map.values());
+
+        ObservableList<Media> l = FXCollections.observableArrayList();
         l.addAll(list);
+
         tabelaMedias.setItems(l);
     }
 

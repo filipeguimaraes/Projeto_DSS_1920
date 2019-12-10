@@ -7,32 +7,17 @@
  */
 package LN;
 
-import java.util.Set;
 
 public class Media {
 
-    private String categoria;
     private String nomeMedia;
     private String path;
     private String artista;
-    private Set<String> proprietarios;
 
-    /**
-     *
-     * @param categoria
-     */
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
-    public Set<String> getProprietarios() {
-        // TODO - implement Media.getProprietarios
-        throw new UnsupportedOperationException();
-    }
-
-    public void numeroDonos() {
-        // TODO - implement Media.numeroDonos
-        throw new UnsupportedOperationException();
+    public Media( String nomeMedia, String path, String artista) {
+        this.nomeMedia = nomeMedia;
+        this.path = path;
+        this.artista = artista;
     }
 
     /**
@@ -67,19 +52,8 @@ public class Media {
         return path;
     }
 
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setNomeMedia(String nomeMedia) {
-        this.nomeMedia = nomeMedia;
-    }
-
     public String getArtista() {
         return artista;
     }
 
-    public void setProprietarios(Set<String> proprietarios) {
-        this.proprietarios = proprietarios;
-    }
 }

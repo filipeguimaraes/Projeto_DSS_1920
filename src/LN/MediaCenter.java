@@ -6,6 +6,8 @@ package LN;
  * @author Filipe Guimarães A85308
  * @author Gonçalo Ferreira A84073
  */
+import DAO.UtilitarioDAO;
+import DAO.UtilizadorDAO;
 import LN.Exceptions.*;
 import LN.Residentes.*;
 import java.io.File;
@@ -13,11 +15,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MediaCenter {
 
+    private UtilitarioDAO util;
     private Administrador admin;
     private String pathParaMedia;
     private Map<String,Biblioteca> bibliotecas;
@@ -25,15 +30,17 @@ public class MediaCenter {
     private Map<String,Media> mediaDAO;
     private String emailOn;
     private Integer permissao;
+
     private static Integer administrador=1;
     private static Integer utilizador=2;
     private static Integer convidado=3;
 
     public MediaCenter() {
-        this.admin = new Administrador();
-        this.pathParaMedia = "c:\\Media\\";
+        this.util = new UtilitarioDAO();
+        this.admin = util.getAdmin();
+        this.pathParaMedia = util.pathToMedia();
         this.bibliotecas = new HashMap<>();
-        this.utilizadorDAO = new HashMap<>();
+        this.utilizadorDAO = new UtilizadorDAO();
         this.mediaDAO = new HashMap<>();
         this.emailOn = null;
         this.permissao = 0;
@@ -142,25 +149,24 @@ public class MediaCenter {
     public void upload(String path, String nome, String col, String artista, String cat) throws MediaException, IOException {
         if(!validaFich(path)) throw new MediaException("Formato de ficheiro invalido");
         boolean existe = mediaDAO.containsKey("nome");
+        Utilizador u = utilizadorDAO.get(emailOn);
         if(existe) {
-            mediaDAO.get("nome").getProprietarios().add(emailOn);
+            //adicionar ao map com string categoria
+            //mediaDAO.get("nome").getProprietarios().add(emailOn);
+            //m.setCategoria(cat); passar para cima
         } else{
             String pathNovo = copiaFicheiro(path);
-            Media m = new Media();
-            m.setNome(nome);
-            m.setCategoria(cat);
-            m.setArtista(artista);
-            m.setPath(pathNovo);
-            Utilizador u = utilizadorDAO.get(emailOn);
+            Media m = new Media(nome, pathNovo, artista);
             Biblioteca b = u.getBiblioteca();
             Map<String,Colecao> colecoes = b.getColecoes();
             if (colecoes.containsKey(col)){
                 Colecao c = colecoes.get(col);
                 c.add(m);
             }else {
-                Colecao c = new Colecao();
-                c.setNomeCol(col);
-                c.add(m);
+                List<Media> med= new ArrayList<>(); //colocar DAO
+                med.add(m);
+                Colecao c = new Colecao(med, col);
+                b.addColecaoNaBiblioteca(c);
             }
         }
     }

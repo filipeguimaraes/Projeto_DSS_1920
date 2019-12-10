@@ -18,21 +18,18 @@ public class Main extends Application {
 
     public void init(){
         //teste de media
-        Media m = new Media();
-        m.setNome("Hello");
-        m.setPath("c:\\Media\\Adele - Hello.mp3");
-        m.setArtista("Adelle");
-        m.setCategoria("Pop");
+        Media m = new Media("Hello",
+                "c:\\Media\\Adele - Hello.mp3",
+                "Adelle");
 
-        Media b = new Media();
-        b.setNome("Beatriz");
-        b.setPath("c:\\Media\\bea.mp3");
-        b.setArtista("Rocha");
-        b.setCategoria("Popzão");
+        Media b = new Media("UML #1",
+                "c:\\Media\\The Morpheus Tutorials - UML Tutorial #1.mp4",
+                "The Morpheus Tutorials");
+
 
         model.adicionaMedia(m);
         model.adicionaMedia(b);
-        model.registaUtilizador("ola","ola","ola");
+
         ControllerFirstMenu.init(model);
         ControllerLogin.init(model);
         ControllerMainPage.init(model);
