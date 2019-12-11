@@ -49,7 +49,7 @@ public class MediaDAO implements Map<MediaKey, Media> {
             int i = 0;
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT nomeMedia FROM mediacenter.media");
-            for (;rs.next();i++);
+            while (rs.next()) i++;
             return i;
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}
@@ -117,7 +117,7 @@ public class MediaDAO implements Map<MediaKey, Media> {
                     value.getNomeMedia()+"','"+
                     value.getPath()+"','"+
                     value.getArtista()+"')";
-            int i  = stm.executeUpdate(sql);
+            stm.executeUpdate(sql);
             return new Media(
                     value.getNomeMedia(),
                     value.getPath(),
@@ -158,7 +158,7 @@ public class MediaDAO implements Map<MediaKey, Media> {
 
     @Override
     public Set<MediaKey> keySet() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override

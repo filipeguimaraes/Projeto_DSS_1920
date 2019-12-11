@@ -1,4 +1,3 @@
-package LN;
 /**
  *
  *
@@ -6,10 +5,16 @@ package LN;
  * @author Filipe Guimarães A85308
  * @author Gonçalo Ferreira A84073
  */
+package LN;
+
+import DAO.BibliotecaDAO;
+import DAO.MediaDAO;
 import DAO.UtilitarioDAO;
 import DAO.UtilizadorDAO;
 import LN.Exceptions.*;
 import LN.Residentes.*;
+import UTILITIES.MediaKey;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -22,12 +27,11 @@ import java.util.Map;
 
 public class MediaCenter {
 
-    private UtilitarioDAO util;
     private Administrador admin;
     private String pathParaMedia;
     private Map<String,Biblioteca> bibliotecas;
     private Map<String, Utilizador> utilizadorDAO;
-    private Map<String,Media> mediaDAO;
+    private Map<MediaKey,Media> mediaDAO;
     private String emailOn;
     private Integer permissao;
 
@@ -36,18 +40,18 @@ public class MediaCenter {
     private static Integer convidado=3;
 
     public MediaCenter() {
-        this.util = new UtilitarioDAO();
-        this.admin = util.getAdmin();
-        this.pathParaMedia = util.pathToMedia();
-        this.bibliotecas = new HashMap<>();
-        this.utilizadorDAO = new UtilizadorDAO();
-        this.mediaDAO = new HashMap<>();
+        this.admin = UtilitarioDAO.getInstance().getAdmin();
+        this.pathParaMedia = UtilitarioDAO.getInstance().pathToMedia();
+        this.bibliotecas = BibliotecaDAO.getInstance();
+        this.utilizadorDAO = UtilizadorDAO.getInstance();
+        this.mediaDAO = MediaDAO.getInstance();
         this.emailOn = null;
         this.permissao = 0;
     }
 
     public void adicionaMedia(Media m){
-        mediaDAO.put(m.getNomeMedia(),m);
+        MediaKey key = new MediaKey(m.getNomeMedia(),m.getArtista());
+        mediaDAO.put(key,m);
     }
 
     public void setAdministrador() {
@@ -146,7 +150,8 @@ public class MediaCenter {
      * @param artista
      * @param cat
      */
-    public void upload(String path, String nome, String col, String artista, String cat) throws MediaException, IOException {
+    public void upload(String path, String nome, String col, String artista, String cat)
+            throws MediaException, IOException {
         if(!validaFich(path)) throw new MediaException("Formato de ficheiro invalido");
         boolean existe = mediaDAO.containsKey("nome");
         Utilizador u = utilizadorDAO.get(emailOn);
@@ -165,7 +170,7 @@ public class MediaCenter {
             }else {
                 List<Media> med= new ArrayList<>(); //colocar DAO
                 med.add(m);
-                Colecao c = new Colecao(med, col);
+                Colecao c = new Colecao(col,med,col);
                 b.addColecaoNaBiblioteca(c);
             }
         }
@@ -305,8 +310,9 @@ public class MediaCenter {
      * @param password
      */
     public void registaUtilizador(String nome, String email, String password) {
-        Biblioteca b = new Biblioteca(null,"0","Geral");
-        Utilizador u = new Utilizador(b,nome,email,password);
+        String codBiblioteca = Integer.toString(bibliotecas.size());
+        Biblioteca b = new Biblioteca(codBiblioteca,"Biblioteca de "+nome);
+        Utilizador u = new Utilizador(codBiblioteca,nome,email,password);
         utilizadorDAO.put(email,u);
     }
 
@@ -356,7 +362,79 @@ public class MediaCenter {
     //apagar
 
 
-    public Map<String, Media> getMediaDAO() {
+    public Administrador getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Administrador admin) {
+        this.admin = admin;
+    }
+
+    public String getPathParaMedia() {
+        return pathParaMedia;
+    }
+
+    public void setPathParaMedia(String pathParaMedia) {
+        this.pathParaMedia = pathParaMedia;
+    }
+
+    public Map<String, Biblioteca> getBibliotecas() {
+        return bibliotecas;
+    }
+
+    public void setBibliotecas(Map<String, Biblioteca> bibliotecas) {
+        this.bibliotecas = bibliotecas;
+    }
+
+    public Map<String, Utilizador> getUtilizadorDAO() {
+        return utilizadorDAO;
+    }
+
+    public void setUtilizadorDAO(Map<String, Utilizador> utilizadorDAO) {
+        this.utilizadorDAO = utilizadorDAO;
+    }
+
+    public void setMediaDAO(Map<MediaKey, Media> mediaDAO) {
+        this.mediaDAO = mediaDAO;
+    }
+
+    public String getEmailOn() {
+        return emailOn;
+    }
+
+    public Integer getPermissao() {
+        return permissao;
+    }
+
+    public void setPermissao(Integer permissao) {
+        this.permissao = permissao;
+    }
+
+    public static Integer getAdministrador() {
+        return administrador;
+    }
+
+    public static void setAdministrador(Integer administrador) {
+        MediaCenter.administrador = administrador;
+    }
+
+    public static Integer getUtilizador() {
+        return utilizador;
+    }
+
+    public static void setUtilizador(Integer utilizador) {
+        MediaCenter.utilizador = utilizador;
+    }
+
+    public static Integer getConvidado() {
+        return convidado;
+    }
+
+    public static void setConvidado(Integer convidado) {
+        MediaCenter.convidado = convidado;
+    }
+
+    public Map<MediaKey, Media> getMediaDAO() {
         return mediaDAO;
     }
 }

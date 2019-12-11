@@ -9,6 +9,8 @@ package GUI.controller;
 
 import LN.Media;
 import LN.MediaCenter;
+import LN.Residentes.Utilizador;
+import UTILITIES.MediaKey;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,7 +44,7 @@ public class ControllerMainPage implements Initializable {
     private TableColumn<Media, String> nomeMedia;
 
     @FXML
-    private TableColumn<Media, String> artista;
+    private TableColumn<Utilizador, String> artista;
 
     @FXML
     private TableColumn<Media, String> categoria;
@@ -90,20 +92,27 @@ public class ControllerMainPage implements Initializable {
     }
 
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
+    public void populateTabela(){
         nomeMedia.setCellValueFactory(new PropertyValueFactory<>("nomeMedia"));
         artista.setCellValueFactory(new PropertyValueFactory<>("artista"));
-        //categoria.setCellValueFactory(new PropertyValueFactory<>("categoria")); dar a colta ao problema
+        String emailOn = model.getEmailOn();
+        if (emailOn!=null) {
+            //categoria.setCellValueFactory(new PropertyValueFactory<>("categorias"));
 
-        Map<String,Media> map = model.getMediaDAO();
+        }
+        Map<MediaKey,Media> map = model.getMediaDAO();
         List<Media> list = new ArrayList<>(map.values());
 
         ObservableList<Media> l = FXCollections.observableArrayList();
         l.addAll(list);
 
         tabelaMedias.setItems(l);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        populateTabela();
     }
 
     public static void init(MediaCenter model){

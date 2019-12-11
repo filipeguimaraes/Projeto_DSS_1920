@@ -7,12 +7,12 @@
  */
 package DAO;
 
+import LN.Media;
 import LN.Residentes.Utilizador;
+import UTILITIES.MediaKey;
+
 import java.sql.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class UtilizadorDAO implements Map<String, Utilizador> {
 
@@ -34,6 +34,21 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
             inst = new UtilizadorDAO();
         }
         return inst;
+    }
+
+    public Map<Media,String> categoriasByUtilizador(String email){
+        try (Connection conn = DriverManager.getConnection(url)) {
+            Map<Media,String> cat = new HashMap<>();
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.utilizador_media " +
+                    "where Utilizador_email='"+email+"'");
+            while (rs.next()) {
+                MediaKey key = new MediaKey(rs.getString("2"),rs.getString("3"));
+                cat.put(MediaDAO.getInstance().get(key),rs.getString(4));
+            }
+            return cat;
+        }
+        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     public int hashCode() {
@@ -161,12 +176,13 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
                         rs.getString(3)));
             }
             return col;
-        }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
+        } catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
     public Set<Entry<String, Utilizador>> entrySet() {
         throw new UnsupportedOperationException();
     }
+
+
 }

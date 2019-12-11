@@ -17,8 +17,8 @@ public class Biblioteca {
     private String cod;
     private String nomeBiblio;
 
-    public Biblioteca(String colecao, String cod, String nomeBiblio) {
-        this.colecoes = ColecaoDAO.getInstance().get()
+    public Biblioteca(String cod, String nomeBiblio) {
+        this.colecoes = ColecaoDAO.getInstance().getByBiblioteca(this.cod);
         this.cod = cod;
         this.nomeBiblio = nomeBiblio;
     }

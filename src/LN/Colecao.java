@@ -15,7 +15,8 @@ public class Colecao {
     private List<Media> mediasCol;
     private String nomeCol;
 
-    public Colecao(List<Media> mediasCol, String nomeCol) {
+    public Colecao(String codCol, List<Media> mediasCol, String nomeCol) {
+        this.codCol = codCol;
         this.mediasCol = mediasCol;
         this.nomeCol = nomeCol;
     }

@@ -1,4 +1,5 @@
 /**
+ *
  * @author Beatriz Rocha A84003
  * @author Filipe Guimarães A85308
  * @author Gonçalo Ferreira A84073
@@ -89,8 +90,7 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
                     "where cod='"+key+"'";
             ResultSet rs = stm.executeQuery(sql);
             if (rs.next())
-                b = new Biblioteca(null,
-                        rs.getString(1),
+                b = new Biblioteca(rs.getString(1),
                         rs.getString(2));
             return b;
         }
@@ -108,11 +108,8 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
             String sql = "INSERT INTO mediacenter.biblioteca VALUES ('"+
                     value.getCod()+"','"+
                     value.getNomeBiblio()+"')";
-            int i  = stm.executeUpdate(sql);
-            return new Biblioteca(
-                    null,
-                    value.getNomeBiblio(),
-                    value.getCod());
+            stm.executeUpdate(sql);
+            return new Biblioteca(value.getNomeBiblio(),value.getCod());
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
@@ -135,7 +132,6 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
         throw new UnsupportedOperationException();
     }
 
-
     @Override
     public void clear() {
         try(Connection conn = DriverManager.getConnection(url)){
@@ -157,9 +153,8 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
             Collection<Biblioteca> col = new HashSet<>();
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.biblioteca");
-            for (;rs.next();) {
-                col.add(new Biblioteca(null,
-                        rs.getString(1),
+            while (rs.next()) {
+                col.add(new Biblioteca(rs.getString(1),
                         rs.getString(2)));
             }
             return col;

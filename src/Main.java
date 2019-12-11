@@ -17,7 +17,7 @@ public class Main extends Application {
     public static void main(String[] args){ launch(args); }
 
     public void init(){
-        //teste de media
+        /*
         Media m = new Media("Hello",
                 "c:\\Media\\Adele - Hello.mp3",
                 "Adelle");
@@ -29,6 +29,8 @@ public class Main extends Application {
 
         model.adicionaMedia(m);
         model.adicionaMedia(b);
+
+         */
 
         ControllerFirstMenu.init(model);
         ControllerLogin.init(model);
