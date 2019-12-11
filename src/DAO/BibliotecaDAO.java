@@ -11,10 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class BibliotecaDAO implements Map<String, Biblioteca> {
     private static BibliotecaDAO inst = null;
@@ -45,8 +42,8 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
         try (Connection conn = DriverManager.getConnection(url)) {
             int i = 0;
             Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT cod FROM mediacenter.biblioteca");
-            while (rs.next()) i++;
+            ResultSet rs = stm.executeQuery("SELECT COUNT(*) FROM mediacenter.biblioteca");
+            if (rs.next()) i= rs.getInt(1);
             return i;
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}
@@ -148,9 +145,9 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
     }
 
     @Override
-    public Collection<Biblioteca> values() {
+    public List<Biblioteca> values() {
         try (Connection conn = DriverManager.getConnection(url)) {
-            Collection<Biblioteca> col = new HashSet<>();
+            List<Biblioteca> col = new ArrayList<>();
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.biblioteca");
             while (rs.next()) {

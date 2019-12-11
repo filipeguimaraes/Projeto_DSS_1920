@@ -21,11 +21,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MediaCenter {
+
+    private static MediaCenter inst = null;
 
     private Administrador admin;
     private String pathParaMedia;
@@ -39,11 +40,18 @@ public class MediaCenter {
     private static Integer utilizador=2;
     private static Integer convidado=3;
 
+    public static MediaCenter getInstance(){
+        if(inst==null){
+            inst = new MediaCenter();
+        }
+        return inst;
+    }
+
     public MediaCenter() {
         this.admin = UtilitarioDAO.getInstance().getAdmin();
         this.pathParaMedia = UtilitarioDAO.getInstance().pathToMedia();
         this.bibliotecas = BibliotecaDAO.getInstance();
-        this.utilizadorDAO = UtilizadorDAO.getInstance();
+        this.utilizadorDAO = new UtilizadorDAO();
         this.mediaDAO = MediaDAO.getInstance();
         this.emailOn = null;
         this.permissao = 0;
@@ -208,10 +216,10 @@ public class MediaCenter {
 
     /**
      *
-     * @param nomeMedia nome da media a reproduzer
+     * @param key Chave que contem o nome da media a reproduzir e o respetivo artista
      */
-    public void reproduzirMedia(String nomeMedia) {
-        reproduz(mediaDAO.get(nomeMedia).getPath());
+    public void reproduzirMedia(MediaKey key) {
+        reproduz(mediaDAO.get(key).getPath());
     }
 
     public void reproduz(String path){

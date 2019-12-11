@@ -31,7 +31,7 @@ import java.util.ResourceBundle;
 
 public class ControllerLogin implements Initializable {
 
-    private static MediaCenter model;
+    private static MediaCenter model = MediaCenter.getInstance();
 
     @FXML
     private TextField email;
@@ -67,12 +67,6 @@ public class ControllerLogin implements Initializable {
             e.printStackTrace();
         }
     }
-
-
-    public static void init(MediaCenter model){
-        ControllerLogin.model=model;
-    }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

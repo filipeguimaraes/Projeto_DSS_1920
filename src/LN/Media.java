@@ -8,16 +8,23 @@
 package LN;
 
 
+import DAO.MediaDAO;
+import LN.Residentes.Utilizador;
+
+import java.util.Map;
+
 public class Media {
 
     private String nomeMedia;
     private String path;
     private String artista;
+    private Map<Utilizador,String> categorias;
 
     public Media( String nomeMedia, String path, String artista) {
         this.nomeMedia = nomeMedia;
         this.path = path;
         this.artista = artista;
+        this.categorias = MediaDAO.getInstance().categoriasByUtilizador(nomeMedia,artista);
     }
 
     /**
@@ -56,4 +63,19 @@ public class Media {
         return artista;
     }
 
+    public void setNomeMedia(String nomeMedia) {
+        this.nomeMedia = nomeMedia;
+    }
+
+    public Map<Utilizador, String> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(Map<Utilizador, String> categorias) {
+        this.categorias = categorias;
+    }
+
+    public String getCategoriaPorUtilizador(String email){
+        return this.categorias.get(email);
+    }
 }

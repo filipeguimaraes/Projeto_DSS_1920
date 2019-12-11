@@ -21,7 +21,7 @@ import java.io.IOException;
 
 public class ControllerFirstMenu {
 
-    private static MediaCenter model;
+    private static MediaCenter model = MediaCenter.getInstance();
 
     @FXML
     private Button residente;
@@ -60,10 +60,6 @@ public class ControllerFirstMenu {
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(login);
         window.show();
-    }
-
-    public static void init(MediaCenter model){
-        ControllerFirstMenu.model=model;
     }
 
 }

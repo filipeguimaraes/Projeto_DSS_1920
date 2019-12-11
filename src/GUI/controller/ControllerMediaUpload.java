@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class ControllerMediaUpload {
 
-    private static MediaCenter model;
+    private static MediaCenter model = MediaCenter.getInstance();
 
     @FXML
     private TextField nome;
@@ -54,7 +54,4 @@ public class ControllerMediaUpload {
         stage.close();
     }
 
-    public static void init(MediaCenter model){
-        ControllerMediaUpload.model=model;
-    }
 }

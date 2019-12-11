@@ -7,10 +7,12 @@
  */
 package GUI.controller;
 
+import LN.Biblioteca;
+import LN.Colecao;
 import LN.Media;
 import LN.MediaCenter;
-import LN.Residentes.Utilizador;
 import UTILITIES.MediaKey;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,20 +24,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ControllerMainPage implements Initializable {
 
-    private static MediaCenter model;
+    private static MediaCenter model = MediaCenter.getInstance();
+
+    @FXML
+    private Label bemVindo;
 
     @FXML
     private TableView<Media> tabelaMedias;
@@ -44,11 +47,13 @@ public class ControllerMainPage implements Initializable {
     private TableColumn<Media, String> nomeMedia;
 
     @FXML
-    private TableColumn<Utilizador, String> artista;
+    private TableColumn<Media, String> artista;
 
     @FXML
     private TableColumn<Media, String> categoria;
 
+    @FXML
+    private TreeView<String> bibliotecas;
 
     @FXML
     private ImageView upload;
@@ -58,6 +63,7 @@ public class ControllerMainPage implements Initializable {
 
     @FXML
     private ImageView play;
+
 
     @FXML
     void handleUploadButton(MouseEvent event) throws IOException {
@@ -83,7 +89,8 @@ public class ControllerMainPage implements Initializable {
     void handlePlayButton(MouseEvent event) {
         try {
             Media m = tabelaMedias.getSelectionModel().getSelectedItem();
-            model.reproduzirMedia(m.getNomeMedia());
+            MediaKey key = new MediaKey(m.getNomeMedia(),m.getArtista());
+            model.reproduzirMedia(key);
         }catch (Exception e){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText(e.getMessage());
@@ -93,29 +100,67 @@ public class ControllerMainPage implements Initializable {
 
 
     public void populateTabela(){
-        nomeMedia.setCellValueFactory(new PropertyValueFactory<>("nomeMedia"));
-        artista.setCellValueFactory(new PropertyValueFactory<>("artista"));
-        String emailOn = model.getEmailOn();
-        if (emailOn!=null) {
-            //categoria.setCellValueFactory(new PropertyValueFactory<>("categorias"));
 
+    }
+
+    public void populateArvore(){
+        TreeItem<String> rootitem = new TreeItem<>("Bibliotecas");
+        rootitem.setExpanded(true);
+        List<Biblioteca> bib = (ArrayList<Biblioteca>)model.getBibliotecas().values();
+        for(Biblioteca b : bib){
+            System.out.println(b.getNomeBiblio());
+            TreeItem<String> item = new TreeItem<>(b.getNomeBiblio());
+            rootitem.getChildren().add(item);
+            System.out.println(rootitem.getChildren().toString());
+            /*
+            List<Colecao> col = (ArrayList<Colecao>)b.getColecoes().values();
+            System.out.println(col);
+            for (Colecao c : col){
+                TreeItem<String> node = new TreeItem<>(c.getNomeCol());
+                item.getChildren().add(node);
+            }
+
+             */
         }
-        Map<MediaKey,Media> map = model.getMediaDAO();
-        List<Media> list = new ArrayList<>(map.values());
+        System.out.println(rootitem.getChildren().toString());
+        try {
+            this.bibliotecas.setRoot(rootitem);
+            this.bibliotecas.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        }catch (NullPointerException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Não foi possivel apresentar as bibliotecas.");
+            alert.showAndWait();
+        }
 
-        ObservableList<Media> l = FXCollections.observableArrayList();
-        l.addAll(list);
+    }
 
-        tabelaMedias.setItems(l);
+    public void setBemVindo(){
+        if(model.eUtilizador()){
+            bemVindo.setText("Bem Vindo/a, "+model.getUtilizadorDAO().get(model.getEmailOn()).getNome()+"!");
+        }else bemVindo.setText("Bem Vindo, Convidado!");
+
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        nomeMedia.setCellValueFactory(new PropertyValueFactory<>("nomeMedia"));
+        artista.setCellValueFactory(new PropertyValueFactory<>("artista"));
+        String email = model.getEmailOn();
+        if(email!=null){
+            System.out.println("hey "+email);
+            categoria.setCellValueFactory(
+                    c -> new SimpleStringProperty(c.getValue().getCategoriaPorUtilizador(email)));
+        }
 
+        Map<MediaKey,Media> map = model.getMediaDAO();
+        List<Media> list = new ArrayList<>(map.values());
+        ObservableList<Media> l = FXCollections.observableArrayList();
+        l.addAll(list);
+
+        tabelaMedias.setItems(l);
+        setBemVindo();
         populateTabela();
+        populateArvore();
     }
 
-    public static void init(MediaCenter model){
-        ControllerMainPage.model=model;
-    }
 }

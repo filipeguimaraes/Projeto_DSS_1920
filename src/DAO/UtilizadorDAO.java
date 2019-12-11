@@ -35,7 +35,7 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
         }
         return inst;
     }
-
+/*
     public Map<Media,String> categoriasByUtilizador(String email){
         try (Connection conn = DriverManager.getConnection(url)) {
             Map<Media,String> cat = new HashMap<>();
@@ -43,13 +43,17 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
             ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.utilizador_media " +
                     "where Utilizador_email='"+email+"'");
             while (rs.next()) {
-                MediaKey key = new MediaKey(rs.getString("2"),rs.getString("3"));
-                cat.put(MediaDAO.getInstance().get(key),rs.getString(4));
+                MediaDAO m = new MediaDAO();
+                MediaKey key = new MediaKey(rs.getString(2),rs.getString(3));
+                cat.put(m.get(key),rs.getString(4));
+                System.out.println(key.toString()+m.get(key)+" : "+rs.getString(4));
             }
             return cat;
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
+
+ */
 
     public int hashCode() {
         return inst.hashCode();
@@ -100,11 +104,13 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
             Statement stm = conn.createStatement();
             String sql = "SELECT * FROM mediacenter.utilizador WHERE email='"+key+"'";
             ResultSet rs = stm.executeQuery(sql);
-            if (rs.next())
+            if (rs.next()) {
                 ut = new Utilizador(rs.getString(4),
                         rs.getString(2),
                         rs.getString(1),
                         rs.getString(3));
+
+            }
             return ut;
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}

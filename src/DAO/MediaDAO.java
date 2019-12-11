@@ -8,16 +8,14 @@
 package DAO;
 
 import LN.Media;
+import LN.Residentes.Utilizador;
 import UTILITIES.MediaKey;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MediaDAO implements Map<MediaKey, Media> {
     private static MediaDAO inst = null;
@@ -37,6 +35,20 @@ public class MediaDAO implements Map<MediaKey, Media> {
             inst = new MediaDAO();
         }
         return inst;
+    }
+
+    public Map<Utilizador,String> categoriasByUtilizador(String nomeMedia, String artista){
+        try (Connection conn = DriverManager.getConnection(url)) {
+            Map<Utilizador,String> cat = new HashMap<>();
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.utilizador_media " +
+                    "where Media_nomeMedia='"+nomeMedia+"' and Media_artista='"+artista+"'");
+            while (rs.next()) {
+                cat.put(UtilizadorDAO.getInstance().get(rs.getString(1)),rs.getString(4));
+            }
+            return cat;
+        }
+        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     public int hashCode() {
@@ -92,14 +104,16 @@ public class MediaDAO implements Map<MediaKey, Media> {
             Media m = null;
             Statement stm = conn.createStatement();
             MediaKey chave = (MediaKey)key;
+            String nome = chave.getNome();
+            String artista = chave.getArtista();
             String sql = "SELECT * FROM mediacenter.media " +
-                    "where nomeMedia='"+chave.getNome()+"' " +
-                    "and artista='"+chave.getNome()+"'";
+                    "where nomeMedia='"+nome+"' and artista='"+artista+"'";
             ResultSet rs = stm.executeQuery(sql);
-            if (rs.next())
+            if (rs.next()){
                 m = new Media(rs.getString(1),
                         rs.getString(2),
                         rs.getString(3));
+            }
             return m;
         }
         catch (Exception e) {throw new NullPointerException(e.getMessage());}
@@ -167,7 +181,7 @@ public class MediaDAO implements Map<MediaKey, Media> {
             Collection<Media> col = new HashSet<>();
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.media");
-            for (;rs.next();) {
+            while (rs.next()) {
                 col.add(new Media(
                         rs.getString(1),
                         rs.getString(2),

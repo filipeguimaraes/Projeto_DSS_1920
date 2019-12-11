@@ -8,7 +8,6 @@
 package LN.Residentes;
 
 import DAO.BibliotecaDAO;
-import DAO.UtilitarioDAO;
 import DAO.UtilizadorDAO;
 import LN.Biblioteca;
 import LN.Media;
@@ -22,7 +21,6 @@ public class Utilizador {
     private String nome;
     private String email;
     private String password;
-    private Map<Media,String> categorias;
 
 
     public Utilizador(String codBiblioteca, String nome, String email, String password) {
@@ -30,7 +28,6 @@ public class Utilizador {
         this.nome = nome;
         this.email = email;
         this.password = password;
-        this.categorias = UtilizadorDAO.getInstance().categoriasByUtilizador(email);
     }
 
     /**
@@ -76,4 +73,5 @@ public class Utilizador {
     public String getEmail() {
         return email;
     }
+
 }

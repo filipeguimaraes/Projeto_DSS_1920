@@ -16,31 +16,8 @@ public class Main extends Application {
 
     public static void main(String[] args){ launch(args); }
 
-    public void init(){
-        /*
-        Media m = new Media("Hello",
-                "c:\\Media\\Adele - Hello.mp3",
-                "Adelle");
-
-        Media b = new Media("UML #1",
-                "c:\\Media\\The Morpheus Tutorials - UML Tutorial #1.mp4",
-                "The Morpheus Tutorials");
-
-
-        model.adicionaMedia(m);
-        model.adicionaMedia(b);
-
-         */
-
-        ControllerFirstMenu.init(model);
-        ControllerLogin.init(model);
-        ControllerMainPage.init(model);
-        ControllerMediaUpload.init(model);
-    }
-
     @Override
     public void start(Stage stage) throws IOException {
-        init();
         stage.setTitle("Media Center");
         Image image = new Image("/images/icon.png");
         stage.getIcons().add(image);
