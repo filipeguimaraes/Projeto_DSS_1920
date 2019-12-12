@@ -1,6 +1,4 @@
 /**
- *
- *
  * @author Beatriz Rocha A84003
  * @author Filipe Guimarães A85308
  * @author Gonçanlo Ferreira A84073
@@ -12,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -35,9 +32,9 @@ public class ControllerFirstMenu {
     @FXML
     void handleResidenteButton(ActionEvent event) throws IOException {
         model.setPermissaoResidente();
-        Parent loginMenu = FXMLLoader.load(getClass().getResource("/GUI/views/Login.fxml"));
-        Scene login = new Scene(loginMenu);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Scene login = new Scene(FXMLLoader.load(getClass().getResource("/GUI/views/Login.fxml")));
+        login.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(login);
         window.show();
     }
@@ -45,9 +42,9 @@ public class ControllerFirstMenu {
     @FXML
     void handleAdminButton(ActionEvent event) throws IOException {
         model.setPermissaoAdministrador();
-        Parent loginMenu = FXMLLoader.load(getClass().getResource("/GUI/views/Login.fxml"));
-        Scene login = new Scene(loginMenu);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Scene login = new Scene(FXMLLoader.load(getClass().getResource("/GUI/views/Login.fxml")));
+
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(login);
         window.show();
     }
@@ -55,9 +52,9 @@ public class ControllerFirstMenu {
     @FXML
     void handleConvButton(ActionEvent event) throws IOException {
         model.setPremissaoConvidado();
-        Parent loginMenu = FXMLLoader.load(getClass().getResource("/GUI/views/MainPage.fxml"));
-        Scene login = new Scene(loginMenu);
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Scene login = new Scene(FXMLLoader.load(getClass().getResource("/GUI/views/MainPage.fxml")));
+        login.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(login);
         window.show();
     }

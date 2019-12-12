@@ -1,5 +1,4 @@
 /**
- *
  * @author Beatriz Rocha A84003
  * @author Filipe Guimarães A85308
  * @author Gonçalo Ferreira A84073
@@ -9,7 +8,10 @@ package DAO;
 import LN.Biblioteca;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class BibliotecaDAO implements Map<String, Biblioteca> {
     private static BibliotecaDAO inst = null;
@@ -17,15 +19,15 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
             "serverTimezone=UTC&user=root&password=bolinhosdeatum";
 
     public BibliotecaDAO() {
-        try{
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             throw new NullPointerException(e.getMessage());
         }
     }
 
-    public static BibliotecaDAO getInstance(){
-        if (inst==null){
+    public static BibliotecaDAO getInstance() {
+        if (inst == null) {
             inst = new BibliotecaDAO();
         }
         return inst;
@@ -43,15 +45,15 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
             int i = 0;
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT COUNT(*) FROM mediacenter.biblioteca");
-            if (rs.next()) i= rs.getInt(1);
+            if (rs.next()) i = rs.getInt(1);
             return i;
         } catch (SQLException e) {
             throw new NullPointerException(e.getMessage());
-        } finally{
-            if(conn!=null)
+        } finally {
+            if (conn != null)
                 try {
                     conn.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
         }
@@ -60,18 +62,18 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
     @Override
     public boolean isEmpty() {
         Connection con = null;
-        try{
+        try {
             con = DriverManager.getConnection(url);
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT cod FROM mediacenter.biblioteca");
             return !rs.next();
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
-        }finally{
-            if(con!=null)
+        } finally {
+            if (con != null)
                 try {
                     con.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
         }
@@ -79,29 +81,31 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
 
 
     @Override
-    public boolean containsKey(Object key) throws NullPointerException{
+    public boolean containsKey(Object key) throws NullPointerException {
         Connection con = null;
-        try{
+        try {
             con = DriverManager.getConnection(url);
             Statement st = con.createStatement();
             String sql = "SELECT cod FROM mediacenter.biblioteca " +
-                    "where cod='"+key+"' ";
+                    "where cod='" + key + "' ";
             ResultSet rs = st.executeQuery(sql);
             return rs.next();
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
-        } finally{
-            if(con!=null)
+        } finally {
+            if (con != null)
                 try {
                     con.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
         }
     }
 
     @Override
-    public boolean containsValue(Object value){ throw new UnsupportedOperationException(); }
+    public boolean containsValue(Object value) {
+        throw new UnsupportedOperationException();
+    }
 
 
     @Override
@@ -112,7 +116,7 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
             Biblioteca b = null;
             Statement stm = conn.createStatement();
             String sql = "SELECT * FROM mediacenter.biblioteca " +
-                    "where cod='"+key+"'";
+                    "where cod='" + key + "'";
             ResultSet rs = stm.executeQuery(sql);
             if (rs.next())
                 b = new Biblioteca(rs.getString(1),
@@ -120,16 +124,15 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
             return b;
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
-        } finally{
-            if(conn!=null)
+        } finally {
+            if (conn != null)
                 try {
                     conn.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
         }
     }
-
 
 
     @Override
@@ -139,19 +142,19 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
             conn = DriverManager.getConnection(url);
             Statement stm = conn.createStatement();
             stm.executeUpdate("DELETE FROM mediacenter.biblioteca " +
-                    "where cod='"+key+"'");
-            String sql = "INSERT INTO mediacenter.biblioteca VALUES ('"+
-                    value.getCod()+"','"+
-                    value.getNomeBiblio()+"')";
+                    "where cod='" + key + "'");
+            String sql = "INSERT INTO mediacenter.biblioteca VALUES ('" +
+                    value.getCod() + "','" +
+                    value.getNomeBiblio() + "')";
             stm.executeUpdate(sql);
-            return new Biblioteca(value.getNomeBiblio(),value.getCod());
+            return new Biblioteca(value.getNomeBiblio(), value.getCod());
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
-        } finally{
-            if(conn!=null)
+        } finally {
+            if (conn != null)
                 try {
                     conn.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
         }
@@ -160,21 +163,21 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
     @Override
     public Biblioteca remove(Object key) {
         Connection conn = null;
-        try{
+        try {
             conn = DriverManager.getConnection(url);
             Biblioteca m = this.get(key);
             Statement stm = conn.createStatement();
             String sql = "DELETE FROM mediacenter.biblioteca  " +
-                    "where cod='"+key+"'";
+                    "where cod='" + key + "'";
             stm.executeUpdate(sql);
             return m;
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
-        } finally{
-            if(conn!=null)
+        } finally {
+            if (conn != null)
                 try {
                     conn.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
         }
@@ -188,17 +191,17 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
     @Override
     public void clear() {
         Connection conn = null;
-        try{
+        try {
             conn = DriverManager.getConnection(url);
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM mediacenter.media");
-        } catch(Exception e){
+        } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
-        } finally{
-            if(conn!=null)
+        } finally {
+            if (conn != null)
                 try {
                     conn.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
         }
@@ -212,7 +215,7 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
     @Override
     public List<Biblioteca> values() {
         Connection conn = null;
-        try{
+        try {
             conn = DriverManager.getConnection(url);
             List<Biblioteca> col = new ArrayList<>();
             Statement stm = conn.createStatement();
@@ -224,18 +227,18 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
             return col;
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
-        } finally{
-            if(conn!=null)
+        } finally {
+            if (conn != null)
                 try {
                     conn.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
         }
     }
 
     @Override
-    public Set<Entry<String,Biblioteca>> entrySet() {
+    public Set<Entry<String, Biblioteca>> entrySet() {
         throw new UnsupportedOperationException();
     }
 }

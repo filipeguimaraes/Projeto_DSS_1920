@@ -30,7 +30,7 @@ public class MediaKey {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || this.getClass() != o.getClass()) return false;
         MediaKey mediaKey = (MediaKey) o;
         return mediaKey.nome.equals(this.nome) &&
                 mediaKey.artista.equals(this.artista);

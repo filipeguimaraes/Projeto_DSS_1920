@@ -1,6 +1,4 @@
 /**
- *
- *
  * @author Beatriz Rocha A84003
  * @author Filipe Guimarães A85308
  * @author Gonçalo Ferreira A84073
@@ -15,21 +13,21 @@ public class UtilitarioDAO {
             "serverTimezone=UTC&user=root&password=bolinhosdeatum";
 
     public UtilitarioDAO() {
-        try{
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             throw new NullPointerException(e.getMessage());
         }
     }
 
-    public static UtilitarioDAO getInstance(){
-        if (inst==null){
+    public static UtilitarioDAO getInstance() {
+        if (inst == null) {
             inst = new UtilitarioDAO();
         }
         return inst;
     }
 
-    public String getPassAdmin(){
+    public String getPassAdmin() {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
@@ -41,19 +39,19 @@ public class UtilitarioDAO {
             return admin;
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
-        } finally{
-            if(conn!=null)
+        } finally {
+            if (conn != null)
                 try {
                     conn.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
         }
     }
 
-    public String getEmailAdmin(){
+    public String getEmailAdmin() {
         Connection conn = null;
-        try{
+        try {
             conn = DriverManager.getConnection(url);
             String admin = "";
             Statement stm = conn.createStatement();
@@ -63,21 +61,21 @@ public class UtilitarioDAO {
             return admin;
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
-        } finally{
-            if(conn!=null)
+        } finally {
+            if (conn != null)
                 try {
                     conn.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
         }
     }
 
-    public String pathToMedia(){
+    public String pathToMedia() {
         Connection conn = null;
-        try{
+        try {
             conn = DriverManager.getConnection(url);
-            String path=null;
+            String path = null;
             Statement stm = conn.createStatement();
             String sql = "SELECT pathToMedia FROM mediacenter.utilitario";
             ResultSet rs = stm.executeQuery(sql);
@@ -86,11 +84,11 @@ public class UtilitarioDAO {
             return path;
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
-        } finally{
-            if(conn!=null)
+        } finally {
+            if (conn != null)
                 try {
                     conn.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
         }

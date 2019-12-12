@@ -1,30 +1,26 @@
 /**
- *
- *
  * @author Beatriz Rocha A84003
  * @author Filipe Guimarães A85308
  * @author Gonçalo Ferreira A84073
  */
 package LN;
 
-import DAO.MediaDAO;
+import DAO.ColecaoMediaDAO;
 import UTILITIES.MediaKey;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Colecao {
 
     private String codCol;
-    private List<Media> mediasCol;
+    private ColecaoMediaDAO mediasCol;
     private String nomeCol;
 
-    public Colecao(String codCol, List<MediaKey> mediasCol, String nomeCol) {
+    public Colecao(String codCol, String nomeCol) {
         this.codCol = codCol;
-        List<Media>  medias = new ArrayList<>();
-        for (MediaKey k : mediasCol){
-            medias.add(MediaDAO.getInstance().get(k));
-        }
-        this.mediasCol = medias;
+        this.mediasCol = ColecaoMediaDAO.getInstance();
         this.nomeCol = nomeCol;
     }
 
@@ -75,22 +71,6 @@ public class Colecao {
         throw new UnsupportedOperationException();
     }
 
-    public void setNomeCol(String nomeCol) {
-        this.nomeCol = nomeCol;
-    }
-
-    public List<Media> getMediasCol() {
-        return mediasCol;
-    }
-
-    public void setMediasCol(List<Media> mediasCol) {
-        this.mediasCol = mediasCol;
-    }
-
-    public String getNomeCol() {
-        return nomeCol;
-    }
-
     public String getCodCol() {
         return codCol;
     }
@@ -99,13 +79,19 @@ public class Colecao {
         this.codCol = codCol;
     }
 
-    public List<MediaKey> getMediaKeys() {
-        List<MediaKey> mk = new ArrayList<>();
-        for (Media m : this.mediasCol) {
-            MediaKey key = new MediaKey(m.getNomeMedia(),m.getArtista());
-            mk.add(key);
-        }
-        return mk;
+    public void setMediasCol(ColecaoMediaDAO mediasCol) {
+        this.mediasCol = mediasCol;
     }
 
+    public String getNomeCol() {
+        return nomeCol;
+    }
+
+    public Map<MediaKey,Media> getMedias(){
+        return this.mediasCol.get(this.codCol);
+    }
+
+    public void setNomeCol(String nomeCol) {
+        this.nomeCol = nomeCol;
+    }
 }

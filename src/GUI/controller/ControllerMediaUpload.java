@@ -35,18 +35,18 @@ public class ControllerMediaUpload {
 
     @FXML
     void handleSelecionarButton(ActionEvent event) {
-        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FileChooser fc = new FileChooser();
         File selectedFile = fc.showOpenDialog(stage);
         try {
             String path = selectedFile.getPath();
             model.validaFich(path);
-            model.upload(path,nome.getText(),col.getText(),artista.getText(),categoria.getText());
-        } catch (IOException|MediaException m){
+            model.upload(path, nome.getText(), col.getText(), artista.getText(), categoria.getText());
+        } catch (IOException | MediaException m) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(m.getMessage());
             alert.showAndWait();
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Não selecionou nenhum ficheiro!");
             alert.showAndWait();

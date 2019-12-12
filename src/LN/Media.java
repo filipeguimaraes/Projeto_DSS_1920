@@ -1,6 +1,4 @@
 /**
- *
- *
  * @author Beatriz Rocha A84003
  * @author Filipe Guimarães A85308
  * @author Gonçalo Ferreira A84073
@@ -8,13 +6,9 @@
 package LN;
 
 
-import DAO.MediaDAO;
-import DAO.UtilizadorDAO;
+import DAO.CategoriaDAO;
 import LN.Residentes.Utilizador;
-import UTILITIES.MediaKey;
-import com.sun.webkit.network.Util;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class Media {
@@ -22,20 +16,13 @@ public class Media {
     private String nomeMedia;
     private String path;
     private String artista;
-    private Map<Utilizador,String> categorias;
+    private Map<Utilizador, String> categorias;
 
-    public Media( String nomeMedia, String path, String artista) {
+    public Media(String nomeMedia, String path, String artista) {
         this.nomeMedia = nomeMedia;
         this.path = path;
         this.artista = artista;
-        Map<String,String> userCategoria = MediaDAO.getInstance()
-                .categoriasByUtilizador(this.nomeMedia,this.artista);
-        this.categorias = new HashMap<>();
-        for(String user : userCategoria.keySet()){
-            Utilizador u = UtilizadorDAO.getInstance().get(user);
-            this.categorias.put(u,userCategoria.get(user));
-        }
-        //this.categorias = MediaDAO.getInstance().categoriasByUtilizador(nomeMedia,artista);
+        this.categorias = CategoriaDAO.getInstance();
     }
 
     /**
@@ -43,7 +30,7 @@ public class Media {
      * @param nome
      */
     public void setNome(String nome) {
-        this.nomeMedia=nome;
+        this.nomeMedia = nome;
     }
 
     /**
@@ -86,7 +73,7 @@ public class Media {
         this.categorias = categorias;
     }
 
-    public String getCategoriaPorUtilizador(String email){
+    public String getCategoriaPorUtilizador(String email) {
         return this.categorias.get(email);
     }
 }

@@ -87,7 +87,8 @@
    <left>
       <VBox prefHeight="557.0" prefWidth="195.0" BorderPane.alignment="CENTER">
          <children>
-            <TreeView fx:id="bibliotecas" prefHeight="437.0" prefWidth="220.0" />
+            <TreeView fx:id="bibliotecas" prefHeight="410.0" prefWidth="198.0" showRoot="false" />
+            <Button mnemonicParsing="false" onAction="#handleMouseClicked" prefHeight="25.0" prefWidth="256.0" text="Ver &gt;" />
             <MenuButton alignment="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="220.0" text="Criar Coleção">
               <items>
                 <MenuItem disable="true" mnemonicParsing="false" text="Default" />

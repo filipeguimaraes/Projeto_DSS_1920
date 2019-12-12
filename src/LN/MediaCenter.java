@@ -1,6 +1,4 @@
 /**
- *
- *
  * @author Beatriz Rocha A84003
  * @author Filipe Guimarães A85308
  * @author Gonçalo Ferreira A84073
@@ -11,8 +9,12 @@ import DAO.BibliotecaDAO;
 import DAO.MediaDAO;
 import DAO.UtilitarioDAO;
 import DAO.UtilizadorDAO;
-import LN.Exceptions.*;
-import LN.Residentes.*;
+import LN.Exceptions.AdminException;
+import LN.Exceptions.MediaException;
+import LN.Exceptions.PermissaoException;
+import LN.Exceptions.UtilizadorException;
+import LN.Residentes.Administrador;
+import LN.Residentes.Utilizador;
 import UTILITIES.MediaKey;
 
 import java.io.File;
@@ -30,25 +32,28 @@ public class MediaCenter {
 
     private Administrador admin;
     private String pathParaMedia;
-    private Map<String,Biblioteca> bibliotecas;
+    private Map<String, Biblioteca> bibliotecas;
     private Map<String, Utilizador> utilizadorDAO;
-    private Map<MediaKey,Media> mediaDAO;
+    private Map<MediaKey, Media> mediaDAO;
     private String emailOn;
     private Integer permissao;
 
-    private static Integer administrador=1;
-    private static Integer utilizador=2;
-    private static Integer convidado=3;
+    private static Integer administrador = 1;
+    private static Integer utilizador = 2;
+    private static Integer convidado = 3;
 
-    public static MediaCenter getInstance(){
-        if(inst==null){
+    public static MediaCenter getInstance() {
+        if (inst == null) {
             inst = new MediaCenter();
         }
         return inst;
     }
 
-    public MediaCenter() {
-        this.admin = new Administrador();
+    private MediaCenter() {
+
+        this.admin = new Administrador(
+                UtilitarioDAO.getInstance().getEmailAdmin(),
+                UtilitarioDAO.getInstance().getPassAdmin());
         this.pathParaMedia = UtilitarioDAO.getInstance().pathToMedia();
         this.bibliotecas = BibliotecaDAO.getInstance();
         this.utilizadorDAO = UtilizadorDAO.getInstance();
@@ -57,9 +62,9 @@ public class MediaCenter {
         this.permissao = 0;
     }
 
-    public void adicionaMedia(Media m){
-        MediaKey key = new MediaKey(m.getNomeMedia(),m.getArtista());
-        mediaDAO.put(key,m);
+    public void adicionaMedia(Media m) {
+        MediaKey key = new MediaKey(m.getNomeMedia(), m.getArtista());
+        mediaDAO.put(key, m);
     }
 
     public void setAdministrador() {
@@ -160,23 +165,23 @@ public class MediaCenter {
      */
     public void upload(String path, String nome, String col, String artista, String cat)
             throws MediaException, IOException {
-        if(!validaFich(path)) throw new MediaException("Formato de ficheiro invalido");
+        if (!validaFich(path)) throw new MediaException("Formato de ficheiro invalido");
         boolean existe = mediaDAO.containsKey("nome");
         Utilizador u = utilizadorDAO.get(emailOn);
-        if(existe) {
+        if (existe) {
             //adicionar ao map com string categoria
             //mediaDAO.get("nome").getProprietarios().add(emailOn);
             //m.setCategoria(cat); passar para cima
-        } else{
+        } else {
             String pathNovo = copiaFicheiro(path);
             Media m = new Media(nome, pathNovo, artista);
             Biblioteca b = u.getBiblioteca();
-            Map<String,Colecao> colecoes = b.getColecoes();
-            if (colecoes.containsKey(col)){
+            Map<String, Colecao> colecoes = b.getColecoes();
+            if (colecoes.containsKey(col)) {
                 Colecao c = colecoes.get(col);
                 c.add(m);
-            }else {
-                List<Media> med= new ArrayList<>(); //colocar DAO
+            } else {
+                List<Media> med = new ArrayList<>(); //colocar DAO
                 med.add(m);
                 //Colecao c = new Colecao(col,med,col);
                 //b.addColecaoNaBiblioteca(c);
@@ -222,7 +227,7 @@ public class MediaCenter {
         reproduz(mediaDAO.get(key).getPath());
     }
 
-    public void reproduz(String path){
+    public void reproduz(String path) {
         try {
             ProcessBuilder pb = new ProcessBuilder(
                     "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe", path);
@@ -233,7 +238,7 @@ public class MediaCenter {
             try {
                 Process start = pb.start();
             } catch (IOException ex) {
-                System.out.println("Não tem o vlc instalado"+ex);
+                System.out.println("Não tem o vlc instalado" + ex);
             }
         }
     }
@@ -252,7 +257,7 @@ public class MediaCenter {
     }
 
     public void removePermissao() {
-        this.permissao=null;
+        this.permissao = null;
     }
 
     public void apagaConta() {
@@ -277,7 +282,9 @@ public class MediaCenter {
     /**
      * Metodo para definir a permissão para convidado
      */
-    public void setPremissaoConvidado() { this.permissao = convidado; }
+    public void setPremissaoConvidado() {
+        this.permissao = convidado;
+    }
 
     /**
      * Metodo que recebendo o email e a password, se corretos coloca o emailOn com o email do utilizador
@@ -291,13 +298,13 @@ public class MediaCenter {
                 Utilizador u = utilizadorDAO.get(email);
                 if (u == null) {
                     throw new UtilizadorException("O email que introduziu não se encontra registado no sistema," +
-                                " contacte o administrador para criar a sua conta.");
+                            " contacte o administrador para criar a sua conta.");
                 }
 
                 if (!u.getPassword().equals(password)) {
                     throw new UtilizadorException("A password que introduziu está incorreta.");
                 }
-            } else if (this.permissao.equals(administrador)){
+            } else if (this.permissao.equals(administrador)) {
                 if (!admin.getEmail().equals(email))
                     throw new AdminException("O email que introduziu está incorreto");
 
@@ -319,9 +326,9 @@ public class MediaCenter {
      */
     public void registaUtilizador(String nome, String email, String password) {
         String codBiblioteca = Integer.toString(bibliotecas.size());
-        Biblioteca b = new Biblioteca(codBiblioteca,"Biblioteca de "+nome);
-        Utilizador u = new Utilizador(codBiblioteca,nome,email,password);
-        utilizadorDAO.put(email,u);
+        Biblioteca b = new Biblioteca(codBiblioteca, "Biblioteca de " + nome);
+        Utilizador u = new Utilizador(codBiblioteca, nome, email, password);
+        utilizadorDAO.put(email, u);
     }
 
     /**
@@ -331,7 +338,7 @@ public class MediaCenter {
     public String copiaFicheiro(String path) throws IOException {
         File origem = new File(path);
         String nome = origem.getName();
-        File destino = new File(pathParaMedia+nome);
+        File destino = new File(pathParaMedia + nome);
         /*
         if (destino.exists())
                 throw new MediaException("O ficheiro já existe no sistema");

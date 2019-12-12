@@ -21,9 +21,9 @@ public class ControllerCreateAccount {
     @FXML
     void handleSairButton(ActionEvent event) throws IOException {
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(
-                new Scene(FXMLLoader.load(getClass().getResource("/GUI/views/FirstMenu.fxml")))
-        );
+        Scene ca = new Scene(FXMLLoader.load(getClass().getResource("/GUI/views/FirstMenu.fxml")));
+        ca.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
+        window.setScene(ca);
         window.setMaximized(false);
         window.show();
     }
