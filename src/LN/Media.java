@@ -9,8 +9,12 @@ package LN;
 
 
 import DAO.MediaDAO;
+import DAO.UtilizadorDAO;
 import LN.Residentes.Utilizador;
+import UTILITIES.MediaKey;
+import com.sun.webkit.network.Util;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Media {
@@ -24,7 +28,14 @@ public class Media {
         this.nomeMedia = nomeMedia;
         this.path = path;
         this.artista = artista;
-        this.categorias = MediaDAO.getInstance().categoriasByUtilizador(nomeMedia,artista);
+        Map<String,String> userCategoria = MediaDAO.getInstance()
+                .categoriasByUtilizador(this.nomeMedia,this.artista);
+        this.categorias = new HashMap<>();
+        for(String user : userCategoria.keySet()){
+            Utilizador u = UtilizadorDAO.getInstance().get(user);
+            this.categorias.put(u,userCategoria.get(user));
+        }
+        //this.categorias = MediaDAO.getInstance().categoriasByUtilizador(nomeMedia,artista);
     }
 
     /**

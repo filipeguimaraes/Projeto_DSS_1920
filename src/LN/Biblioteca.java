@@ -18,9 +18,15 @@ public class Biblioteca {
     private String nomeBiblio;
 
     public Biblioteca(String cod, String nomeBiblio) {
-        this.colecoes = ColecaoDAO.getInstance().getByBiblioteca(this.cod);
         this.cod = cod;
         this.nomeBiblio = nomeBiblio;
+        ArrayList<String> codColecoes = new ArrayList<>(ColecaoDAO.getInstance().getByBiblioteca(cod));
+        this.colecoes = new HashMap<>();
+        for (String key : codColecoes){
+            Colecao c = ColecaoDAO.getInstance().get(key);
+            this.colecoes.put(key, c);
+        }
+        //this.colecoes = ColecaoDAO.getInstance().getByBiblioteca(this.cod);
     }
 
     /**

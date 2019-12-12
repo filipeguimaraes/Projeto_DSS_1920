@@ -7,6 +7,9 @@
  */
 package LN;
 
+import DAO.MediaDAO;
+import UTILITIES.MediaKey;
+
 import java.util.*;
 
 public class Colecao {
@@ -15,9 +18,13 @@ public class Colecao {
     private List<Media> mediasCol;
     private String nomeCol;
 
-    public Colecao(String codCol, List<Media> mediasCol, String nomeCol) {
+    public Colecao(String codCol, List<MediaKey> mediasCol, String nomeCol) {
         this.codCol = codCol;
-        this.mediasCol = mediasCol;
+        List<Media>  medias = new ArrayList<>();
+        for (MediaKey k : mediasCol){
+            medias.add(MediaDAO.getInstance().get(k));
+        }
+        this.mediasCol = medias;
         this.nomeCol = nomeCol;
     }
 
@@ -91,4 +98,14 @@ public class Colecao {
     public void setCodCol(String codCol) {
         this.codCol = codCol;
     }
+
+    public List<MediaKey> getMediaKeys() {
+        List<MediaKey> mk = new ArrayList<>();
+        for (Media m : this.mediasCol) {
+            MediaKey key = new MediaKey(m.getNomeMedia(),m.getArtista());
+            mk.add(key);
+        }
+        return mk;
+    }
+
 }

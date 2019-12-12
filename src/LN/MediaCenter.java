@@ -48,10 +48,10 @@ public class MediaCenter {
     }
 
     public MediaCenter() {
-        this.admin = UtilitarioDAO.getInstance().getAdmin();
+        this.admin = new Administrador();
         this.pathParaMedia = UtilitarioDAO.getInstance().pathToMedia();
         this.bibliotecas = BibliotecaDAO.getInstance();
-        this.utilizadorDAO = new UtilizadorDAO();
+        this.utilizadorDAO = UtilizadorDAO.getInstance();
         this.mediaDAO = MediaDAO.getInstance();
         this.emailOn = null;
         this.permissao = 0;
@@ -178,8 +178,8 @@ public class MediaCenter {
             }else {
                 List<Media> med= new ArrayList<>(); //colocar DAO
                 med.add(m);
-                Colecao c = new Colecao(col,med,col);
-                b.addColecaoNaBiblioteca(c);
+                //Colecao c = new Colecao(col,med,col);
+                //b.addColecaoNaBiblioteca(c);
             }
         }
     }

@@ -1,11 +1,3 @@
-import DAO.UtilizadorDAO;
-import LN.MediaCenter;
-import LN.Residentes.Utilizador;
-import UTILITIES.MediaKey;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class MainTest  {
 
@@ -19,7 +11,7 @@ public class MainTest  {
         System.out.println(users.containsKey("rita@email.com"));
 
          */
-        MediaKey key = new MediaKey("ola","ola");
+        //MediaKey key = new MediaKey("ola","ola");
 
 
     }

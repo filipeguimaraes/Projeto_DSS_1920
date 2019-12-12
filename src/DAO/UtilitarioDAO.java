@@ -7,13 +7,7 @@
  */
 package DAO;
 
-import LN.Residentes.Administrador;
-import LN.Residentes.Utilizador;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class UtilitarioDAO {
     private static UtilitarioDAO inst = null;
@@ -35,23 +29,54 @@ public class UtilitarioDAO {
         return inst;
     }
 
-    public Administrador getAdmin(){
-        try (Connection conn = DriverManager.getConnection(url)) {
-            Administrador admin = null;
+    public String getPassAdmin(){
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
+            String admin = "";
             Statement stm = conn.createStatement();
             String sql = "SELECT emailAdmin,passAdmin FROM mediacenter.utilitario";
             ResultSet rs = stm.executeQuery(sql);
-            if (rs.next())
-                admin = new Administrador(
-                        rs.getString(1),
-                        rs.getString(2));
+            if (rs.next()) admin = rs.getString(1);
             return admin;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
+    }
+
+    public String getEmailAdmin(){
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
+            String admin = "";
+            Statement stm = conn.createStatement();
+            String sql = "SELECT emailAdmin,passAdmin FROM mediacenter.utilitario";
+            ResultSet rs = stm.executeQuery(sql);
+            if (rs.next()) admin = rs.getString(2);
+            return admin;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
+        }
     }
 
     public String pathToMedia(){
-        try (Connection conn = DriverManager.getConnection(url)) {
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
             String path=null;
             Statement stm = conn.createStatement();
             String sql = "SELECT pathToMedia FROM mediacenter.utilitario";
@@ -59,7 +84,15 @@ public class UtilitarioDAO {
             if (rs.next())
                 path = rs.getString(1);
             return path;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 }

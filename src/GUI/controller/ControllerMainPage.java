@@ -100,21 +100,38 @@ public class ControllerMainPage implements Initializable {
 
 
     public void populateTabela(){
+        nomeMedia.setCellValueFactory(new PropertyValueFactory<>("nomeMedia"));
+        artista.setCellValueFactory(new PropertyValueFactory<>("artista"));
 
+        String email = model.getEmailOn();
+        if(email!=null){
+            System.out.println("hey "+email);
+            categoria.setCellValueFactory(
+                    c -> new SimpleStringProperty(c.getValue().getCategoriaPorUtilizador(email)));
+        }
+
+        Map<MediaKey,Media> map = model.getMediaDAO();
+        List<Media> list = new ArrayList<>(map.values());
+        ObservableList<Media> l = FXCollections.observableArrayList();
+        l.addAll(list);
+
+        tabelaMedias.setItems(l);
     }
 
     public void populateArvore(){
         TreeItem<String> rootitem = new TreeItem<>("Bibliotecas");
         rootitem.setExpanded(true);
         List<Biblioteca> bib = (ArrayList<Biblioteca>)model.getBibliotecas().values();
+        //Map<String,Colecao> col = bib.get(1).getColecoes();
         for(Biblioteca b : bib){
             System.out.println(b.getNomeBiblio());
             TreeItem<String> item = new TreeItem<>(b.getNomeBiblio());
             rootitem.getChildren().add(item);
             System.out.println(rootitem.getChildren().toString());
+            //Map<String,Colecao> col = b.getColecoes();
+            //System.out.println(col);
+            //System.out.println(col);
             /*
-            List<Colecao> col = (ArrayList<Colecao>)b.getColecoes().values();
-            System.out.println(col);
             for (Colecao c : col){
                 TreeItem<String> node = new TreeItem<>(c.getNomeCol());
                 item.getChildren().add(node);
@@ -122,7 +139,6 @@ public class ControllerMainPage implements Initializable {
 
              */
         }
-        System.out.println(rootitem.getChildren().toString());
         try {
             this.bibliotecas.setRoot(rootitem);
             this.bibliotecas.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -143,21 +159,7 @@ public class ControllerMainPage implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        nomeMedia.setCellValueFactory(new PropertyValueFactory<>("nomeMedia"));
-        artista.setCellValueFactory(new PropertyValueFactory<>("artista"));
-        String email = model.getEmailOn();
-        if(email!=null){
-            System.out.println("hey "+email);
-            categoria.setCellValueFactory(
-                    c -> new SimpleStringProperty(c.getValue().getCategoriaPorUtilizador(email)));
-        }
 
-        Map<MediaKey,Media> map = model.getMediaDAO();
-        List<Media> list = new ArrayList<>(map.values());
-        ObservableList<Media> l = FXCollections.observableArrayList();
-        l.addAll(list);
-
-        tabelaMedias.setItems(l);
         setBemVindo();
         populateTabela();
         populateArvore();

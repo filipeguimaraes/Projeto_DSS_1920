@@ -11,10 +11,7 @@ import LN.Media;
 import LN.Residentes.Utilizador;
 import UTILITIES.MediaKey;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.*;
 
 public class MediaDAO implements Map<MediaKey, Media> {
@@ -37,18 +34,28 @@ public class MediaDAO implements Map<MediaKey, Media> {
         return inst;
     }
 
-    public Map<Utilizador,String> categoriasByUtilizador(String nomeMedia, String artista){
-        try (Connection conn = DriverManager.getConnection(url)) {
-            Map<Utilizador,String> cat = new HashMap<>();
+    public Map<String,String> categoriasByUtilizador(String nomeMedia, String artista){
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
+            Map<String,String> cat = new HashMap<>();
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.utilizador_media " +
                     "where Media_nomeMedia='"+nomeMedia+"' and Media_artista='"+artista+"'");
             while (rs.next()) {
-                cat.put(UtilizadorDAO.getInstance().get(rs.getString(1)),rs.getString(4));
+                cat.put(rs.getString(1),rs.getString(4));
             }
             return cat;
+        } catch (SQLException e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     public int hashCode() {
@@ -57,31 +64,52 @@ public class MediaDAO implements Map<MediaKey, Media> {
 
     @Override
     public int size() {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
             int i = 0;
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT nomeMedia FROM mediacenter.media");
             while (rs.next()) i++;
             return i;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
     public boolean isEmpty() {
-        try(Connection con = DriverManager.getConnection(url)){
+        Connection con = null;
+        try{
+            con = DriverManager.getConnection(url);
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT nomeMedia FROM mediacenter.media");
             return !rs.next();
-        }catch(Exception e){
+        } catch(SQLException e){
             throw new NullPointerException(e.getMessage());
+        } finally{
+            if(con!=null)
+                try {
+                    con.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
     }
 
 
     @Override
     public boolean containsKey(Object key) throws NullPointerException{
-        try(Connection con = DriverManager.getConnection(url)){
+        Connection con = null;
+        try{
+            con = DriverManager.getConnection(url);
             Statement st = con.createStatement();
             MediaKey chave = (MediaKey)key;
             String sql = "SELECT nomeMedia FROM mediacenter.media " +
@@ -89,8 +117,15 @@ public class MediaDAO implements Map<MediaKey, Media> {
                     "and artista='"+chave.getArtista()+"'";
             ResultSet rs = st.executeQuery(sql);
             return rs.next();
-        }catch(Exception e){
+        } catch(SQLException e){
             throw new NullPointerException(e.getMessage());
+        } finally{
+            if(con!=null)
+                try {
+                    con.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
     }
 
@@ -100,7 +135,9 @@ public class MediaDAO implements Map<MediaKey, Media> {
 
     @Override
     public Media get(Object key) {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
             Media m = null;
             Statement stm = conn.createStatement();
             MediaKey chave = (MediaKey)key;
@@ -115,15 +152,25 @@ public class MediaDAO implements Map<MediaKey, Media> {
                         rs.getString(3));
             }
             return m;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
 
 
     @Override
     public Media put(MediaKey key, Media value) {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
             Statement stm = conn.createStatement();
             stm.executeUpdate("DELETE FROM mediacenter.media  " +
                     "where nomeMedia='"+key.getNome()+"' and artista='"+key.getNome()+"'");
@@ -136,13 +183,23 @@ public class MediaDAO implements Map<MediaKey, Media> {
                     value.getNomeMedia(),
                     value.getPath(),
                     value.getArtista());
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
     public Media remove(Object key) {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
             Media m = this.get(key);
             MediaKey chave = (MediaKey)key;
             Statement stm = conn.createStatement();
@@ -150,8 +207,16 @@ public class MediaDAO implements Map<MediaKey, Media> {
                     "where nomeMedia='"+chave.getNome()+"' and artista='"+chave.getNome()+"'";
             stm.executeUpdate(sql);
             return m;
+        } catch (SQLException e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
@@ -162,11 +227,20 @@ public class MediaDAO implements Map<MediaKey, Media> {
 
     @Override
     public void clear() {
-        try(Connection conn = DriverManager.getConnection(url)){
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM mediacenter.media");
         } catch(Exception e){
             throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
     }
 
@@ -177,8 +251,10 @@ public class MediaDAO implements Map<MediaKey, Media> {
 
     @Override
     public Collection<Media> values() {
-        try (Connection conn = DriverManager.getConnection(url)) {
-            Collection<Media> col = new HashSet<>();
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
+            List<Media> col = new ArrayList<>();
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.media");
             while (rs.next()) {
@@ -188,8 +264,16 @@ public class MediaDAO implements Map<MediaKey, Media> {
                         rs.getString(3)));
             }
             return col;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override

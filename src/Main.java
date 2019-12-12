@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application {
-    private static MediaCenter model = new MediaCenter();
 
     public static void main(String[] args){ launch(args); }
 

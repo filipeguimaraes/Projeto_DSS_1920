@@ -7,10 +7,8 @@
 package DAO;
 
 import LN.Biblioteca;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+
+import java.sql.*;
 import java.util.*;
 
 public class BibliotecaDAO implements Map<String, Biblioteca> {
@@ -39,31 +37,52 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
 
     @Override
     public int size() {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
             int i = 0;
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT COUNT(*) FROM mediacenter.biblioteca");
             if (rs.next()) i= rs.getInt(1);
             return i;
+        } catch (SQLException e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
     public boolean isEmpty() {
-        try(Connection con = DriverManager.getConnection(url)){
+        Connection con = null;
+        try{
+            con = DriverManager.getConnection(url);
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT cod FROM mediacenter.biblioteca");
             return !rs.next();
         }catch(Exception e){
             throw new NullPointerException(e.getMessage());
+        }finally{
+            if(con!=null)
+                try {
+                    con.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
     }
 
 
     @Override
     public boolean containsKey(Object key) throws NullPointerException{
-        try(Connection con = DriverManager.getConnection(url)){
+        Connection con = null;
+        try{
+            con = DriverManager.getConnection(url);
             Statement st = con.createStatement();
             String sql = "SELECT cod FROM mediacenter.biblioteca " +
                     "where cod='"+key+"' ";
@@ -71,6 +90,13 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
             return rs.next();
         }catch(Exception e){
             throw new NullPointerException(e.getMessage());
+        } finally{
+            if(con!=null)
+                try {
+                    con.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
     }
 
@@ -80,7 +106,9 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
 
     @Override
     public Biblioteca get(Object key) {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
             Biblioteca b = null;
             Statement stm = conn.createStatement();
             String sql = "SELECT * FROM mediacenter.biblioteca " +
@@ -90,15 +118,25 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
                 b = new Biblioteca(rs.getString(1),
                         rs.getString(2));
             return b;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
 
 
     @Override
     public Biblioteca put(String key, Biblioteca value) {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
             Statement stm = conn.createStatement();
             stm.executeUpdate("DELETE FROM mediacenter.biblioteca " +
                     "where cod='"+key+"'");
@@ -107,21 +145,39 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
                     value.getNomeBiblio()+"')";
             stm.executeUpdate(sql);
             return new Biblioteca(value.getNomeBiblio(),value.getCod());
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
     public Biblioteca remove(Object key) {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
             Biblioteca m = this.get(key);
             Statement stm = conn.createStatement();
             String sql = "DELETE FROM mediacenter.biblioteca  " +
                     "where cod='"+key+"'";
             stm.executeUpdate(sql);
             return m;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
@@ -131,11 +187,20 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
 
     @Override
     public void clear() {
-        try(Connection conn = DriverManager.getConnection(url)){
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM mediacenter.media");
         } catch(Exception e){
             throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
     }
 
@@ -146,7 +211,9 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
 
     @Override
     public List<Biblioteca> values() {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
             List<Biblioteca> col = new ArrayList<>();
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.biblioteca");
@@ -155,8 +222,16 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
                         rs.getString(2)));
             }
             return col;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override

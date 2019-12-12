@@ -7,19 +7,16 @@
  */
 package LN.Residentes;
 
+import DAO.UtilitarioDAO;
+
 public class Administrador {
 
     private String email;
     private String passAdmin;
 
-    public Administrador(String email, String passAdmin) {
-        this.email = email;
-        this.passAdmin = passAdmin;
-    }
-
     public Administrador() {
-        this.email = "ola";
-        this.passAdmin = "ola";
+        this.email = UtilitarioDAO.getInstance().getEmailAdmin();
+        this.passAdmin = UtilitarioDAO.getInstance().getPassAdmin();
     }
 
     public String getEmail() {

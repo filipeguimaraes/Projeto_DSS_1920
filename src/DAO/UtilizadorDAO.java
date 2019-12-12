@@ -61,36 +61,64 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
 
     @Override
     public int size() {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
             int i = 0;
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT mediacenter.utilizador FROM Utilizador");
             while(rs.next()) i++;
             return i;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
     public boolean isEmpty() {
-        try(Connection con = DriverManager.getConnection(url)){
+        Connection con = null;
+        try{
+            con = DriverManager.getConnection(url);
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT mediacenter.utilizador FROM Utilizador");
             return !rs.next();
         }catch(Exception e){
             throw new NullPointerException(e.getMessage());
+        } finally{
+            if(con!=null)
+                try {
+                    con.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
     }
 
     @Override
     public boolean containsKey(Object key) throws NullPointerException{
-        try(Connection con = DriverManager.getConnection(url)){
+        Connection con = null;
+        try{
+            con = DriverManager.getConnection(url);
             Statement st = con.createStatement();
             String sql = "SELECT nome FROM mediacenter.utilizador where email='"+key+"'";
             ResultSet rs = st.executeQuery(sql);
             return rs.next();
         }catch(Exception e){
             throw new NullPointerException(e.getMessage());
+        } finally{
+            if(con!=null)
+                try {
+                    con.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
     }
 
@@ -99,7 +127,9 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
 
     @Override
     public Utilizador get(Object key) {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
             Utilizador ut = null;
             Statement stm = conn.createStatement();
             String sql = "SELECT * FROM mediacenter.utilizador WHERE email='"+key+"'";
@@ -112,13 +142,23 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
 
             }
             return ut;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
     public Utilizador put(String key, Utilizador value) {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
             Statement stm = conn.createStatement();
             stm.executeUpdate("DELETE FROM mediacenter.utilizador WHERE email='"+key+"'");
             String sql = "INSERT INTO Utilizador VALUES ('"+
@@ -132,20 +172,39 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
                     value.getNome(),
                     value.getEmail(),
                     value.getPassword());
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
     public Utilizador remove(Object key) {
-        try (Connection conn = DriverManager.getConnection(url)) {
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
             Utilizador ut = this.get(key);
             Statement stm = conn.createStatement();
             String sql = "DELETE '"+key+"' FROM Utilizador";
             stm.executeUpdate(sql);
             return ut;
+        } catch (Exception e)
+        {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
-        catch (Exception e) {throw new NullPointerException(e.getMessage());}
     }
 
     @Override
@@ -155,11 +214,20 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
 
     @Override
     public void clear() {
-        try(Connection conn = DriverManager.getConnection(url)){
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM mediacenter.utilizador");
         } catch(Exception e){
             throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
         }
     }
 
@@ -170,8 +238,10 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
 
     @Override
     public Collection<Utilizador> values() {
-        try (Connection conn = DriverManager.getConnection(url)) {
-            Collection<Utilizador> col = new HashSet<>();
+        Connection conn = null;
+        try{
+            conn = DriverManager.getConnection(url);
+            Collection<Utilizador> col = new ArrayList<>();
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.utilizador");
             for (;rs.next();) {
@@ -182,7 +252,16 @@ public class UtilizadorDAO implements Map<String, Utilizador> {
                         rs.getString(3)));
             }
             return col;
-        } catch (Exception e) {throw new NullPointerException(e.getMessage());}
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally{
+            if(conn!=null)
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
+        }
     }
 
     @Override
