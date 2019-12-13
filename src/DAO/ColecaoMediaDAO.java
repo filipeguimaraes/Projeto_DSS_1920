@@ -67,4 +67,38 @@ public class ColecaoMediaDAO {
         }
         return media;
     }
+
+
+    public Media add(MediaKey key, Media value, String codCol) {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
+            Statement stm = conn.createStatement();
+            stm.executeUpdate("DELETE FROM mediacenter.colecao_media  " +
+                    "where Media_nomeMedia='" + key.getNome() + "' " +
+                    "and Media_artista='" + key.getArtista() + "' " +
+                    "and Colecao_codColecao='" + codCol + "'");
+
+            String sql = "INSERT INTO mediacenter.colecao_media VALUES ('" +
+                    value.getNomeMedia() + "','" +
+                    value.getArtista() + "','" +
+                    codCol + "')";
+            stm.executeUpdate(sql);
+            return new Media(
+                    value.getNomeMedia(),
+                    value.getPath(),
+                    value.getArtista());
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally {
+            if (conn != null)
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+        }
+    }
+
+
 }

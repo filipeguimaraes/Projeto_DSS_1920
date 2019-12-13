@@ -1,7 +1,14 @@
 package DAO;
 
+import LN.Colecao;
+import LN.Media;
 import LN.Residentes.Utilizador;
+import UTILITIES.MediaKey;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -24,6 +31,34 @@ public class CategoriaDAO implements Map<Utilizador, String> {
             inst = new CategoriaDAO();
         }
         return inst;
+    }
+
+    public String atribuirCategoria(Utilizador key, MediaKey chaveMedia, String categoria){
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
+            Statement stm = conn.createStatement();
+            stm.executeUpdate("DELETE FROM mediacenter.utilizador_media  " +
+                    "where Utilizador_email='" + key + "' " +
+                    "and Media_nomeMedia='"+chaveMedia.getNome()+"' " +
+                    "and Media_artista='"+chaveMedia.getArtista()+"'");
+            String sql = "INSERT INTO mediacenter.colecao VALUES ('" +
+                    key + "','" +
+                    chaveMedia.getNome() + "','" +
+                    chaveMedia.getArtista() + "','" +
+                    categoria + "')";
+            stm.executeUpdate(sql);
+            return categoria;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally {
+            if (conn != null)
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+        }
     }
 
     @Override

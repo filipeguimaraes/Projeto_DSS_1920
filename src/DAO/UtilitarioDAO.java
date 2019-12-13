@@ -33,7 +33,7 @@ public class UtilitarioDAO {
             conn = DriverManager.getConnection(url);
             String admin = "";
             Statement stm = conn.createStatement();
-            String sql = "SELECT emailAdmin,passAdmin FROM mediacenter.utilitario";
+            String sql = "SELECT passAdmin FROM mediacenter.utilitario";
             ResultSet rs = stm.executeQuery(sql);
             if (rs.next()) admin = rs.getString(1);
             return admin;
@@ -55,9 +55,9 @@ public class UtilitarioDAO {
             conn = DriverManager.getConnection(url);
             String admin = "";
             Statement stm = conn.createStatement();
-            String sql = "SELECT emailAdmin,passAdmin FROM mediacenter.utilitario";
+            String sql = "SELECT emailAdmin FROM mediacenter.utilitario";
             ResultSet rs = stm.executeQuery(sql);
-            if (rs.next()) admin = rs.getString(2);
+            if (rs.next()) admin = rs.getString(1);
             return admin;
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
@@ -81,6 +81,7 @@ public class UtilitarioDAO {
             ResultSet rs = stm.executeQuery(sql);
             if (rs.next())
                 path = rs.getString(1);
+            System.out.println(path);
             return path;
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());

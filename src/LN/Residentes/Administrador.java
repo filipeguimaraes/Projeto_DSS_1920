@@ -14,9 +14,9 @@ public class Administrador {
     private String email;
     private String passAdmin;
 
-    public Administrador(String email, String pass) {
-        this.email = email;
-        this.passAdmin = pass;
+    public Administrador() {
+        this.email = UtilitarioDAO.getInstance().getEmailAdmin();
+        this.passAdmin = UtilitarioDAO.getInstance().getPassAdmin();
     }
 
     public String getEmail() {

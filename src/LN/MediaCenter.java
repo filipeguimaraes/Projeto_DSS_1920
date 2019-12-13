@@ -5,10 +5,7 @@
  */
 package LN;
 
-import DAO.BibliotecaDAO;
-import DAO.MediaDAO;
-import DAO.UtilitarioDAO;
-import DAO.UtilizadorDAO;
+import DAO.*;
 import LN.Exceptions.AdminException;
 import LN.Exceptions.MediaException;
 import LN.Exceptions.PermissaoException;
@@ -22,9 +19,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class MediaCenter {
 
@@ -51,147 +47,53 @@ public class MediaCenter {
 
     private MediaCenter() {
 
-        this.admin = new Administrador(
-                UtilitarioDAO.getInstance().getEmailAdmin(),
-                UtilitarioDAO.getInstance().getPassAdmin());
+        this.admin = new Administrador();
         this.pathParaMedia = UtilitarioDAO.getInstance().pathToMedia();
         this.bibliotecas = BibliotecaDAO.getInstance();
         this.utilizadorDAO = UtilizadorDAO.getInstance();
         this.mediaDAO = MediaDAO.getInstance();
         this.emailOn = null;
-        this.permissao = 0;
+        this.permissao = null;
     }
 
-    public void adicionaMedia(Media m) {
-        MediaKey key = new MediaKey(m.getNomeMedia(), m.getArtista());
-        mediaDAO.put(key, m);
-    }
-
-    public void setAdministrador() {
-        this.permissao = administrador;
-    }
 
     /**
-     *
-     * @param media
-     */
-    public void existeMedia(String media) {
-        // TODO - implement MediaCenter.existeMedia
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     *
-     * @param categoria
-     * @param media
-     */
-    public void alteraCategoria(String categoria, String media) {
-        // TODO - implement MediaCenter.alteraCategoria
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     *
-     * @param nome
-     */
-    public void colecaoDefault(String nome) {
-        // TODO - implement MediaCenter.colecaoDefault
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     *
-     * @param nome
-     */
-    public void colecaoRandom(String nome) {
-        // TODO - implement MediaCenter.colecaoRandom
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     *
-     * @param artista
-     * @param nome
-     */
-    public void colecaoArtista(String artista, String nome) {
-        // TODO - implement MediaCenter.colecaoArtista
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     *
-     * @param categoria
-     * @param nome
-     */
-    public void colecaoCategoria(String categoria, String nome) {
-        // TODO - implement MediaCenter.colecaoCategoria
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     *
-     * @param nome
-     */
-    public void alteraNome(String nome) {
-        // TODO - implement MediaCenter.alteraNome
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     *
-     * @param emailDep
-     */
-    public void alteraEmail(String emailDep) {
-        // TODO - implement MediaCenter.alteraEmail
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     *
-     * @param pass
-     */
-    public void alteraPassword(String pass) {
-        // TODO - implement MediaCenter.alteraPassword
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     *
-     * @param path
-     * @param nome
-     * @param col
-     * @param artista
-     * @param cat
+     * @param path    Caminho para o ficheiro de origem
+     * @param nome    Nome da media
+     * @param col     Nome da colecao
+     * @param artista Nome do artista
+     * @param cat     Categoria da media
      */
     public void upload(String path, String nome, String col, String artista, String cat)
             throws MediaException, IOException {
-        if (!validaFich(path)) throw new MediaException("Formato de ficheiro invalido");
-        boolean existe = mediaDAO.containsKey("nome");
-        Utilizador u = utilizadorDAO.get(emailOn);
-        if (existe) {
-            //adicionar ao map com string categoria
-            //mediaDAO.get("nome").getProprietarios().add(emailOn);
-            //m.setCategoria(cat); passar para cima
-        } else {
-            String pathNovo = copiaFicheiro(path);
-            Media m = new Media(nome, pathNovo, artista);
-            Biblioteca b = u.getBiblioteca();
-            Map<String, Colecao> colecoes = b.getColecoes();
-            if (colecoes.containsKey(col)) {
-                Colecao c = colecoes.get(col);
-                c.add(m);
-            } else {
-                List<Media> med = new ArrayList<>(); //colocar DAO
-                med.add(m);
-                //Colecao c = new Colecao(col,med,col);
-                //b.addColecaoNaBiblioteca(c);
-            }
+        if (!validaFich(path))
+            throw new MediaException("Formato de ficheiro invalido");
+
+        MediaKey chave = new MediaKey(nome, artista);
+        boolean existe = mediaDAO.containsKey(chave);
+
+        String codCol = ColecaoDAO.getInstance().getCodCol(col);
+
+        if (codCol == null) {
+            codCol = String.valueOf((ColecaoDAO.getInstance().size() * 10) + 10);
+            Colecao c = new Colecao(codCol, col);
+            String codB = this.utilizadorDAO.get(this.emailOn).getBiblioteca().getCod();
+            ColecaoDAO.getInstance().putOnBiblioteca(c.getCodCol(), c, codB);
         }
+
+        if (!existe) {
+            String pathNovo = copiaFicheiro(path);
+            Media auxiliar = new Media(nome, pathNovo, artista);
+            this.mediaDAO.put(chave, auxiliar);
+        }
+
+        Media m = this.mediaDAO.get(chave);
+        ColecaoMediaDAO.getInstance().add(chave, m, codCol);
+        CategoriaDAO.getInstance().atribuirCategoria(this.utilizadorDAO.get(this.emailOn), chave, cat);
     }
 
     /**
-     *
-     * @param path
+     * @param path Caminho onde vai ser verificada a extensão
      */
     public boolean validaFich(String path) {
         String ext = path.split("\\.")[1];
@@ -211,46 +113,31 @@ public class MediaCenter {
     }
 
     /**
-     *
-     * @param path
-     */
-    public void removerMedia(String path) {
-        // TODO - implement MediaCenter.removerMedia
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     *
      * @param key Chave que contem o nome da media a reproduzir e o respetivo artista
      */
     public void reproduzirMedia(MediaKey key) {
         reproduz(mediaDAO.get(key).getPath());
     }
 
+
     public void reproduz(String path) {
         try {
             ProcessBuilder pb = new ProcessBuilder(
                     "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe", path);
-            Process start = pb.start();
+            pb.start();
         } catch (IOException e) {
             ProcessBuilder pb = new ProcessBuilder(
                     "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe", path);
             try {
-                Process start = pb.start();
+                pb.start();
             } catch (IOException ex) {
                 System.out.println("Não tem o vlc instalado" + ex);
             }
         }
     }
 
-    public void terminarSessao() {
-        // TODO - implement MediaCenter.terminarSessao
-        throw new UnsupportedOperationException();
-    }
-
     /**
-     *
-     * @param email
+     * @param email Email que esta a iniciar sessão
      */
     public void setEmailOn(String email) {
         this.emailOn = email;
@@ -260,10 +147,6 @@ public class MediaCenter {
         this.permissao = null;
     }
 
-    public void apagaConta() {
-        // TODO - implement MediaCenter.apagaConta
-        throw new UnsupportedOperationException();
-    }
 
     /**
      * Metodo para definir a permissão para residente
@@ -288,7 +171,8 @@ public class MediaCenter {
 
     /**
      * Metodo que recebendo o email e a password, se corretos coloca o emailOn com o email do utilizador
-     * @param email email fornecida
+     *
+     * @param email    email fornecida
      * @param password password fornecida
      */
     public void iniciarSessao(String email, String password)
@@ -319,32 +203,24 @@ public class MediaCenter {
     }
 
     /**
-     *
-     * @param nome
-     * @param email
-     * @param password
+     * @param nome     nome do urilizador
+     * @param email    email do utilizador
+     * @param password password do utilizador
      */
     public void registaUtilizador(String nome, String email, String password) {
-        String codBiblioteca = Integer.toString(bibliotecas.size());
+        String codBiblioteca = String.valueOf(bibliotecas.size() + 1);
         Biblioteca b = new Biblioteca(codBiblioteca, "Biblioteca de " + nome);
         Utilizador u = new Utilizador(codBiblioteca, nome, email, password);
         utilizadorDAO.put(email, u);
     }
 
     /**
-     *
-     * @param path
+     * @param path Caminho do ficheiro de destino
      */
     public String copiaFicheiro(String path) throws IOException {
         File origem = new File(path);
         String nome = origem.getName();
         File destino = new File(pathParaMedia + nome);
-        /*
-        if (destino.exists())
-                throw new MediaException("O ficheiro já existe no sistema");
-
-
-         */
         FileChannel entrada = null;
         FileChannel saida = null;
 
@@ -358,7 +234,11 @@ public class MediaCenter {
             if (saida != null && saida.isOpen())
                 saida.close();
         }
-        return destino.getPath();
+
+        String aux = destino.getPath().replaceAll(Pattern.quote("\\"), "/");
+        System.out.println(aux);
+
+        return aux;
     }
 
     public boolean eAdmin() {
@@ -374,79 +254,16 @@ public class MediaCenter {
     }
 
 
-    //apagar
-
-
-    public Administrador getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Administrador admin) {
-        this.admin = admin;
-    }
-
-    public String getPathParaMedia() {
-        return pathParaMedia;
-    }
-
-    public void setPathParaMedia(String pathParaMedia) {
-        this.pathParaMedia = pathParaMedia;
-    }
-
     public Map<String, Biblioteca> getBibliotecas() {
         return bibliotecas;
-    }
-
-    public void setBibliotecas(Map<String, Biblioteca> bibliotecas) {
-        this.bibliotecas = bibliotecas;
     }
 
     public Map<String, Utilizador> getUtilizadorDAO() {
         return utilizadorDAO;
     }
 
-    public void setUtilizadorDAO(Map<String, Utilizador> utilizadorDAO) {
-        this.utilizadorDAO = utilizadorDAO;
-    }
-
-    public void setMediaDAO(Map<MediaKey, Media> mediaDAO) {
-        this.mediaDAO = mediaDAO;
-    }
-
     public String getEmailOn() {
         return emailOn;
-    }
-
-    public Integer getPermissao() {
-        return permissao;
-    }
-
-    public void setPermissao(Integer permissao) {
-        this.permissao = permissao;
-    }
-
-    public static Integer getAdministrador() {
-        return administrador;
-    }
-
-    public static void setAdministrador(Integer administrador) {
-        MediaCenter.administrador = administrador;
-    }
-
-    public static Integer getUtilizador() {
-        return utilizador;
-    }
-
-    public static void setUtilizador(Integer utilizador) {
-        MediaCenter.utilizador = utilizador;
-    }
-
-    public static Integer getConvidado() {
-        return convidado;
-    }
-
-    public static void setConvidado(Integer convidado) {
-        MediaCenter.convidado = convidado;
     }
 
     public Map<MediaKey, Media> getMediaDAO() {

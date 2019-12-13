@@ -19,6 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -64,6 +65,15 @@ public class ControllerLogin implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    void handleVoltarButton(MouseEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene start = new Scene(FXMLLoader.load( getClass().getResource("/GUI/views/FirstMenu.fxml") ));
+        start.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
+        stage.setScene(start);
+        stage.show();
     }
 
     @Override

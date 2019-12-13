@@ -48,7 +48,7 @@ public class ControllerMediaUpload {
             alert.showAndWait();
         } catch (NullPointerException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Não selecionou nenhum ficheiro!");
+            alert.setContentText("Não selecionou nenhum ficheiro! ou "+e.getMessage());
             alert.showAndWait();
         }
         stage.close();

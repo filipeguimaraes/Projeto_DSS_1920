@@ -5,6 +5,7 @@
  */
 package GUI.controller;
 
+import DAO.ColecaoDAO;
 import LN.Biblioteca;
 import LN.Colecao;
 import LN.Media;
@@ -65,6 +66,14 @@ public class ControllerMainPage implements Initializable {
     @FXML
     private ImageView play;
 
+    @FXML
+    private ImageView refresh;
+
+    @FXML
+    void handleRefreshButton(MouseEvent event) {
+        tabelaMedias.getItems().clear();
+        populateTabelaGeral();
+    }
 
     @FXML
     void handleUploadButton(MouseEvent event) throws IOException {
@@ -143,17 +152,19 @@ public class ControllerMainPage implements Initializable {
         TreeItem<String> rootitem = new TreeItem<>("Bibliotecas -0");
         rootitem.setExpanded(true);
         List<Biblioteca> bib = (ArrayList<Biblioteca>) model.getBibliotecas().values();
-
+/*
         for (Biblioteca b : bib) {
             TreeItem<String> item = new TreeItem<>(b.getNomeBiblio() + " -" + b.getCod());
             rootitem.getChildren().add(item);
-            List<Colecao> col = new ArrayList<>(b.getColecoes().values());
+            //List<Colecao> col = new ArrayList<Colecao>(ColecaoDAO.getInstance().getByBiblioteca(b.getCod()));
 
             for (Colecao c : col) {
                 TreeItem<String> node = new TreeItem<>(c.getNomeCol() + " -" + c.getCodCol());
                 item.getChildren().add(node);
             }
         }
+
+ */
         try {
             this.bibliotecas.setRoot(rootitem);
             this.bibliotecas.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -187,7 +198,7 @@ public class ControllerMainPage implements Initializable {
 
         setBemVindo();
         populateTabelaGeral();
-        populateArvore();
+        //populateArvore();
     }
 
 }

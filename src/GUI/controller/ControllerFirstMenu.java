@@ -43,7 +43,7 @@ public class ControllerFirstMenu {
     void handleAdminButton(ActionEvent event) throws IOException {
         model.setPermissaoAdministrador();
         Scene login = new Scene(FXMLLoader.load(getClass().getResource("/GUI/views/Login.fxml")));
-
+        login.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(login);
         window.show();

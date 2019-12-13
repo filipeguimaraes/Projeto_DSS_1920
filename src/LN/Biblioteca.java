@@ -13,20 +13,14 @@ import java.util.*;
 
 public class Biblioteca {
 
-    private Map<String,Colecao> colecoes;
+    private ColecaoDAO colecoes;
     private String cod;
     private String nomeBiblio;
 
     public Biblioteca(String cod, String nomeBiblio) {
         this.cod = cod;
         this.nomeBiblio = nomeBiblio;
-        ArrayList<String> codColecoes = new ArrayList<>(ColecaoDAO.getInstance().getByBiblioteca(cod));
-        this.colecoes = new HashMap<>();
-        for (String key : codColecoes){
-            Colecao c = ColecaoDAO.getInstance().get(key);
-            this.colecoes.put(key, c);
-        }
-        //this.colecoes = ColecaoDAO.getInstance().getByBiblioteca(this.cod);
+        this.colecoes = ColecaoDAO.getInstance();
     }
 
     /**
@@ -35,14 +29,6 @@ public class Biblioteca {
      */
     public void addColecaoNaBiblioteca(Colecao colecao) {
         colecoes.put(colecao.getNomeCol(),colecao);
-    }
-
-    public Map<String,Colecao> getColecoes() {
-        return this.colecoes;
-    }
-
-    public void setColecoes(Map<String, Colecao> colecoes) {
-        this.colecoes = colecoes;
     }
 
     public String getCod() {

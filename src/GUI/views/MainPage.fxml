@@ -49,7 +49,7 @@
                               <Insets bottom="5.0" right="5.0" top="5.0" />
                            </VBox.margin>
                            <children>
-                              <Region prefHeight="27.0" prefWidth="99.0" />
+                              <Region prefHeight="27.0" prefWidth="85.0" />
                               <MenuButton mnemonicParsing="false" prefHeight="27.0" prefWidth="144.0" text="Alterações de Conta">
                                 <items>
                                   <MenuItem disable="true" mnemonicParsing="false" text="Nome" />
@@ -89,7 +89,7 @@
          <children>
             <TreeView fx:id="bibliotecas" prefHeight="410.0" prefWidth="198.0" showRoot="false" />
             <Button mnemonicParsing="false" onAction="#handleMouseClicked" prefHeight="25.0" prefWidth="256.0" text="Ver &gt;" />
-            <MenuButton alignment="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="220.0" text="Criar Coleção">
+            <MenuButton alignment="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="252.0" text="Criar Coleção">
               <items>
                 <MenuItem disable="true" mnemonicParsing="false" text="Default" />
                   <MenuItem disable="true" mnemonicParsing="false" text="Aleatória" />
@@ -98,7 +98,7 @@
               </items>
             </MenuButton>
             <Region prefHeight="36.0" prefWidth="220.0" />
-            <HBox prefHeight="30.0" prefWidth="243.0" spacing="20.0">
+            <HBox prefHeight="41.0" prefWidth="190.0" spacing="20.0">
                <children>
                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <ImageView fx:id="play" fitHeight="41.0" onMouseClicked="#handlePlayButton" pickOnBounds="true" preserveRatio="true">
@@ -119,6 +119,15 @@
                      </cursor>
                   </ImageView>
                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <ImageView fx:id="refresh" fitHeight="41.0" fitWidth="52.0" onMouseClicked="#handleRefreshButton" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/refresh.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <Region prefHeight="200.0" prefWidth="200.0" />
                </children>
             </HBox>
          </children>

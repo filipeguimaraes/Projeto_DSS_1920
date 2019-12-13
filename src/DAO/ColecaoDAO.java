@@ -6,13 +6,9 @@
 package DAO;
 
 import LN.Colecao;
-import UTILITIES.MediaKey;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ColecaoDAO implements Map<String, Colecao> {
     private static ColecaoDAO inst = null;
@@ -34,36 +30,55 @@ public class ColecaoDAO implements Map<String, Colecao> {
         return inst;
     }
 
-
-/*
-    public Colecao putOnBiblioteca(String key, Colecao value, String codBibli) {
+    public String getCodCol(String nome){
         Connection conn = null;
-        try{
+        try {
             conn = DriverManager.getConnection(url);
             Statement stm = conn.createStatement();
-            stm.executeUpdate("DELETE FROM mediacenter.colecao  " +
-                    "where codColecao='"+key+"'");
-            String sql = "INSERT INTO mediacenter.colecao VALUES ('"+
-                    value.getMediasCol()+"','"+
-                    codBibli+"','"+
-                    value.getNomeCol()+"')";
-            stm.executeUpdate(sql);
-            return new Colecao( value.getCodCol(),
-                    value.getMediasCol(),
-                    value.getNomeCol());
+            String sql = "SELECT codColecao FROM mediacenter.colecao " +
+                    "WHERE nomeColecao='"+nome+"'";
+            ResultSet rs = stm.executeQuery(sql);
+            String cod = null;
+            if (rs.next()) cod = rs.getString(1);
+            return cod;
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
-        } finally{
-            if(conn!=null)
+        } finally {
+            if (conn != null)
                 try {
                     conn.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
         }
     }
 
- */
+    public Colecao putOnBiblioteca(String key, Colecao value, String codBibli) {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
+            Statement stm = conn.createStatement();
+            stm.executeUpdate("DELETE FROM mediacenter.colecao  " +
+                    "where codColecao='" + key + "'");
+            String sql = "INSERT INTO mediacenter.colecao VALUES ('" +
+                    key + "','" +
+                    codBibli + "','" +
+                    value.getNomeCol() + "')";
+            stm.executeUpdate(sql);
+            return new Colecao(value.getCodCol(),
+                    value.getNomeCol());
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally {
+            if (conn != null)
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+        }
+    }
+
 
     public List<String> getByBiblioteca(String codBiblioteca) {
         Connection conn = null;
@@ -303,7 +318,7 @@ public class ColecaoDAO implements Map<String, Colecao> {
         try {
             conn = DriverManager.getConnection(url);
             Statement st = conn.createStatement();
-            st.executeUpdate("DELETE FROM mediacenter.media");
+            st.executeUpdate("DELETE FROM mediacenter.colecao");
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
         } finally {
@@ -318,14 +333,31 @@ public class ColecaoDAO implements Map<String, Colecao> {
 
     @Override
     public Set<String> keySet() {
-        throw new UnsupportedOperationException();
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
+            Set<String> keys = new HashSet<>();
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.colecao");
+            while (rs.next()) keys.add(rs.getString(1));
+            return keys;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally {
+            if (conn != null)
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+        }
     }
 
     @Override
     public List<Colecao> values() {
         Connection conn = null;
         try {
-            DriverManager.getConnection(url);
+            conn = DriverManager.getConnection(url);
             List<Colecao> col = new ArrayList<>();
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM mediacenter.colecao");
