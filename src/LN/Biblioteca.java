@@ -46,4 +46,21 @@ public class Biblioteca {
     public void setNomeBiblio(String nomeBiblio) {
         this.nomeBiblio = nomeBiblio;
     }
+
+    public Colecao getColecao(String cod) {
+        return this.colecoes.getByBiblioteca(this.cod,cod);
+    }
+
+    public Colecao getColecaoByNome(String nome){
+        String codigo = this.colecoes.getCodCol(nome);
+        return this.colecoes.getByBiblioteca(this.cod,codigo);
+    }
+
+    public void adicionaColecao(Colecao col){
+        this.colecoes.putOnBiblioteca(col.getCodCol(), col, this.cod);
+    }
+
+
+
+
 }

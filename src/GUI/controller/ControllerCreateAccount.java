@@ -24,7 +24,7 @@ public class ControllerCreateAccount {
         Scene ca = new Scene(FXMLLoader.load(getClass().getResource("/GUI/views/FirstMenu.fxml")));
         ca.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
         window.setScene(ca);
-        window.setMaximized(false);
+        window.centerOnScreen();
         window.show();
     }
 

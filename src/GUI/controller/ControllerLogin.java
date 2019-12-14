@@ -49,6 +49,7 @@ public class ControllerLogin implements Initializable {
                         .getResource("/GUI/views/CreateAccount.fxml")));
                 admin.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
                 window.setScene(admin);
+                window.centerOnScreen();
                 window.show();
             } else if (model.eUtilizador()) {
                 Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -56,6 +57,7 @@ public class ControllerLogin implements Initializable {
                         .getResource("/GUI/views/MainPage.fxml")));
                 user.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
                 window.setScene(user);
+                window.centerOnScreen();
                 window.show();
             }
         } catch (UtilizadorException | AdminException | PermissaoException u) {
@@ -73,6 +75,7 @@ public class ControllerLogin implements Initializable {
         Scene start = new Scene(FXMLLoader.load( getClass().getResource("/GUI/views/FirstMenu.fxml") ));
         start.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
         stage.setScene(start);
+        stage.centerOnScreen();
         stage.show();
     }
 

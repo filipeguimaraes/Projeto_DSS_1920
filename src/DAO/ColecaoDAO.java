@@ -30,13 +30,13 @@ public class ColecaoDAO implements Map<String, Colecao> {
         return inst;
     }
 
-    public String getCodCol(String nome){
+    public String getCodCol(String nome) {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
             Statement stm = conn.createStatement();
             String sql = "SELECT codColecao FROM mediacenter.colecao " +
-                    "WHERE nomeColecao='"+nome+"'";
+                    "WHERE nomeColecao='" + nome + "'";
             ResultSet rs = stm.executeQuery(sql);
             String cod = null;
             if (rs.next()) cod = rs.getString(1);
@@ -104,56 +104,33 @@ public class ColecaoDAO implements Map<String, Colecao> {
                 }
         }
     }
-/*
-    public Map<String,Colecao> getByBiblioteca(String codBiblioteca) {
+
+    public Colecao getByBiblioteca(String codBiblioteca, String codColecao) {
         Connection conn = null;
-        try{
+        try {
             conn = DriverManager.getConnection(url);
-            Map<String,Colecao> m = new HashMap<>();
+            Colecao m = null;
             Statement stm = conn.createStatement();
             String sql = "SELECT * FROM mediacenter.colecao " +
-                    "where Biblioteca_cod='"+codBiblioteca+"'";
+                    "where codColecao='" + codColecao + "' " +
+                    "and Biblioteca_cod='"+codBiblioteca+"'";
             ResultSet rs = stm.executeQuery(sql);
-            while (rs.next()) {
-                m.put(rs.getString(1),
-                        new Colecao(rs.getString(1),
-                                mediasOnColecao(rs.getString(1),conn),
-                                rs.getString(3)));
-            }
+            if (rs.next())
+                m = new Colecao(rs.getString(1),
+                        rs.getString(3));
             return m;
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
-        } finally{
-            if(conn!=null)
+        } finally {
+            if (conn != null)
                 try {
                     conn.close();
-                }catch (SQLException e){
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
         }
     }
 
-
-
-    public List<MediaKey> mediasOnColecao(String codColecao, Connection conn) throws SQLException {
-        Statement stm2 = conn.createStatement();
-        ResultSet rs2 = stm2.executeQuery("SELECT * FROM mediacenter.colecao_media " +
-                "where Colecao_codColecao='" + codColecao + "'");
-        List<MediaKey> medias = new ArrayList<>();
-        while (rs2.next()) {
-            MediaKey chave = new MediaKey(
-                    rs2.getString(1),
-                    rs2.getString(2));
-            medias.add(chave);
-        }
-        return medias;
-    }
-
-    public int hashCode() {
-        return inst.hashCode();
-    }
-
- */
 
     @Override
     public int size() {

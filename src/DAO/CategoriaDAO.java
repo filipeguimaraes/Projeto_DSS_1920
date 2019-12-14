@@ -5,13 +5,8 @@ import LN.Media;
 import LN.Residentes.Utilizador;
 import UTILITIES.MediaKey;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.sql.*;
+import java.util.*;
 
 public class CategoriaDAO implements Map<Utilizador, String> {
     private static CategoriaDAO inst = null;
@@ -33,7 +28,7 @@ public class CategoriaDAO implements Map<Utilizador, String> {
         return inst;
     }
 
-    public String atribuirCategoria(Utilizador key, MediaKey chaveMedia, String categoria){
+    public String atribuirCategoria(String key, MediaKey chaveMedia, String categoria){
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
@@ -42,7 +37,7 @@ public class CategoriaDAO implements Map<Utilizador, String> {
                     "where Utilizador_email='" + key + "' " +
                     "and Media_nomeMedia='"+chaveMedia.getNome()+"' " +
                     "and Media_artista='"+chaveMedia.getArtista()+"'");
-            String sql = "INSERT INTO mediacenter.colecao VALUES ('" +
+            String sql = "INSERT INTO mediacenter.utilizador_media VALUES ('" +
                     key + "','" +
                     chaveMedia.getNome() + "','" +
                     chaveMedia.getArtista() + "','" +
@@ -84,6 +79,32 @@ public class CategoriaDAO implements Map<Utilizador, String> {
     @Override
     public String get(Object key) {
         throw new UnsupportedOperationException();
+    }
+
+
+    public String getCategoria(Object key, MediaKey mediaKey) {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
+            Statement stm = conn.createStatement();
+            String sql = "SELECT categoria FROM mediacenter.utilizador_media " +
+                    "where Utilizador_email='" + key + "' " +
+                    "and Media_nomeMedia='"+mediaKey.getNome()+"' " +
+                    "and Media_artista='"+mediaKey.getArtista()+"'";
+            ResultSet rs = stm.executeQuery(sql);
+            String categoria = null;
+            if (rs.next()) categoria = rs.getString(1);
+            return categoria;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally {
+            if (conn != null)
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+        }
     }
 
     @Override

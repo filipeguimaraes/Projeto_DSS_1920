@@ -1,3 +1,8 @@
+import DAO.ColecaoDAO;
+import LN.Colecao;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainTest  {
 
@@ -12,7 +17,13 @@ public class MainTest  {
 
          */
         //MediaKey key = new MediaKey("ola","ola");
-        System.out.println("");
+        /*
+        Map<String, Colecao> ola = new HashMap<>();
+        ola.put("key1", ColecaoDAO.getInstance().get("10"));
+        ola.put("Key2",ColecaoDAO.getInstance().get("20"));
+
+        System.out.println(ola.toString());
+         */
 
     }
 }

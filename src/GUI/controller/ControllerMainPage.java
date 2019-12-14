@@ -24,8 +24,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -58,54 +56,52 @@ public class ControllerMainPage implements Initializable {
     private TreeView<String> bibliotecas;
 
     @FXML
-    private ImageView upload;
-
-    @FXML
-    private Button logout;
-
-    @FXML
-    private ImageView play;
-
-    @FXML
-    private ImageView refresh;
-
-    @FXML
-    void handleRefreshButton(MouseEvent event) {
+    void handleRefreshButton() {
         tabelaMedias.getItems().clear();
         populateTabelaGeral();
+        populateArvore();
     }
 
     @FXML
-    void handleUploadButton(MouseEvent event) throws IOException {
-        Stage newWindow = new Stage();
-        newWindow.setTitle("Fazer Upload");
-        Image image = new Image("/images/upload.png");
-        newWindow.getIcons().add(image);
-        Scene start = new Scene(FXMLLoader.load(getClass().getResource("/GUI/views/MediaUpload.fxml")));
-        start.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
-        newWindow.setScene(start);
-        newWindow.show();
+    void handleUploadButton() throws IOException {
+        if (model.eConvidado()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Para realizar esta operação precisa de ter sessão iniciada!");
+            alert.showAndWait();
+        } else {
+            Stage newWindow = new Stage();
+            newWindow.setTitle("Fazer Upload");
+            Image image = new Image("/images/upload.png");
+            newWindow.getIcons().add(image);
+            Scene start = new Scene(FXMLLoader.load(getClass().getResource("/GUI/views/MediaUpload.fxml")));
+            start.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
+            newWindow.setScene(start);
+            newWindow.centerOnScreen();
+            newWindow.show();
+        }
     }
 
     @FXML
     void handleLogoutButton(ActionEvent event) throws IOException {
+        model.removePermissao();
         Parent loginMenu = FXMLLoader.load(getClass().getResource("/GUI/views/FirstMenu.fxml"));
         Scene login = new Scene(loginMenu);
         login.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(login);
+        window.centerOnScreen();
         window.show();
     }
 
     @FXML
-    void handlePlayButton(MouseEvent event) {
+    void handlePlayButton() {
         try {
             Media m = tabelaMedias.getSelectionModel().getSelectedItem();
             MediaKey key = new MediaKey(m.getNomeMedia(), m.getArtista());
             model.reproduzirMedia(key);
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText(e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Nenhuma media selecionada!");
             alert.showAndWait();
         }
     }
@@ -116,7 +112,8 @@ public class ControllerMainPage implements Initializable {
         if (email != null) {
             System.out.println("hey " + email);
             categoria.setCellValueFactory(
-                    c -> new SimpleStringProperty(c.getValue().getCategoriaPorUtilizador(email)));
+                    c -> new SimpleStringProperty(
+                            c.getValue().getCategoriaPorUtilizador(email)));
         }
     }
 
@@ -124,23 +121,22 @@ public class ControllerMainPage implements Initializable {
         nomeMedia.setCellValueFactory(new PropertyValueFactory<>("nomeMedia"));
         artista.setCellValueFactory(new PropertyValueFactory<>("artista"));
 
-        //populateColunaCategoria();
+        populateColunaCategoria();
 
         Map<MediaKey, Media> map = model.getMediaDAO();
         List<Media> list = new ArrayList<>(map.values());
         ObservableList<Media> l = FXCollections.observableArrayList();
         l.addAll(list);
-
         tabelaMedias.setItems(l);
     }
 
-    public void populateTabela(String item) {
+    public void populateTabela(String colecao) {
+        tabelaMedias.getItems().clear();
         nomeMedia.setCellValueFactory(new PropertyValueFactory<>("nomeMedia"));
         artista.setCellValueFactory(new PropertyValueFactory<>("artista"));
+        populateColunaCategoria();
 
-        //populateColunaCategoria();
-
-        Map<MediaKey, Media> map = model.getMediaDAO();
+        Map<MediaKey, Media> map = ColecaoDAO.getInstance().get(colecao).getMedias();
         List<Media> list = new ArrayList<>(map.values());
         ObservableList<Media> l = FXCollections.observableArrayList();
         l.addAll(list);
@@ -152,19 +148,19 @@ public class ControllerMainPage implements Initializable {
         TreeItem<String> rootitem = new TreeItem<>("Bibliotecas -0");
         rootitem.setExpanded(true);
         List<Biblioteca> bib = (ArrayList<Biblioteca>) model.getBibliotecas().values();
-/*
         for (Biblioteca b : bib) {
             TreeItem<String> item = new TreeItem<>(b.getNomeBiblio() + " -" + b.getCod());
             rootitem.getChildren().add(item);
-            //List<Colecao> col = new ArrayList<Colecao>(ColecaoDAO.getInstance().getByBiblioteca(b.getCod()));
+            List<String> col = new ArrayList<>(ColecaoDAO.getInstance().getByBiblioteca(b.getCod()));
 
-            for (Colecao c : col) {
-                TreeItem<String> node = new TreeItem<>(c.getNomeCol() + " -" + c.getCodCol());
+            for (String cod : col) {
+                String colecao = ColecaoDAO.getInstance().get(cod).getNomeCol();
+                TreeItem<String> node = new TreeItem<>(colecao);
                 item.getChildren().add(node);
             }
         }
 
- */
+
         try {
             this.bibliotecas.setRoot(rootitem);
             this.bibliotecas.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -178,12 +174,10 @@ public class ControllerMainPage implements Initializable {
 
 
     @FXML
-    private void handleMouseClicked(MouseEvent mouseEvent) {
-        String item = bibliotecas.getSelectionModel().getSelectedItem().getValue();
-        System.out.println(item);
+    private void handleMouseClicked() {
+        String col = bibliotecas.getSelectionModel().getSelectedItem().getValue();
         //System.out.println("Selected Text : " + item.getValue());
-        //tabelaMedias.getItems().clear();
-        //populateTabela(item.getValue());
+        populateTabela(ColecaoDAO.getInstance().getCodCol(col));
     }
 
     public void setBemVindo() {
@@ -195,10 +189,9 @@ public class ControllerMainPage implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         setBemVindo();
         populateTabelaGeral();
-        //populateArvore();
+        populateArvore();
     }
 
 }

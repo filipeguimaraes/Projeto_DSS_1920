@@ -119,13 +119,16 @@
                      </cursor>
                   </ImageView>
                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <ImageView fx:id="refresh" fitHeight="41.0" fitWidth="52.0" onMouseClicked="#handleRefreshButton" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="refresh" fitHeight="30.0" fitWidth="33.0" onMouseClicked="#handleRefreshButton" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../images/refresh.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <HBox.margin>
+                        <Insets bottom="6.0" left="6.0" top="6.0" />
+                     </HBox.margin>
                   </ImageView>
                   <Region prefHeight="200.0" prefWidth="200.0" />
                </children>

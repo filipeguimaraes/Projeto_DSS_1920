@@ -66,7 +66,7 @@ public class Colecao {
      *
      * @param m
      */
-    public void add(Media m) {
+    public void adicionaMedia(Media m) {
         // TODO - implement Colecao.add
         throw new UnsupportedOperationException();
     }

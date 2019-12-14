@@ -7,16 +7,14 @@ package LN;
 
 
 import DAO.CategoriaDAO;
-import LN.Residentes.Utilizador;
-
-import java.util.Map;
+import UTILITIES.MediaKey;
 
 public class Media {
 
     private String nomeMedia;
     private String path;
     private String artista;
-    private Map<Utilizador, String> categorias;
+    private CategoriaDAO categorias;
 
     public Media(String nomeMedia, String path, String artista) {
         this.nomeMedia = nomeMedia;
@@ -26,7 +24,6 @@ public class Media {
     }
 
     /**
-     *
      * @param nome
      */
     public void setNome(String nome) {
@@ -34,7 +31,6 @@ public class Media {
     }
 
     /**
-     *
      * @param nome
      */
     public void setArtista(String nome) {
@@ -42,7 +38,6 @@ public class Media {
     }
 
     /**
-     *
      * @param path
      */
     public void setPath(String path) {
@@ -65,15 +60,8 @@ public class Media {
         this.nomeMedia = nomeMedia;
     }
 
-    public Map<Utilizador, String> getCategorias() {
-        return categorias;
-    }
-
-    public void setCategorias(Map<Utilizador, String> categorias) {
-        this.categorias = categorias;
-    }
 
     public String getCategoriaPorUtilizador(String email) {
-        return this.categorias.get(email);
+        return this.categorias.getCategoria(email, new MediaKey(this.nomeMedia, this.artista));
     }
 }

@@ -23,6 +23,7 @@ public class Main extends Application {
         Scene start = new Scene(FXMLLoader.load( getClass().getResource("/GUI/views/FirstMenu.fxml") ));
         start.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
         stage.setScene(start);
+        stage.centerOnScreen();
         stage.show();
     }
 }

@@ -70,15 +70,17 @@ public class MediaCenter {
             throw new MediaException("Formato de ficheiro invalido");
 
         MediaKey chave = new MediaKey(nome, artista);
-        boolean existe = mediaDAO.containsKey(chave);
+        boolean existe = this.mediaDAO.containsKey(chave);
 
-        String codCol = ColecaoDAO.getInstance().getCodCol(col);
+        Utilizador u = this.utilizadorDAO.get(this.getEmailOn());
+        Biblioteca b = this.bibliotecas.get(u.getBiblioteca().getCod());
+        Colecao colecao = b.getColecaoByNome(col);
+        String codCol = colecao.getCodCol();
 
         if (codCol == null) {
             codCol = String.valueOf((ColecaoDAO.getInstance().size() * 10) + 10);
-            Colecao c = new Colecao(codCol, col);
-            String codB = this.utilizadorDAO.get(this.emailOn).getBiblioteca().getCod();
-            ColecaoDAO.getInstance().putOnBiblioteca(c.getCodCol(), c, codB);
+            colecao = new Colecao(codCol, col);
+            b.adicionaColecao(colecao);
         }
 
         if (!existe) {
@@ -88,8 +90,8 @@ public class MediaCenter {
         }
 
         Media m = this.mediaDAO.get(chave);
-        ColecaoMediaDAO.getInstance().add(chave, m, codCol);
-        CategoriaDAO.getInstance().atribuirCategoria(this.utilizadorDAO.get(this.emailOn), chave, cat);
+        colecao.adicionaMedia(m);
+        CategoriaDAO.getInstance().atribuirCategoria(this.emailOn, chave, cat);
     }
 
     /**
@@ -116,18 +118,18 @@ public class MediaCenter {
      * @param key Chave que contem o nome da media a reproduzir e o respetivo artista
      */
     public void reproduzirMedia(MediaKey key) {
-        reproduz(mediaDAO.get(key).getPath());
+        reproduz(this.mediaDAO.get(key).getPath());
     }
 
 
     public void reproduz(String path) {
         try {
             ProcessBuilder pb = new ProcessBuilder(
-                    "C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe", path);
+                    "C:/Program Files (x86)/VideoLAN/VLC/vlc.exe", new File(path).getPath());
             pb.start();
         } catch (IOException e) {
             ProcessBuilder pb = new ProcessBuilder(
-                    "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe", path);
+                    "C:/Program Files/VideoLAN/VLC/vlc.exe", new File(path).getPath());
             try {
                 pb.start();
             } catch (IOException ex) {
@@ -144,6 +146,7 @@ public class MediaCenter {
     }
 
     public void removePermissao() {
+        this.emailOn=null;
         this.permissao = null;
     }
 

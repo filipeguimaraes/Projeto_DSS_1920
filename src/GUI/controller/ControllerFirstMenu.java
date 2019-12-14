@@ -36,6 +36,7 @@ public class ControllerFirstMenu {
         login.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(login);
+        window.centerOnScreen();
         window.show();
     }
 
@@ -46,6 +47,7 @@ public class ControllerFirstMenu {
         login.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(login);
+        window.centerOnScreen();
         window.show();
     }
 
@@ -56,6 +58,7 @@ public class ControllerFirstMenu {
         login.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(login);
+        window.centerOnScreen();
         window.show();
     }
 
