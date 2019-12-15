@@ -61,7 +61,7 @@
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Region prefHeight="85.0" prefWidth="97.0" HBox.hgrow="ALWAYS" />
-                  <ImageView fx:id="sair" fitHeight="88.0" fitWidth="26.0" onMouseClicked="#handleSairButton" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="88.0" fitWidth="26.0" onMouseClicked="#handleSairButton" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../images/return.png" />
                      </image>

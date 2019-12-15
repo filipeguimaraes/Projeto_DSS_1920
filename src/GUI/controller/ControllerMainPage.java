@@ -77,8 +77,10 @@ public class ControllerMainPage implements Initializable {
             newWindow.setTitle("Fazer Upload");
             Image image = new Image("/images/upload.png");
             newWindow.getIcons().add(image);
-            Scene start = new Scene(FXMLLoader.load(getClass().getResource("/GUI/views/MediaUpload.fxml")));
-            start.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
+            Scene start = new Scene(FXMLLoader.load(getClass()
+                    .getResource("/GUI/views/MediaUpload.fxml")));
+            start.getStylesheets().add(getClass()
+                    .getResource("/GUI/sheet.css").toExternalForm());
             newWindow.setScene(start);
             newWindow.centerOnScreen();
             newWindow.show();
@@ -110,22 +112,30 @@ public class ControllerMainPage implements Initializable {
         }
     }
 
-    public void showMedia(){
-        Biblioteca biblioteca = model.getBibliotecas()
-                .getByNome(bibliotecas.getSelectionModel().getSelectedItem());
-        String nomeColecao = colecoes.getSelectionModel().getSelectedItem();
-        Colecao colecao = biblioteca.getColecaoByNome(nomeColecao);
-        if(colecao!=null) {
-            List<Media> list = new ArrayList<>(colecao.getMedias().values());
-            setTabelaMedia(list);
+    public void showMedia() {
+        try {
+            Biblioteca biblioteca = model.getBibliotecas()
+                    .getByNome(bibliotecas.getSelectionModel().getSelectedItem());
+            String nomeColecao = colecoes.getSelectionModel().getSelectedItem();
+            Colecao colecao = biblioteca.getColecaoByNome(nomeColecao);
+            if (colecao != null) {
+                List<Media> list = new ArrayList<>(colecao.getMedias().values());
+                setTabelaMedia(list);
+            }
+        } catch (NullPointerException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Nenhuma biblioteca selecionada!");
+            alert.showAndWait();
         }
+
 
     }
 
 
     public void setBemVindo() {
         if (model.eUtilizador()) {
-            bemVindo.setText("Bem Vindo/a, " + model.getUtilizadorDAO().get(model.getEmailOn()).getNome() + "!");
+            bemVindo.setText("Bem Vindo/a, " +
+                    model.getUtilizadorDAO().get(model.getEmailOn()).getNome() + "!");
         } else bemVindo.setText("Bem Vindo, Convidado!");
 
     }
@@ -156,10 +166,12 @@ public class ControllerMainPage implements Initializable {
         ObservableList<String> l = FXCollections.observableArrayList();
         l.addAll(bib);
         bibliotecas.setItems(l);
-}
+    }
 
     public void setColecoes() {
-        Biblioteca b = model.getBibliotecas().getByNome(bibliotecas.getSelectionModel().getSelectedItem());
+        tabelaMedias.getItems().clear();
+        Biblioteca b = model.getBibliotecas()
+                .getByNome(bibliotecas.getSelectionModel().getSelectedItem());
         if (b != null) {
             List<String> col = b.getColecoes().values().stream()
                     .map(Colecao::getNomeCol).collect(Collectors.toList());
