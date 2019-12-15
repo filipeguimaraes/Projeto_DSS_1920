@@ -5,7 +5,6 @@
  */
 package GUI.controller;
 
-import DAO.ColecaoDAO;
 import LN.Biblioteca;
 import LN.Colecao;
 import LN.Media;
@@ -30,8 +29,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ControllerMainPage implements Initializable {
 
@@ -53,14 +52,19 @@ public class ControllerMainPage implements Initializable {
     private TableColumn<Media, String> categoria;
 
     @FXML
-    private TreeView<String> bibliotecas;
+    private ListView<String> bibliotecas;
+
+    @FXML
+    private ListView<String> colecoes;
+
 
     @FXML
     void handleRefreshButton() {
-        tabelaMedias.getItems().clear();
-        populateTabelaGeral();
-        populateArvore();
+        List<Media> list = new ArrayList<>();
+        setTabelaMedia(list);
+        setBibliotecas();
     }
+
 
     @FXML
     void handleUploadButton() throws IOException {
@@ -106,79 +110,18 @@ public class ControllerMainPage implements Initializable {
         }
     }
 
-
-    public void populateColunaCategoria() {
-        String email = model.getEmailOn();
-        if (email != null) {
-            System.out.println("hey " + email);
-            categoria.setCellValueFactory(
-                    c -> new SimpleStringProperty(
-                            c.getValue().getCategoriaPorUtilizador(email)));
-        }
-    }
-
-    public void populateTabelaGeral() {
-        nomeMedia.setCellValueFactory(new PropertyValueFactory<>("nomeMedia"));
-        artista.setCellValueFactory(new PropertyValueFactory<>("artista"));
-
-        populateColunaCategoria();
-
-        Map<MediaKey, Media> map = model.getMediaDAO();
-        List<Media> list = new ArrayList<>(map.values());
-        ObservableList<Media> l = FXCollections.observableArrayList();
-        l.addAll(list);
-        tabelaMedias.setItems(l);
-    }
-
-    public void populateTabela(String colecao) {
-        tabelaMedias.getItems().clear();
-        nomeMedia.setCellValueFactory(new PropertyValueFactory<>("nomeMedia"));
-        artista.setCellValueFactory(new PropertyValueFactory<>("artista"));
-        populateColunaCategoria();
-
-        Map<MediaKey, Media> map = ColecaoDAO.getInstance().get(colecao).getMedias();
-        List<Media> list = new ArrayList<>(map.values());
-        ObservableList<Media> l = FXCollections.observableArrayList();
-        l.addAll(list);
-
-        tabelaMedias.setItems(l);
-    }
-
-    public void populateArvore() {
-        TreeItem<String> rootitem = new TreeItem<>("Bibliotecas -0");
-        rootitem.setExpanded(true);
-        List<Biblioteca> bib = (ArrayList<Biblioteca>) model.getBibliotecas().values();
-        for (Biblioteca b : bib) {
-            TreeItem<String> item = new TreeItem<>(b.getNomeBiblio() + " -" + b.getCod());
-            rootitem.getChildren().add(item);
-            List<String> col = new ArrayList<>(ColecaoDAO.getInstance().getByBiblioteca(b.getCod()));
-
-            for (String cod : col) {
-                String colecao = ColecaoDAO.getInstance().get(cod).getNomeCol();
-                TreeItem<String> node = new TreeItem<>(colecao);
-                item.getChildren().add(node);
-            }
-        }
-
-
-        try {
-            this.bibliotecas.setRoot(rootitem);
-            this.bibliotecas.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        } catch (NullPointerException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Não foi possivel apresentar as bibliotecas.");
-            alert.showAndWait();
+    public void showMedia(){
+        Biblioteca biblioteca = model.getBibliotecas()
+                .getByNome(bibliotecas.getSelectionModel().getSelectedItem());
+        String nomeColecao = colecoes.getSelectionModel().getSelectedItem();
+        Colecao colecao = biblioteca.getColecaoByNome(nomeColecao);
+        if(colecao!=null) {
+            List<Media> list = new ArrayList<>(colecao.getMedias().values());
+            setTabelaMedia(list);
         }
 
     }
 
-
-    @FXML
-    private void handleMouseClicked() {
-        String col = bibliotecas.getSelectionModel().getSelectedItem().getValue();
-        //System.out.println("Selected Text : " + item.getValue());
-        populateTabela(ColecaoDAO.getInstance().getCodCol(col));
-    }
 
     public void setBemVindo() {
         if (model.eUtilizador()) {
@@ -187,11 +130,52 @@ public class ControllerMainPage implements Initializable {
 
     }
 
+    public void setColunaCategoria() {
+        String email = model.getEmailOn();
+        if (email != null) {
+            categoria.setCellValueFactory(
+                    c -> new SimpleStringProperty(
+                            c.getValue().getCategoriaPorUtilizador(email)));
+        }
+    }
+
+    public void setTabelaMedia(List<Media> list) {
+        tabelaMedias.getItems().clear();
+        nomeMedia.setCellValueFactory(new PropertyValueFactory<>("nomeMedia"));
+        artista.setCellValueFactory(new PropertyValueFactory<>("artista"));
+
+        setColunaCategoria();
+        ObservableList<Media> l = FXCollections.observableArrayList();
+        l.addAll(list);
+        tabelaMedias.setItems(l);
+    }
+
+    public void setBibliotecas() {
+        List<String> bib = model.getBibliotecas().values().stream()
+                .map(Biblioteca::getNomeBiblio).collect(Collectors.toList());
+        ObservableList<String> l = FXCollections.observableArrayList();
+        l.addAll(bib);
+        bibliotecas.setItems(l);
+}
+
+    public void setColecoes() {
+        Biblioteca b = model.getBibliotecas().getByNome(bibliotecas.getSelectionModel().getSelectedItem());
+        if (b != null) {
+            List<String> col = b.getColecoes().values().stream()
+                    .map(Colecao::getNomeCol).collect(Collectors.toList());
+            ObservableList<String> l = FXCollections.observableArrayList();
+            l.addAll(col);
+            colecoes.setItems(l);
+        }
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setBemVindo();
-        populateTabelaGeral();
-        populateArvore();
+        List<Media> list = new ArrayList<>(model.getMediaDAO().values());
+        setTabelaMedia(list);
+        setBibliotecas();
     }
 
 }

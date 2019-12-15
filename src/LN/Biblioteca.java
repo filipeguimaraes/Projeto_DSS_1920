@@ -52,8 +52,12 @@ public class Biblioteca {
     }
 
     public Colecao getColecaoByNome(String nome){
-        String codigo = this.colecoes.getCodCol(nome);
+        String codigo = this.colecoes.getCodCol(nome,this.cod);
         return this.colecoes.getByBiblioteca(this.cod,codigo);
+    }
+
+    public Map<String,Colecao> getColecoes(){
+        return this.colecoes.getByBiblioteca(this.cod);
     }
 
     public void adicionaColecao(Colecao col){

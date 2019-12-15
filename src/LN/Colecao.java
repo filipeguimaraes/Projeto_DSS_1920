@@ -64,11 +64,10 @@ public class Colecao {
 
     /**
      *
-     * @param m
+     * @param m media que pertende adicionar
      */
     public void adicionaMedia(Media m) {
-        // TODO - implement Colecao.add
-        throw new UnsupportedOperationException();
+        this.mediasCol.get(this.codCol).put(new MediaKey(m.getNomeMedia(),m.getArtista()),m);
     }
 
     public String getCodCol() {

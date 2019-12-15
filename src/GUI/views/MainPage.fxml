@@ -4,11 +4,11 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -16,6 +16,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="672.0" prefWidth="982.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.controller.ControllerMainPage">
    <top>
@@ -87,8 +88,26 @@
    <left>
       <VBox prefHeight="557.0" prefWidth="195.0" BorderPane.alignment="CENTER">
          <children>
-            <TreeView fx:id="bibliotecas" prefHeight="410.0" prefWidth="198.0" showRoot="false" />
-            <Button mnemonicParsing="false" onAction="#handleMouseClicked" prefHeight="25.0" prefWidth="256.0" text="Ver &gt;" />
+            <VBox>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bibliotecas">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </VBox>
+            <ListView fx:id="bibliotecas" onMouseClicked="#setColecoes" prefHeight="184.0" prefWidth="195.0" />
+            <VBox>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Coleções">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </VBox>
+            <ListView fx:id="colecoes" onMouseClicked="#showMedia" prefHeight="278.0" prefWidth="195.0" />
             <MenuButton alignment="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="252.0" text="Criar Coleção">
               <items>
                 <MenuItem disable="true" mnemonicParsing="false" text="Default" />
@@ -97,17 +116,26 @@
                   <MenuItem disable="true" mnemonicParsing="false" text="Por categoria" />
               </items>
             </MenuButton>
-            <Region prefHeight="36.0" prefWidth="220.0" />
-            <HBox prefHeight="41.0" prefWidth="190.0" spacing="20.0">
+         </children>
+      </VBox>
+   </left>
+   <bottom>
+      <HBox BorderPane.alignment="CENTER">
+         <children>
+            <Region prefHeight="32.0" prefWidth="741.0" HBox.hgrow="ALWAYS" />
+            <HBox prefHeight="20.0" prefWidth="241.0" spacing="20.0">
                <children>
                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <ImageView fx:id="play" fitHeight="41.0" onMouseClicked="#handlePlayButton" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="play" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#handlePlayButton" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../images/play.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
+                     <HBox.margin>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </HBox.margin>
                   </ImageView>
                   <Region prefHeight="41.0" prefWidth="57.0" />
                   <ImageView fx:id="upload" fitHeight="41.0" onMouseClicked="#handleUploadButton" pickOnBounds="true" preserveRatio="true">
@@ -132,11 +160,11 @@
                   </ImageView>
                   <Region prefHeight="200.0" prefWidth="200.0" />
                </children>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
             </HBox>
          </children>
-      </VBox>
-   </left>
-   <bottom>
-      <Region prefHeight="44.0" prefWidth="982.0" BorderPane.alignment="CENTER" />
+      </HBox>
    </bottom>
 </BorderPane>

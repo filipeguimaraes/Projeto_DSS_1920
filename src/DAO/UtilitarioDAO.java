@@ -81,7 +81,6 @@ public class UtilitarioDAO {
             ResultSet rs = stm.executeQuery(sql);
             if (rs.next())
                 path = rs.getString(1);
-            System.out.println(path);
             return path;
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());

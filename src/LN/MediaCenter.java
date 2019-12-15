@@ -28,7 +28,7 @@ public class MediaCenter {
 
     private Administrador admin;
     private String pathParaMedia;
-    private Map<String, Biblioteca> bibliotecas;
+    private BibliotecaDAO bibliotecas;
     private Map<String, Utilizador> utilizadorDAO;
     private Map<MediaKey, Media> mediaDAO;
     private String emailOn;
@@ -146,7 +146,7 @@ public class MediaCenter {
     }
 
     public void removePermissao() {
-        this.emailOn=null;
+        this.emailOn = null;
         this.permissao = null;
     }
 
@@ -239,7 +239,6 @@ public class MediaCenter {
         }
 
         String aux = destino.getPath().replaceAll(Pattern.quote("\\"), "/");
-        System.out.println(aux);
 
         return aux;
     }
@@ -257,7 +256,7 @@ public class MediaCenter {
     }
 
 
-    public Map<String, Biblioteca> getBibliotecas() {
+    public BibliotecaDAO getBibliotecas() {
         return bibliotecas;
     }
 

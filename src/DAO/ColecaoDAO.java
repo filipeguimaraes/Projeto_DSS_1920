@@ -53,13 +53,38 @@ public class ColecaoDAO implements Map<String, Colecao> {
         }
     }
 
+    public String getCodCol(String nome, String codBiblioteca) {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
+            Statement stm = conn.createStatement();
+            String sql = "SELECT codColecao FROM mediacenter.colecao " +
+                    "WHERE nomeColecao='" + nome + "' " +
+                    "and Biblioteca_cod='"+codBiblioteca+"'";
+            ResultSet rs = stm.executeQuery(sql);
+            String cod = null;
+            if (rs.next()) cod = rs.getString(1);
+            return cod;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally {
+            if (conn != null)
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+        }
+    }
+
     public Colecao putOnBiblioteca(String key, Colecao value, String codBibli) {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
             Statement stm = conn.createStatement();
             stm.executeUpdate("DELETE FROM mediacenter.colecao  " +
-                    "where codColecao='" + key + "'");
+                    "where codColecao='" + key + "' " +
+                    "and Biblioteca_cod='"+codBibli+"'");
             String sql = "INSERT INTO mediacenter.colecao VALUES ('" +
                     key + "','" +
                     codBibli + "','" +
@@ -80,19 +105,21 @@ public class ColecaoDAO implements Map<String, Colecao> {
     }
 
 
-    public List<String> getByBiblioteca(String codBiblioteca) {
+    public Map<String,Colecao> getByBiblioteca(String codBiblioteca) {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
-            List<String> m = new ArrayList<>();
+            Map<String,Colecao> col = new HashMap<>();
             Statement stm = conn.createStatement();
             String sql = "SELECT * FROM mediacenter.colecao " +
                     "where Biblioteca_cod='" + codBiblioteca + "'";
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
-                m.add(rs.getString(1));
+                col.put(rs.getString(1),
+                        new Colecao(rs.getString(1),
+                                rs.getString(3)));
             }
-            return m;
+            return col;
         } catch (Exception e) {
             throw new NullPointerException(e.getMessage());
         } finally {

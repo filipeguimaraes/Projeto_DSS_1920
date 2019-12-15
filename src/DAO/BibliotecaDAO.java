@@ -33,8 +33,35 @@ public class BibliotecaDAO implements Map<String, Biblioteca> {
         return inst;
     }
 
+
+
     public int hashCode() {
         return inst.hashCode();
+    }
+
+    public Biblioteca getByNome(Object key) {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
+            Biblioteca b = null;
+            Statement stm = conn.createStatement();
+            String sql = "SELECT * FROM mediacenter.biblioteca " +
+                    "where nome='" + key + "'";
+            ResultSet rs = stm.executeQuery(sql);
+            if (rs.next())
+                b = new Biblioteca(rs.getString(1),
+                        rs.getString(2));
+            return b;
+        } catch (Exception e) {
+            throw new NullPointerException(e.getMessage());
+        } finally {
+            if (conn != null)
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+        }
     }
 
     @Override

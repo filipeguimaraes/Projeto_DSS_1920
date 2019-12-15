@@ -37,10 +37,9 @@ public class ColecaoMediaDAO {
             String sql = "SELECT * FROM mediacenter.colecao_media " +
                     "where Colecao_codColecao='" + codColecao + "'";
             ResultSet rs = stm.executeQuery(sql);
-            if (rs.next()) {
-                m.put(new MediaKey(rs.getString(1),
-                                rs.getString(2)),
-                        mediaOnColecao(codColecao, conn));
+            while (rs.next()) {
+                MediaKey key = new MediaKey(rs.getString(1), rs.getString(2));
+                m.put(key, MediaDAO.getInstance().get(key));
             }
             return m;
         } catch (Exception e) {
