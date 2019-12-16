@@ -18,6 +18,7 @@ public class ServerStub implements Runnable{
     private ReentrantLock server_lock;
 
     private static MediaCenter model = MediaCenter.getInstance();
+    //isto é um problema significa que todas as conecções ao sv vão partilhar o mesmo email on e perms.
 
     public ServerStub(Socket client_socket, ReentrantLock server_lock) {
         this.client_socket = client_socket;
