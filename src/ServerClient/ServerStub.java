@@ -1,57 +1,128 @@
 package ServerClient;
 
+import DAO.BibliotecaDAO;
+import LN.Exceptions.AdminException;
+import LN.Exceptions.MediaException;
+import LN.Exceptions.PermissaoException;
+import LN.Exceptions.UtilizadorException;
+import LN.Media;
 import LN.MediaCenter;
+import LN.Residentes.Utilizador;
+import UTILITIES.MediaKey;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.Map;
 
-public class ServerStub implements Runnable{
-    private Socket client_socket;
-    private PrintWriter out;
-    private BufferedReader in;
+public class ServerStub implements MediaCenterSignatures {
 
-    private ReentrantLock server_lock;
+    private MediaCenter model = new MediaCenter();
 
-    private static MediaCenter model = MediaCenter.getInstance();
-    //isto é um problema significa que todas as conecções ao sv vão partilhar o mesmo email on e perms.
 
-    public ServerStub(Socket client_socket, ReentrantLock server_lock) {
-        this.client_socket = client_socket;
-        this.server_lock = server_lock;
-    }
+    @Override
+    public void upload(String path, String nome, String col, String artista, String cat) throws MediaException, IOException {
 
-    private String getResponseFor(String client_request) {
-        String response = "No Response";
-
-        return response;
+        //vai dar cagada devido ao copiar ficheiro que ainda nao esta implementado para o server/client
+        model.upload(path, nome, col, artista, cat);
     }
 
     @Override
-    public void run() {
-        try {
-            in = new BufferedReader(new InputStreamReader(client_socket.getInputStream()));
-            out = new PrintWriter(client_socket.getOutputStream());
+    public boolean validaFich(String path) {
 
-            String client_request = in.readLine();
-            String server_response;
+        //deve dar bosta
+        return model.validaFich(path);
+    }
 
-            while (!client_request.equals("quit")){
+    @Override
+    public void reproduzirMedia(MediaKey key) {
 
-                server_response = getResponseFor(client_request);
+        //provavelment errado
+        reproduz(model.getMediaDAO().get(key).getPath());
+    }
 
-                out.println(server_response);
-                out.flush();
+    @Override
+    public void reproduz(String path) {
 
-                client_request = in.readLine();
-            }
+        //isto é tricky pq tenho de passar a musica ao user e depois ele pode ouvir
+    }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void setEmailOn(String email) {
+
+        model.setEmailOn(email);
+    }
+
+    @Override
+    public void removePermissao() {
+
+        model.removePermissao();
+    }
+
+    @Override
+    public void setPermissaoResidente() {
+
+        model.setPermissaoResidente();
+    }
+
+    @Override
+    public void setPermissaoAdministrador() {
+
+        model.setPermissaoAdministrador();
+    }
+
+    @Override
+    public void setPremissaoConvidado() {
+
+        model.setPremissaoConvidado();
+    }
+
+    @Override
+    public void iniciarSessao(String email, String password) throws UtilizadorException, AdminException, PermissaoException {
+
+        model.iniciarSessao(email, password);
+    }
+
+    @Override
+    public void registaUtilizador(String nome, String email, String password) {
+        model.registaUtilizador(nome, email, password);
+    }
+
+    @Override
+    public String copiaFicheiro(String path) throws IOException {
+        return null;//INCOMPLETE
+    }
+
+    @Override
+    public boolean eAdmin() {
+        return model.eAdmin();
+    }
+
+    @Override
+    public boolean eUtilizador() {
+        return model.eUtilizador();
+    }
+
+    @Override
+    public boolean eConvidado() {
+        return model.eConvidado();
+    }
+
+    @Override
+    public BibliotecaDAO getBibliotecas() {
+        return model.getBibliotecas();
+    }
+
+    @Override
+    public Map<String, Utilizador> getUtilizadorDAO() {
+        return model.getUtilizadorDAO();
+    }
+
+    @Override
+    public String getEmailOn() {
+        return model.getEmailOn();
+    }
+
+    @Override
+    public Map<MediaKey, Media> getMediaDAO() {
+        return model.getMediaDAO();
     }
 }

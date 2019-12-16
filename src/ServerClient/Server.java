@@ -1,11 +1,8 @@
 package ServerClient;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Server {
@@ -15,7 +12,7 @@ public class Server {
             ReentrantLock lock = new ReentrantLock();
             while(true){
                 Socket new_client = server_socket.accept();
-                Thread server_connection = new Thread(new ServerStub(new_client,lock));
+                Thread server_connection = new Thread(new ServerConnection(new_client,lock));
                 server_connection.start();
             }
 

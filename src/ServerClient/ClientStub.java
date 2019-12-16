@@ -1,42 +1,110 @@
 package ServerClient;
 
-import java.io.BufferedReader;
+import DAO.BibliotecaDAO;
+import LN.Exceptions.AdminException;
+import LN.Exceptions.MediaException;
+import LN.Exceptions.PermissaoException;
+import LN.Exceptions.UtilizadorException;
+import LN.Media;
+import LN.Residentes.Utilizador;
+import UTILITIES.MediaKey;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.Scanner;
+import java.util.Map;
 
-public class ClientStub {
+public class ClientStub implements MediaCenterSignatures {
 
+    @Override
+    public void upload(String path, String nome, String col, String artista, String cat) throws MediaException, IOException {
+    }
 
+    @Override
+    public boolean validaFich(String path) {
+        return false;
+    }
 
+    @Override
+    public void reproduzirMedia(MediaKey key) {
 
+    }
 
+    @Override
+    public void reproduz(String path) {
 
+    }
 
-    public static void main(String[] args) {
-        try {
-            Socket socket = new Socket("localhost",12055);
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter out = new PrintWriter(socket.getOutputStream());
+    @Override
+    public void setEmailOn(String email) {
 
-            Scanner scan = new Scanner(System.in);
-            String client_request = "";
-            String server_response;
+    }
 
-            while(scan.hasNextLine() && !client_request.equals("quit")){
-                client_request = scan.nextLine();
+    @Override
+    public void removePermissao() {
 
-                out.println("request by client");
-                out.flush();
+    }
 
-                server_response = in.readLine();
-                //give info to controller view
-            }
+    @Override
+    public void setPermissaoResidente() {
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    }
+
+    @Override
+    public void setPermissaoAdministrador() {
+
+    }
+
+    @Override
+    public void setPremissaoConvidado() {
+
+    }
+
+    @Override
+    public void iniciarSessao(String email, String password) throws UtilizadorException, AdminException, PermissaoException {
+
+    }
+
+    @Override
+    public void registaUtilizador(String nome, String email, String password) {
+
+    }
+
+    @Override
+    public String copiaFicheiro(String path) throws IOException {
+        return null;
+    }
+
+    @Override
+    public boolean eAdmin() {
+        return false;
+    }
+
+    @Override
+    public boolean eUtilizador() {
+        return false;
+    }
+
+    @Override
+    public boolean eConvidado() {
+        return false;
+    }
+
+    @Override
+    public BibliotecaDAO getBibliotecas() {
+        return null;
+    }
+
+    @Override
+    public Map<String, Utilizador> getUtilizadorDAO() {
+        return null;
+    }
+
+    @Override
+    public String getEmailOn() {
+        return null;
+    }
+
+    @Override
+    public Map<MediaKey, Media> getMediaDAO() {
+        return null;
     }
 }
