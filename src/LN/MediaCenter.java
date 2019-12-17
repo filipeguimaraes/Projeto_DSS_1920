@@ -44,7 +44,7 @@ public class MediaCenter {
         return inst;
     }
 
-    private MediaCenter() {
+    public MediaCenter() {
 
         this.admin = new Administrador();
         this.pathParaMedia = UtilitarioDAO.getInstance().pathToMedia();

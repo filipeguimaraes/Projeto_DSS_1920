@@ -17,6 +17,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+
+
         stage.setTitle("Media Center");
         Image image = new Image("/images/icon.png");
         stage.getIcons().add(image);
