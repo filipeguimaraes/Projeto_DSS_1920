@@ -10,13 +10,21 @@ import LN.MediaCenter;
 import LN.Residentes.Utilizador;
 import UTILITIES.MediaKey;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.Map;
 
 public class ServerStub implements MediaCenterSignatures {
 
     private MediaCenter model = new MediaCenter();
 
+    private PrintWriter out;
+    private BufferedReader in;
+
+
+    public ServerStub(BufferedReader in, PrintWriter out) {
+        this.in = in;
+        this.out = out;
+    }
 
     @Override
     public void upload(String path, String nome, String col, String artista, String cat) throws MediaException, IOException {
@@ -88,7 +96,7 @@ public class ServerStub implements MediaCenterSignatures {
 
     @Override
     public String copiaFicheiro(String path) throws IOException {
-        return null;//INCOMPLETE
+        return model.copiaFicheiro(path);//INCOMPLETE
     }
 
     @Override

@@ -20,7 +20,7 @@ public class Client {
             Socket socket = new Socket("localhost",12055);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream());
-            ClientStub stub = new ClientStub();
+            ClientStub stub = new ClientStub(socket);
 
             Scanner scan = new Scanner(System.in);
             String client_request = "";

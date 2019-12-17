@@ -1,22 +1,27 @@
 package ServerClient;
 
+import LN.Exceptions.AdminException;
 import LN.Exceptions.MediaException;
+import LN.Exceptions.PermissaoException;
+import LN.Exceptions.UtilizadorException;
+import UTILITIES.MediaKey;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ServerConnection implements Runnable {
     private Socket client_socket;
+
     private PrintWriter out;
     private BufferedReader in;
 
+    private ObjectInputStream ios;
+    private ObjectOutputStream oos;
+
     private ReentrantLock server_lock;
 
-    private MediaCenterSignatures model = new ServerStub();
+    private MediaCenterSignatures model = new ServerStub(in,out);
 
 
     public ServerConnection(Socket client_socket, ReentrantLock server_lock) {
@@ -24,44 +29,153 @@ public class ServerConnection implements Runnable {
         this.server_lock = server_lock;
     }
 
-    private String getResponseFor(String client_request) throws MediaException {
-        String response = "No Response";
+    private void outPutObject(Object o) throws IOException {
+        oos.writeObject(o);
+        oos.flush();
+    }
+
+    private Object inPutObject() throws IOException, ClassNotFoundException {
+        return ios.readObject();
+    }
+
+    private void reading1() throws IOException {
+        out.println("READY");
+        out.flush();
+        String s = in.readLine();
+        if (!s.equals("START")) throw new IOException("protocol failed 1");
+    }
+
+    private void writing1() throws IOException {
+        String s = in.readLine();
+        if (!s.equals("READY")) throw new IOException("protocol failed 2");
+        out.println("START");
+        out.flush();
+    }
+
+
+    private void getResponseFor(String client_request) throws MediaException, AdminException, UtilizadorException, PermissaoException, IOException {
         String[] split = client_request.split("«");
         switch (split[0]) {
             case "upload":
                 server_lock.lock();
                 try {
+                    reading1();
                     model.upload(split[1], split[2], split[3], split[4], split[5]);
                 } catch (MediaException | IOException e) {
-                    throw new MediaException("UPLOAD DEU CAGADA");
+                    server_lock.unlock();
+                    throw new MediaException(e.getMessage());
                 }
                 server_lock.unlock();
                 break;
 
             case "iniciarSessao":
+                try {
+                    model.iniciarSessao(split[1],split[2]);
+                } catch (UtilizadorException e) {
+                    throw new UtilizadorException(e.getMessage());
+                } catch (AdminException e) {
+                    throw new AdminException(e.getMessage());
+                } catch (PermissaoException e) {
+                    throw new PermissaoException(e.getMessage());
+                }
+                break;
 
+            case "validaFich":
+                writing1();
+                out.println(String.valueOf(model.validaFich(split[1]))); //r bool
+                break;
+
+            case "reproduzirMedia":
+                writing1();
+                model.reproduzirMedia((MediaKey) null);//tem de devovler a data para dar play
+                break;
+                //MediaKey key);
+
+            case "reproduz":
+                model.reproduz(split[1]);
+                break;
+
+            case "setEmailOn":
+                model.setEmailOn(split[1]);
+                break;
+
+            case "removePermissao":
+                model.removePermissao();
+                break;
+
+            case "setPermissaoResidente":
+                model.setPermissaoResidente();
+                break;
+
+            case "setPermissaoAdministrador":
+                model.setPermissaoAdministrador();
+                break;
+
+            case "setPremissaoConvidado":
+                model.setPremissaoConvidado();
+                break;
+
+            case "registaUtilizador":
+                model.registaUtilizador(split[1], split[2], split[3]);
+                break;
+
+            case "eAdmin":
+                writing1();
+                out.println(String.valueOf(model.eAdmin()));
+                break;
+
+            case "eUtilizador":
+                writing1();
+                out.println(String.valueOf(model.eUtilizador()));
+                break;
+
+            case "eConvidado":
+                writing1();
+                out.println(String.valueOf(model.eConvidado()));
+                break;
+
+            case "getEmailOn":
+                writing1();
+                out.println(model.getEmailOn());
+                break;
+
+                //este metodos usaram o serializable
+
+            case "getBibliotecas":
+                writing1();
+                outPutObject(model.getBibliotecas());
+                break;
+
+            case "getUtilizadorDAO":
+                writing1();
+                outPutObject(model.getUtilizadorDAO());
+                break;
+
+            case "getMediaDAO":
+                writing1();
+                outPutObject(model.getMediaDAO());
+                break;
 
             default:
-                return response;
+                out.println("WRONG");
         }
-        return response;
     }
 
     @Override
     public void run() {
         try {
+            ObjectInputStream ios = new ObjectInputStream(client_socket.getInputStream());
+            ObjectOutputStream oos = new ObjectOutputStream(client_socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(client_socket.getInputStream()));
             out = new PrintWriter(client_socket.getOutputStream());
 
             String client_request = in.readLine();
-            String server_response;
 
             while (!client_request.equals("quit")) {
 
                 try {
-                    server_response = getResponseFor(client_request);
-                    out.println(server_response);
-                } catch (MediaException e) {
+                    getResponseFor(client_request);
+                } catch (UtilizadorException | AdminException | PermissaoException | MediaException | IOException e) {
                     out.println(e.getMessage());
                 }
 

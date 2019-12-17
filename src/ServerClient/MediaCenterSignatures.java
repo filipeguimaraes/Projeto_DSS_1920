@@ -18,42 +18,42 @@ public interface MediaCenterSignatures {
         public void upload(String path, String nome, String col, String artista, String cat)
                 throws MediaException, IOException ;
 
-        public boolean validaFich(String path);
+        public boolean validaFich(String path) throws IOException;
 
         public void reproduzirMedia(MediaKey key);
 
         public void reproduz(String path);
 
-        public void setEmailOn(String email);
+        public void setEmailOn(String email) throws IOException;
 
-        public void removePermissao();
+        public void removePermissao() throws IOException;
 
-        public void setPermissaoResidente();
+        public void setPermissaoResidente() throws IOException;
 
-        public void setPermissaoAdministrador();
+        public void setPermissaoAdministrador() throws IOException;
 
-        public void setPremissaoConvidado();
+        public void setPremissaoConvidado() throws IOException;
 
         public void iniciarSessao(String email, String password)
-                throws UtilizadorException, AdminException, PermissaoException;
+                throws UtilizadorException, AdminException, PermissaoException, IOException;
 
-        public void registaUtilizador(String nome, String email, String password);
+        public void registaUtilizador(String nome, String email, String password) throws IOException;
 
         public String copiaFicheiro(String path) throws IOException;
 
-        public boolean eAdmin();
+        public boolean eAdmin() throws IOException;
 
-        public boolean eUtilizador();
+        public boolean eUtilizador() throws IOException;
 
-        public boolean eConvidado();
+        public boolean eConvidado() throws IOException;
 
-        public BibliotecaDAO getBibliotecas();
+        public BibliotecaDAO getBibliotecas() throws IOException;
 
-        public Map<String, Utilizador> getUtilizadorDAO();
+        public Map<String, Utilizador> getUtilizadorDAO() throws IOException;
 
-        public String getEmailOn();
+        public String getEmailOn() throws IOException;
 
-        public Map<MediaKey, Media> getMediaDAO();
+        public Map<MediaKey, Media> getMediaDAO() throws IOException;
 
 
 }
