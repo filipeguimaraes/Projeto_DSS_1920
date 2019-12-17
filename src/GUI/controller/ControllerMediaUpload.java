@@ -2,6 +2,8 @@ package GUI.controller;
 
 import LN.Exceptions.MediaException;
 import LN.MediaCenter;
+import ServerClient.ClientStub;
+import ServerClient.MediaCenterSignatures;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -16,7 +18,7 @@ import java.io.IOException;
 
 public class ControllerMediaUpload {
 
-    private static MediaCenter model = MediaCenter.getInstance();
+    private static MediaCenterSignatures model = ClientStub.getInstance();
 
     @FXML
     private TextField nome;

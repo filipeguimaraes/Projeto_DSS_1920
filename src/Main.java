@@ -10,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.Socket;
+import java.util.logging.SocketHandler;
 
 public class Main extends Application {
 
@@ -17,8 +19,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-
-
         stage.setTitle("Media Center");
         Image image = new Image("/images/icon.png");
         stage.getIcons().add(image);

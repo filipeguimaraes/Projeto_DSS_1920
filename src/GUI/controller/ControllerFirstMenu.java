@@ -6,6 +6,8 @@
 package GUI.controller;
 
 import LN.MediaCenter;
+import ServerClient.ClientStub;
+import ServerClient.MediaCenterSignatures;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +20,7 @@ import java.io.IOException;
 
 public class ControllerFirstMenu {
 
-    private static MediaCenter model = MediaCenter.getInstance();
+    private static MediaCenterSignatures model = ClientStub.getInstance();
 
     @FXML
     private Button residente;

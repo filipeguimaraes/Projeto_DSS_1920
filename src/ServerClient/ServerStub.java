@@ -44,7 +44,7 @@ public class ServerStub implements MediaCenterSignatures {
     public void reproduzirMedia(MediaKey key) {
 
         //provavelment errado
-        reproduz(model.getMediaDAO().get(key).getPath());
+        //reproduz(model.getMediaDAO().get(key).getPath());
     }
 
     @Override
@@ -116,12 +116,12 @@ public class ServerStub implements MediaCenterSignatures {
 
     @Override
     public BibliotecaDAO getBibliotecas() {
-        return model.getBibliotecas();
+        return null;
     }
 
     @Override
     public Map<String, Utilizador> getUtilizadorDAO() {
-        return model.getUtilizadorDAO();
+        return null;
     }
 
     @Override
@@ -131,6 +131,6 @@ public class ServerStub implements MediaCenterSignatures {
 
     @Override
     public Map<MediaKey, Media> getMediaDAO() {
-        return model.getMediaDAO();
+        return null;
     }
 }

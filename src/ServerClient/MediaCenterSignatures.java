@@ -2,6 +2,7 @@ package ServerClient;
 
 
 import DAO.*;
+import LN.Biblioteca;
 import LN.Exceptions.AdminException;
 import LN.Exceptions.MediaException;
 import LN.Exceptions.PermissaoException;
@@ -11,6 +12,8 @@ import LN.Residentes.Utilizador;
 import UTILITIES.MediaKey;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public interface MediaCenterSignatures {
@@ -41,19 +44,20 @@ public interface MediaCenterSignatures {
 
         public String copiaFicheiro(String path) throws IOException;
 
-        public boolean eAdmin() throws IOException;
+        public boolean eAdmin();
 
-        public boolean eUtilizador() throws IOException;
+        public boolean eUtilizador();
 
-        public boolean eConvidado() throws IOException;
+        public boolean eConvidado() ;
 
-        public BibliotecaDAO getBibliotecas() throws IOException;
+        Utilizador getUtilizador(String email);
 
-        public Map<String, Utilizador> getUtilizadorDAO() throws IOException;
+        List<Media> getMedias();
 
-        public String getEmailOn() throws IOException;
+        Biblioteca getBibliotecaByNome(String selectedItem);
 
-        public Map<MediaKey, Media> getMediaDAO() throws IOException;
+        String getEmailOn();
 
+        List<Biblioteca> getBibliotecas();
 
 }

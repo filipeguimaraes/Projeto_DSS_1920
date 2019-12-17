@@ -9,6 +9,8 @@ import LN.Biblioteca;
 import LN.Colecao;
 import LN.Media;
 import LN.MediaCenter;
+import ServerClient.ClientStub;
+import ServerClient.MediaCenterSignatures;
 import UTILITIES.MediaKey;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -35,7 +37,7 @@ import java.util.stream.Collectors;
 
 public class ControllerMainPage implements Initializable {
 
-    private static MediaCenter model = MediaCenter.getInstance();
+    private static MediaCenterSignatures model = ClientStub.getInstance();
 
     @FXML
     private Label bemVindo;

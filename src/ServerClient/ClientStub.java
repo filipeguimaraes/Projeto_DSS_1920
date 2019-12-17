@@ -1,6 +1,7 @@
 package ServerClient;
 
 import DAO.BibliotecaDAO;
+import LN.Biblioteca;
 import LN.Exceptions.AdminException;
 import LN.Exceptions.MediaException;
 import LN.Exceptions.PermissaoException;
@@ -14,15 +15,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 import java.util.Map;
 
 public class ClientStub implements MediaCenterSignatures {
+    private static ClientStub inst = null;
 
     private Socket socket;
     //Socket socket = new Socket("localhost",12055);
 
     private PrintWriter out;
     private BufferedReader in;
+
+    public static ClientStub getInstance() {
+        if (inst == null) {
+            try {
+                inst = new ClientStub(new Socket("localhost",12055));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return inst;
+    }
 
     public ClientStub(Socket socket) throws IOException {
         this.socket = socket;
@@ -114,7 +128,7 @@ public class ClientStub implements MediaCenterSignatures {
     }
 
     @Override
-    public boolean eAdmin() throws IOException {
+    public boolean eAdmin() {
         reading1();
         return Boolean.parseBoolean(in.readLine());
     }
@@ -130,6 +144,21 @@ public class ClientStub implements MediaCenterSignatures {
     public boolean eConvidado() throws IOException {
         reading1();
         return Boolean.parseBoolean(in.readLine());
+    }
+
+    @Override
+    public Utilizador getUtilizador(String email) {
+        return null;
+    }
+
+    @Override
+    public List<Media> getMedias() {
+        return null;
+    }
+
+    @Override
+    public Biblioteca getBibliotecaByNome(String selectedItem) {
+        return null;
     }
 
     @Override
