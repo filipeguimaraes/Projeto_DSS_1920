@@ -29,7 +29,6 @@ public class Colecao {
      * @param nome
      */
     public void criaColecaoDefault(String nome) {
-        // TODO - implement Colecao.criaColecaoDefault
         throw new UnsupportedOperationException();
     }
 
@@ -67,7 +66,7 @@ public class Colecao {
      * @param m media que pertende adicionar
      */
     public void adicionaMedia(Media m) {
-        this.mediasCol.get(this.codCol).put(new MediaKey(m.getNomeMedia(),m.getArtista()),m);
+        this.mediasCol.add(new MediaKey(m.getNomeMedia(),m.getArtista()),m,this.codCol);
     }
 
     public String getCodCol() {

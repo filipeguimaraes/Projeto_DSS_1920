@@ -6,10 +6,7 @@
 package LN;
 
 import DAO.*;
-import LN.Exceptions.AdminException;
-import LN.Exceptions.MediaException;
-import LN.Exceptions.PermissaoException;
-import LN.Exceptions.UtilizadorException;
+import LN.Exceptions.*;
 import LN.Residentes.Administrador;
 import LN.Residentes.Utilizador;
 import UTILITIES.MediaKey;
@@ -19,6 +16,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -75,13 +74,13 @@ public class MediaCenter {
         Utilizador u = this.utilizadorDAO.get(this.getEmailOn());
         Biblioteca b = this.bibliotecas.get(u.getBiblioteca().getCod());
         Colecao colecao = b.getColecaoByNome(col);
-        String codCol = colecao.getCodCol();
+        String codCol;
 
-        if (codCol == null) {
+        if (colecao == null) {
             codCol = String.valueOf((ColecaoDAO.getInstance().size() * 10) + 10);
             colecao = new Colecao(codCol, col);
             b.adicionaColecao(colecao);
-        }
+        } else codCol = colecao.getCodCol();
 
         if (!existe) {
             String pathNovo = copiaFicheiro(path);
@@ -91,7 +90,7 @@ public class MediaCenter {
 
         Media m = this.mediaDAO.get(chave);
         colecao.adicionaMedia(m);
-        CategoriaDAO.getInstance().atribuirCategoria(this.emailOn, chave, cat);
+        m.alteraCategoriaPorUtilizador(u,cat);
     }
 
     /**
@@ -243,6 +242,18 @@ public class MediaCenter {
         return aux;
     }
 
+
+    public void alteraCategoriaComColecao(String categoria, MediaKey media) {
+        this.mediaDAO.get(media);
+
+    }
+
+    public void alteraCategoria(String categoria, MediaKey media) {
+        this.mediaDAO
+                .get(media)
+                .alteraCategoriaPorUtilizador(this.utilizadorDAO.get(emailOn),categoria);
+    }
+
     public boolean eAdmin() {
         return permissao.equals(administrador);
     }
@@ -255,20 +266,23 @@ public class MediaCenter {
         return permissao.equals(convidado);
     }
 
-
-    public BibliotecaDAO getBibliotecas() {
-        return bibliotecas;
-    }
-
-    public Map<String, Utilizador> getUtilizadorDAO() {
-        return utilizadorDAO;
-    }
-
     public String getEmailOn() {
         return emailOn;
     }
 
-    public Map<MediaKey, Media> getMediaDAO() {
-        return mediaDAO;
+    public Biblioteca getBibliotecaByNome(String nome){
+        return this.bibliotecas.getByNome(nome);
+    }
+
+    public List<Biblioteca> getBibliotecas(){
+        return this.bibliotecas.values();
+    }
+
+    public Utilizador getUtilizador(String email){
+        return this.utilizadorDAO.get(email);
+    }
+
+    public List<Media> getMedias() {
+        return new ArrayList<>(this.mediaDAO.values());
     }
 }

@@ -20,6 +20,7 @@
     -fx-background-color: #505050;
     -fx-text-fill: white;
 }
+
 .list-cell {
     -fx-font-size: 14px;
     -fx-background-color: -fx-box-border, -fx-control-inner-background;

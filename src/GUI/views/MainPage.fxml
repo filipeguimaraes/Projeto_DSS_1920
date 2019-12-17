@@ -84,7 +84,7 @@
         <columns>
             <TableColumn id="nomeMedia" fx:id="nomeMedia" prefWidth="322.0" text="Nome" />
             <TableColumn id="nomeMedia" fx:id="artista" maxWidth="329.0" minWidth="-1.0" prefWidth="261.0" text="Artista" />
-            <TableColumn id="CategoriaMedia" fx:id="categoria" minWidth="0.0" prefWidth="150.0" text="Categoria" />
+            <TableColumn id="CategoriaMedia" fx:id="categoria" editable="false" minWidth="0.0" prefWidth="150.0" text="Categoria" />
         </columns>
       </TableView>
    </center>
@@ -138,6 +138,18 @@
             <Region prefHeight="32.0" prefWidth="741.0" HBox.hgrow="ALWAYS" />
             <HBox prefHeight="20.0" prefWidth="241.0" spacing="20.0">
                <children>
+                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <ImageView fx:id="alterarCategoria" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#handleCategoriaButton" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/categoriaSmall.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <HBox.margin>
+                        <Insets top="3.0" />
+                     </HBox.margin>
+                  </ImageView>
                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <ImageView fx:id="play" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#handlePlayButton" pickOnBounds="true" preserveRatio="true">
                      <image>

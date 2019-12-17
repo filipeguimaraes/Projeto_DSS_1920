@@ -28,7 +28,7 @@ public class Biblioteca {
      * @param colecao
      */
     public void addColecaoNaBiblioteca(Colecao colecao) {
-        colecoes.put(colecao.getNomeCol(),colecao);
+        this.colecoes.put(colecao.getNomeCol(),colecao);
     }
 
     public String getCod() {
@@ -65,6 +65,11 @@ public class Biblioteca {
     }
 
 
+    public void criaColecao(String nome){
+        String novoCodigo = String.valueOf((this.colecoes.size()*10)+10);
+        Colecao nova = new Colecao(novoCodigo, nome);
+        adicionaColecao(nova);
+    }
 
 
 }

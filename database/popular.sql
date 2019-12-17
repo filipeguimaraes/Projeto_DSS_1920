@@ -38,6 +38,7 @@ LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/utilizador.csv'
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/utilizador_media.csv'
     into table utilizador_media
     fields terminated by ','
+
     ENCLOSED BY '"'
     LINES terminated by '\n'
     IGNORE 1 LINES ;

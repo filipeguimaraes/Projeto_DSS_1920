@@ -23,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -57,10 +58,44 @@ public class ControllerMainPage implements Initializable {
     @FXML
     private ListView<String> colecoes;
 
+    @FXML
+    private ImageView alterarCategoria;
+
+
+
+    @FXML
+    void handleCategoriaButton() {
+        if(tabelaMedias.getSelectionModel().getSelectedItem()!=null) {
+            try {
+                Media m = tabelaMedias.getSelectionModel().getSelectedItem();
+                System.out.println(m.getNomeMedia());
+                MediaKey key = new MediaKey(m.getNomeMedia(), m.getArtista());
+                FXMLLoader l = new FXMLLoader(getClass().getResource("/GUI/views/AlterarCategoria.fxml"));
+                Scene login = new Scene(l.load());
+                ControllerAlterarCategoria c = l.getController();
+                c.setMediaKey(key);
+                login.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
+                Stage window = new Stage();
+                window.setScene(login);
+                window.centerOnScreen();
+                window.show();
+            } catch (IOException e){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText(e.getMessage());
+                alert.showAndWait();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Nenhuma media selecionada!");
+            alert.showAndWait();
+        }
+    }
 
     @FXML
     void handleRefreshButton() {
-        List<Media> list = new ArrayList<>();
+        List<Media> list = model.getMedias();
+        bibliotecas.getSelectionModel().clearSelection();
+        colecoes.getSelectionModel().clearSelection();
         setTabelaMedia(list);
         setBibliotecas();
     }
@@ -114,9 +149,11 @@ public class ControllerMainPage implements Initializable {
 
     public void showMedia() {
         try {
-            Biblioteca biblioteca = model.getBibliotecas()
-                    .getByNome(bibliotecas.getSelectionModel().getSelectedItem());
-            String nomeColecao = colecoes.getSelectionModel().getSelectedItem();
+            Biblioteca biblioteca = model.getBibliotecaByNome(
+                    bibliotecas.getSelectionModel()
+                               .getSelectedItem());
+            String nomeColecao = colecoes.getSelectionModel()
+                                         .getSelectedItem();
             Colecao colecao = biblioteca.getColecaoByNome(nomeColecao);
             if (colecao != null) {
                 List<Media> list = new ArrayList<>(colecao.getMedias().values());
@@ -135,7 +172,7 @@ public class ControllerMainPage implements Initializable {
     public void setBemVindo() {
         if (model.eUtilizador()) {
             bemVindo.setText("Bem Vindo/a, " +
-                    model.getUtilizadorDAO().get(model.getEmailOn()).getNome() + "!");
+                    model.getUtilizador(model.getEmailOn()).getNome() + "!");
         } else bemVindo.setText("Bem Vindo, Convidado!");
 
     }
@@ -161,23 +198,33 @@ public class ControllerMainPage implements Initializable {
     }
 
     public void setBibliotecas() {
-        List<String> bib = model.getBibliotecas().values().stream()
-                .map(Biblioteca::getNomeBiblio).collect(Collectors.toList());
+        List<String> bib = new ArrayList<>();
+        bib.add("Biblioteca Geral");
+        bib.addAll(model.getBibliotecas()
+                .stream()
+                .map(Biblioteca::getNomeBiblio)
+                .collect(Collectors.toList()));
         ObservableList<String> l = FXCollections.observableArrayList();
         l.addAll(bib);
         bibliotecas.setItems(l);
     }
 
     public void setColecoes() {
+        colecoes.getSelectionModel().clearSelection();
         tabelaMedias.getItems().clear();
-        Biblioteca b = model.getBibliotecas()
-                .getByNome(bibliotecas.getSelectionModel().getSelectedItem());
-        if (b != null) {
-            List<String> col = b.getColecoes().values().stream()
-                    .map(Colecao::getNomeCol).collect(Collectors.toList());
-            ObservableList<String> l = FXCollections.observableArrayList();
-            l.addAll(col);
-            colecoes.setItems(l);
+        String nomeBib = bibliotecas.getSelectionModel().getSelectedItem();
+        if (nomeBib.contains("Biblioteca Geral")) {
+            List<Media> list = model.getMedias();
+            setTabelaMedia(list);
+        } else {
+            Biblioteca b = model.getBibliotecaByNome(nomeBib);
+            if (b != null) {
+                List<String> col = b.getColecoes().values().stream()
+                        .map(Colecao::getNomeCol).collect(Collectors.toList());
+                ObservableList<String> l = FXCollections.observableArrayList();
+                l.addAll(col);
+                colecoes.setItems(l);
+            }
         }
     }
 
@@ -185,8 +232,6 @@ public class ControllerMainPage implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setBemVindo();
-        List<Media> list = new ArrayList<>(model.getMediaDAO().values());
-        setTabelaMedia(list);
         setBibliotecas();
     }
 

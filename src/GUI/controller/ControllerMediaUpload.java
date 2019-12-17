@@ -35,23 +35,31 @@ public class ControllerMediaUpload {
 
     @FXML
     void handleSelecionarButton(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        FileChooser fc = new FileChooser();
-        File selectedFile = fc.showOpenDialog(stage);
-        try {
-            String path = selectedFile.getPath();
-            model.validaFich(path);
-            model.upload(path, nome.getText(), col.getText(), artista.getText(), categoria.getText());
-        } catch (IOException | MediaException m) {
+        if (nome.getText().isEmpty()
+                || categoria.getText().isEmpty()
+                || artista.getText().isEmpty()
+                || col.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText(m.getMessage());
+            alert.setContentText("Por favor, preencha todos os campos!");
             alert.showAndWait();
-        } catch (NullPointerException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Não selecionou nenhum ficheiro! ou "+e.getMessage());
-            alert.showAndWait();
+        } else {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            FileChooser fc = new FileChooser();
+            File selectedFile = fc.showOpenDialog(stage);
+            try {
+                String path = selectedFile.getPath();
+                model.upload(path, nome.getText(), col.getText(), artista.getText(), categoria.getText());
+            } catch (IOException | MediaException m) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText(m.getMessage());
+                alert.showAndWait();
+            } catch (NullPointerException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Não selecionou nenhum ficheiro! ou " + e.getMessage());
+                alert.showAndWait();
+            }
+            stage.close();
         }
-        stage.close();
     }
 
 }

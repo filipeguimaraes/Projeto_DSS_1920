@@ -28,6 +28,8 @@ public class ColecaoMediaDAO {
         return inst;
     }
 
+
+
     public Map<MediaKey, Media> get(String codColecao) {
         Connection conn = null;
         try {

@@ -7,6 +7,7 @@ package LN;
 
 
 import DAO.CategoriaDAO;
+import LN.Residentes.Utilizador;
 import UTILITIES.MediaKey;
 
 public class Media {
@@ -63,5 +64,10 @@ public class Media {
 
     public String getCategoriaPorUtilizador(String email) {
         return this.categorias.getCategoria(email, new MediaKey(this.nomeMedia, this.artista));
+    }
+
+    public void alteraCategoriaPorUtilizador(Utilizador user, String categoria) {
+        MediaKey mediaKey = new MediaKey(this.nomeMedia, this.artista);
+        this.categorias.putCategoria(user.getEmail(), categoria, mediaKey);
     }
 }
