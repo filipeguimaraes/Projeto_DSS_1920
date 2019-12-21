@@ -2,9 +2,10 @@ package DAO;
 
 import UTILITIES.MediaKey;
 
+import java.io.Serializable;
 import java.sql.*;
 
-public class CategoriaDAO {
+public class CategoriaDAO implements Serializable {
     private static CategoriaDAO inst = null;
     private String url = "jdbc:mysql://localhost/mediacenter?" +
             "serverTimezone=UTC&user=root&password=bolinhosdeatum";

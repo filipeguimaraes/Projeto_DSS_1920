@@ -7,10 +7,11 @@ package DAO;
 
 import LN.Colecao;
 
+import java.io.Serializable;
 import java.sql.*;
 import java.util.*;
 
-public class ColecaoDAO implements Map<String, Colecao> {
+public class ColecaoDAO implements Map<String, Colecao>, Serializable {
     private static ColecaoDAO inst = null;
     private String url = "jdbc:mysql://localhost/mediacenter?" +
             "serverTimezone=UTC&user=root&password=bolinhosdeatum";

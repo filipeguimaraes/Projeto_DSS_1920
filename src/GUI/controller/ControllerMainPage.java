@@ -250,7 +250,7 @@ public class ControllerMainPage implements Initializable {
             setBibliotecas();
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Problemas com o servidor, contacte o administrador do sistema!");
+            alert.setContentText("Problemas com o servidor, contacte o administrador do sistema!"+e.getMessage());
             alert.showAndWait();
         }
     }

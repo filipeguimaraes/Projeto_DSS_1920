@@ -9,13 +9,14 @@ package DAO;
 
 import LN.Residentes.Utilizador;
 
+import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class UtilizadorDAO implements Map<String, Utilizador> {
+public class UtilizadorDAO implements Map<String, Utilizador>, Serializable {
 
     private static UtilizadorDAO inst = null;
 

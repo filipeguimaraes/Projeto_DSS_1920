@@ -8,9 +8,10 @@ package LN;
 import DAO.ColecaoMediaDAO;
 import UTILITIES.MediaKey;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class Colecao {
+public class Colecao implements Serializable {
 
     private String codCol;
     private ColecaoMediaDAO mediasCol;

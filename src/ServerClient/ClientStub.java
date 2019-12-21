@@ -30,6 +30,7 @@ public class ClientStub implements MediaCenterSignatures {
         if (inst == null) {
             try {
                 inst = new ClientStub(new Socket("localhost", 12055));
+                System.out.println("AQUI");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -43,6 +44,8 @@ public class ClientStub implements MediaCenterSignatures {
         out = new PrintWriter(this.socket.getOutputStream());
         ios = new ObjectInputStream(this.socket.getInputStream());
         oos = new ObjectOutputStream(this.socket.getOutputStream());
+        oos.flush();
+        out.println("");
     }
 
     private void reading1() throws IOException {
@@ -109,6 +112,8 @@ public class ClientStub implements MediaCenterSignatures {
     public void setPremissaoConvidado() {
         out.println("setPremissaoConvidado");
         out.flush();
+        System.out.println("1234");
+
     }
 
     @Override
@@ -136,7 +141,7 @@ public class ClientStub implements MediaCenterSignatures {
         out.println("eAdmin");
         out.flush();
 
-        reading1();
+        //reading1();
         return Boolean.parseBoolean(in.readLine());
     }
 
@@ -145,7 +150,7 @@ public class ClientStub implements MediaCenterSignatures {
         out.println("eUtilizador");
         out.flush();
 
-        reading1();
+//        reading1();
         return Boolean.parseBoolean(in.readLine());
     }
 
@@ -155,7 +160,7 @@ public class ClientStub implements MediaCenterSignatures {
         out.println("eConvidado");
         out.flush();
 
-        reading1();
+//        reading1();
         return Boolean.parseBoolean(in.readLine());
     }
 

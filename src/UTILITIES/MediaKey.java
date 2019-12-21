@@ -1,8 +1,9 @@
 package UTILITIES;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class MediaKey {
+public class MediaKey implements Serializable {
         private String nome;
         private String artista;
 

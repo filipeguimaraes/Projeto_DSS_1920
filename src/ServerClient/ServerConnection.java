@@ -61,6 +61,10 @@ public class ServerConnection implements Runnable {
 
     private void getResponseFor(String client_request) throws MediaException, AdminException, UtilizadorException, PermissaoException, IOException {
         String[] split = client_request.split("«");
+        if(client_request.equals("setPermissaoConvidado")) {
+            System.out.println("setPermissaoConvidado");
+            model.setPremissaoConvidado();
+        }
         switch (split[0]) {
             case "upload":
                 server_lock.lock();
@@ -111,14 +115,17 @@ public class ServerConnection implements Runnable {
                 break;
 
             case "setPermissaoResidente":
+                System.out.println("setPermissaoResidente");
                 model.setPermissaoResidente();
                 break;
 
             case "setPermissaoAdministrador":
+                System.out.println("setPermissaoAdministrador");
                 model.setPermissaoAdministrador();
                 break;
 
             case "setPremissaoConvidado":
+                System.out.println("setPremissaoConvidado");
                 model.setPremissaoConvidado();
                 break;
 
@@ -127,17 +134,17 @@ public class ServerConnection implements Runnable {
                 break;
 
             case "eAdmin":
-                writing1();
+                System.out.println("eAdmin");
                 out.println(String.valueOf(model.eAdmin()));
                 break;
 
             case "eUtilizador":
-                writing1();
+                System.out.println("eUtilizador");
                 out.println(String.valueOf(model.eUtilizador()));
                 break;
 
             case "eConvidado":
-                writing1();
+                System.out.println("eConvidado");
                 out.println(String.valueOf(model.eConvidado()));
                 break;
 
@@ -178,14 +185,15 @@ public class ServerConnection implements Runnable {
     @Override
     public void run() {
         try {
-            ios = new ObjectInputStream(client_socket.getInputStream());
-            oos = new ObjectOutputStream(client_socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(client_socket.getInputStream()));
             out = new PrintWriter(client_socket.getOutputStream());
+            oos = new ObjectOutputStream(client_socket.getOutputStream());
+            oos.flush();
 
-            String client_request = in.readLine();
-
+            String client_request;
+            client_request = in.readLine();
             while (!client_request.equals("quit")) {
+                client_request = in.readLine();
 
                 try {
                     getResponseFor(client_request);
@@ -195,7 +203,6 @@ public class ServerConnection implements Runnable {
 
                 out.flush();
 
-                client_request = in.readLine();
             }
 
         } catch (IOException e) {
