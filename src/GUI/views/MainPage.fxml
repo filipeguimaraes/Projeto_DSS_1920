@@ -80,11 +80,11 @@
       </VBox>
    </top>
    <center>
-      <TableView fx:id="tabelaMedias" prefHeight="304.0" prefWidth="460.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tabelaMedias" onMouseClicked="#handleClickTable" prefHeight="304.0" prefWidth="460.0" BorderPane.alignment="CENTER">
         <columns>
-            <TableColumn id="nomeMedia" fx:id="nomeMedia" prefWidth="322.0" text="Nome" />
-            <TableColumn id="nomeMedia" fx:id="artista" maxWidth="329.0" minWidth="-1.0" prefWidth="261.0" text="Artista" />
-            <TableColumn id="CategoriaMedia" fx:id="categoria" editable="false" minWidth="0.0" prefWidth="150.0" text="Categoria" />
+            <TableColumn id="nomeMedia" fx:id="nomeMedia" onEditStart="#handlePlayButton" prefWidth="322.0" text="Nome" />
+            <TableColumn id="nomeMedia" fx:id="artista" maxWidth="329.0" minWidth="-1.0" onEditStart="#handlePlayButton" prefWidth="261.0" text="Artista" />
+            <TableColumn id="CategoriaMedia" fx:id="categoria" editable="false" minWidth="0.0" onEditStart="#handlePlayButton" prefWidth="150.0" text="Categoria" />
         </columns>
       </TableView>
    </center>
@@ -141,7 +141,7 @@
                   <Region prefHeight="200.0" prefWidth="200.0" />
                   <ImageView fx:id="alterarCategoria" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#handleCategoriaButton" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../images/categoriaSmall.png" />
+                        <Image url="@../../images/tag.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -159,7 +159,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                      <HBox.margin>
-                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                        <Insets bottom="3.0" right="3.0" top="3.0" />
                      </HBox.margin>
                   </ImageView>
                   <Region prefHeight="41.0" prefWidth="57.0" />

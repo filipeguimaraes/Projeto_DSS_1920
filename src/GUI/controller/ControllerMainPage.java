@@ -24,6 +24,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -61,6 +62,12 @@ public class ControllerMainPage implements Initializable {
     @FXML
     private ImageView alterarCategoria;
 
+    @FXML
+    void handleClickTable(MouseEvent event) {
+        if ( event.getClickCount() == 2) {
+            handlePlayButton();
+        }
+    }
 
 
     @FXML
