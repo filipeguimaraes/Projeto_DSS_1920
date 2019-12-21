@@ -2,8 +2,6 @@ package GUI.controller;
 
 import LN.Media;
 import LN.MediaCenter;
-import ServerClient.ClientStub;
-import ServerClient.MediaCenterSignatures;
 import UTILITIES.MediaKey;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,7 +12,7 @@ import javafx.stage.Stage;
 
 public class ControllerAlterarCategoria {
 
-    private static MediaCenterSignatures model = ClientStub.getInstance();
+    private static MediaCenter model = MediaCenter.getInstance();
 
     private MediaKey mediaKey;
 
@@ -26,8 +24,7 @@ public class ControllerAlterarCategoria {
     @FXML
     void handleAlterarCategoriaButton(ActionEvent event) {
         if (model.eUtilizador()) {
-            //TODO
-            //model.alteraCategoria(novaCategoria.getText(), this.mediaKey);
+            model.alteraCategoria(novaCategoria.getText(), this.mediaKey);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.close();
         } else {

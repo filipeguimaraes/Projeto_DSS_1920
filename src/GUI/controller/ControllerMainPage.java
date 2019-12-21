@@ -9,8 +9,6 @@ import LN.Biblioteca;
 import LN.Colecao;
 import LN.Media;
 import LN.MediaCenter;
-import ServerClient.ClientStub;
-import ServerClient.MediaCenterSignatures;
 import UTILITIES.MediaKey;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -37,7 +35,7 @@ import java.util.stream.Collectors;
 
 public class ControllerMainPage implements Initializable {
 
-    private static MediaCenterSignatures model = ClientStub.getInstance();
+    private static MediaCenter model = MediaCenter.getInstance();
 
     @FXML
     private Label bemVindo;
@@ -67,29 +65,34 @@ public class ControllerMainPage implements Initializable {
 
     @FXML
     void handleCategoriaButton() {
-        if(tabelaMedias.getSelectionModel().getSelectedItem()!=null) {
-            try {
-                Media m = tabelaMedias.getSelectionModel().getSelectedItem();
-                System.out.println(m.getNomeMedia());
-                MediaKey key = new MediaKey(m.getNomeMedia(), m.getArtista());
-                FXMLLoader l = new FXMLLoader(getClass().getResource("/GUI/views/AlterarCategoria.fxml"));
-                Scene login = new Scene(l.load());
-                ControllerAlterarCategoria c = l.getController();
-                c.setMediaKey(key);
-                login.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
-                Stage window = new Stage();
-                window.setScene(login);
-                window.centerOnScreen();
-                window.show();
-            } catch (IOException e){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText(e.getMessage());
+        if (model.eConvidado()){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Para realizar esta operação precisa de ter sessão iniciada!");
+            alert.showAndWait();
+        }else {
+            if (tabelaMedias.getSelectionModel().getSelectedItem() != null) {
+                try {
+                    Media m = tabelaMedias.getSelectionModel().getSelectedItem();
+                    MediaKey key = new MediaKey(m.getNomeMedia(), m.getArtista());
+                    FXMLLoader l = new FXMLLoader(getClass().getResource("/GUI/views/AlterarCategoria.fxml"));
+                    Scene login = new Scene(l.load());
+                    ControllerAlterarCategoria c = l.getController();
+                    c.setMediaKey(key);
+                    login.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
+                    Stage window = new Stage();
+                    window.setScene(login);
+                    window.centerOnScreen();
+                    window.show();
+                } catch (IOException e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText(e.getMessage());
+                    alert.showAndWait();
+                }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("Nenhuma media selecionada!");
                 alert.showAndWait();
             }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("Nenhuma media selecionada!");
-            alert.showAndWait();
         }
     }
 
@@ -97,7 +100,7 @@ public class ControllerMainPage implements Initializable {
     void handleRefreshButton() {
         List<Media> list = model.getMedias();
         bibliotecas.getSelectionModel().clearSelection();
-        colecoes.getSelectionModel().clearSelection();
+        colecoes.getItems().clear();
         setTabelaMedia(list);
         setBibliotecas();
     }

@@ -5,6 +5,7 @@
  */
 package LN;
 
+
 import DAO.*;
 import LN.Exceptions.*;
 import LN.Residentes.Administrador;
@@ -23,7 +24,7 @@ import java.util.regex.Pattern;
 
 public class MediaCenter {
 
-    //private static MediaCenter inst = null;
+    private static MediaCenter inst = null;
 
     private Administrador admin;
     private String pathParaMedia;
@@ -36,7 +37,7 @@ public class MediaCenter {
     private static Integer administrador = 1;
     private static Integer utilizador = 2;
     private static Integer convidado = 3;
-/*
+
     public static MediaCenter getInstance() {
         if (inst == null) {
             inst = new MediaCenter();
@@ -45,7 +46,7 @@ public class MediaCenter {
     }
 
 
- */
+
     public MediaCenter() {
 
         this.admin = new Administrador();

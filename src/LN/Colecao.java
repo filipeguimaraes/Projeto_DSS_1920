@@ -8,8 +8,6 @@ package LN;
 import DAO.ColecaoMediaDAO;
 import UTILITIES.MediaKey;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class Colecao {
@@ -25,7 +23,6 @@ public class Colecao {
     }
 
     /**
-     *
      * @param nome
      */
     public void criaColecaoDefault(String nome) {
@@ -33,7 +30,6 @@ public class Colecao {
     }
 
     /**
-     *
      * @param nome
      */
     public void criaColecaoRandom(String nome) {
@@ -42,7 +38,6 @@ public class Colecao {
     }
 
     /**
-     *
      * @param artista
      * @param nome
      */
@@ -52,7 +47,6 @@ public class Colecao {
     }
 
     /**
-     *
      * @param categoria
      * @param nome
      */
@@ -62,11 +56,10 @@ public class Colecao {
     }
 
     /**
-     *
      * @param m media que pertende adicionar
      */
     public void adicionaMedia(Media m) {
-        this.mediasCol.add(new MediaKey(m.getNomeMedia(),m.getArtista()),m,this.codCol);
+        this.mediasCol.add(new MediaKey(m.getNomeMedia(), m.getArtista()), m, this.codCol);
     }
 
     public String getCodCol() {
@@ -85,7 +78,7 @@ public class Colecao {
         return nomeCol;
     }
 
-    public Map<MediaKey,Media> getMedias(){
+    public Map<MediaKey, Media> getMedias() {
         return this.mediasCol.get(this.codCol);
     }
 

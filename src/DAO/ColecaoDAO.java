@@ -60,7 +60,7 @@ public class ColecaoDAO implements Map<String, Colecao> {
             Statement stm = conn.createStatement();
             String sql = "SELECT codColecao FROM mediacenter.colecao " +
                     "WHERE nomeColecao='" + nome + "' " +
-                    "and Biblioteca_cod='"+codBiblioteca+"'";
+                    "and Biblioteca_cod='" + codBiblioteca + "'";
             ResultSet rs = stm.executeQuery(sql);
             String cod = null;
             if (rs.next()) cod = rs.getString(1);
@@ -84,7 +84,7 @@ public class ColecaoDAO implements Map<String, Colecao> {
             Statement stm = conn.createStatement();
             stm.executeUpdate("DELETE FROM mediacenter.colecao  " +
                     "where codColecao='" + key + "' " +
-                    "and Biblioteca_cod='"+codBibli+"'");
+                    "and Biblioteca_cod='" + codBibli + "'");
             String sql = "INSERT INTO mediacenter.colecao VALUES ('" +
                     key + "','" +
                     codBibli + "','" +
@@ -105,11 +105,11 @@ public class ColecaoDAO implements Map<String, Colecao> {
     }
 
 
-    public Map<String,Colecao> getByBiblioteca(String codBiblioteca) {
+    public Map<String, Colecao> getByBiblioteca(String codBiblioteca) {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
-            Map<String,Colecao> col = new HashMap<>();
+            Map<String, Colecao> col = new HashMap<>();
             Statement stm = conn.createStatement();
             String sql = "SELECT * FROM mediacenter.colecao " +
                     "where Biblioteca_cod='" + codBiblioteca + "'";
@@ -140,7 +140,7 @@ public class ColecaoDAO implements Map<String, Colecao> {
             Statement stm = conn.createStatement();
             String sql = "SELECT * FROM mediacenter.colecao " +
                     "where codColecao='" + codColecao + "' " +
-                    "and Biblioteca_cod='"+codBiblioteca+"'";
+                    "and Biblioteca_cod='" + codBiblioteca + "'";
             ResultSet rs = stm.executeQuery(sql);
             if (rs.next())
                 m = new Colecao(rs.getString(1),

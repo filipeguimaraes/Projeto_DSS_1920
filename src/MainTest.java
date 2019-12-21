@@ -1,10 +1,16 @@
-import DAO.ColecaoDAO;
-import LN.Colecao;
 
-import java.util.HashMap;
-import java.util.Map;
+import GUI.controller.ControllerAlterarCategoria;
+import GUI.controller.ControllerReprodutor;
+import UTILITIES.MediaKey;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
-public class MainTest  {
+import java.io.IOException;
+
+public class MainTest extends Application {
 
     public static void main(String[] args) {
         /*
@@ -25,5 +31,25 @@ public class MainTest  {
         System.out.println(ola.toString());
          */
 
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage stage) throws IOException {
+        stage.setTitle("Media Center");
+        Image image = new Image("/images/icon.png");
+        stage.getIcons().add(image);
+
+        FXMLLoader l = new FXMLLoader(getClass().getResource("/GUI/views/Reprodutor.fxml"));
+        Scene reprod = new Scene(l.load());
+
+        //ControllerReprodutor c = l.getController();
+        //String source = "c:/Media/Britney Spears - Toxic.mp3";
+        //c.setPlayer(source);
+        reprod.getStylesheets().add(getClass().getResource("/GUI/sheet.css").toExternalForm());
+
+        stage.setScene(reprod);
+        stage.centerOnScreen();
+        stage.show();
     }
 }

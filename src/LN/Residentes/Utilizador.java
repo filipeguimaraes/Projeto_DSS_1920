@@ -1,6 +1,4 @@
 /**
- *
- *
  * @author Beatriz Rocha A84003
  * @author Filipe Guimarães A85308
  * @author Gonçalo Ferreira A84073
@@ -8,11 +6,7 @@
 package LN.Residentes;
 
 import DAO.BibliotecaDAO;
-import DAO.UtilizadorDAO;
 import LN.Biblioteca;
-import LN.Media;
-
-import java.util.Map;
 
 
 public class Utilizador {
