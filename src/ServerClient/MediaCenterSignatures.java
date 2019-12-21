@@ -18,46 +18,46 @@ import java.util.Map;
 
 public interface MediaCenterSignatures {
 
-        public void upload(String path, String nome, String col, String artista, String cat)
+        void upload(String path, String nome, String col, String artista, String cat)
                 throws MediaException, IOException ;
 
-        public boolean validaFich(String path) throws IOException;
+        boolean validaFich(String path) throws IOException;
 
-        public void reproduzirMedia(MediaKey key);
+        void reproduzirMedia(MediaKey key);
 
-        public void reproduz(String path);
+        void reproduz(String path);
 
-        public void setEmailOn(String email) throws IOException;
+        void setEmailOn(String email) throws IOException;
 
-        public void removePermissao() throws IOException;
+        void removePermissao() throws IOException;
 
-        public void setPermissaoResidente() throws IOException;
+        void setPermissaoResidente() throws IOException;
 
-        public void setPermissaoAdministrador() throws IOException;
+        void setPermissaoAdministrador() throws IOException;
 
-        public void setPremissaoConvidado() throws IOException;
+        void setPremissaoConvidado() throws IOException;
 
-        public void iniciarSessao(String email, String password)
+        void iniciarSessao(String email, String password)
                 throws UtilizadorException, AdminException, PermissaoException, IOException;
 
-        public void registaUtilizador(String nome, String email, String password) throws IOException;
+        void registaUtilizador(String nome, String email, String password) throws IOException;
 
-        public String copiaFicheiro(String path) throws IOException;
+        String copiaFicheiro(String path) throws IOException;
 
-        public boolean eAdmin();
+        boolean eAdmin() throws IOException;
 
-        public boolean eUtilizador();
+        boolean eUtilizador() throws IOException;
 
-        public boolean eConvidado() ;
+        boolean eConvidado() throws IOException;
 
-        Utilizador getUtilizador(String email);
+        Utilizador getUtilizador(String email) throws IOException;
 
-        List<Media> getMedias();
+        List<Media> getMedias() throws IOException;
 
-        Biblioteca getBibliotecaByNome(String selectedItem);
+        Biblioteca getBibliotecaByNome(String selectedItem) throws IOException;
 
-        String getEmailOn();
+        String getEmailOn() throws IOException;
 
-        List<Biblioteca> getBibliotecas();
+        List<Biblioteca> getBibliotecas() throws IOException;
 
 }

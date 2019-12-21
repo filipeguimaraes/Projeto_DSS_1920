@@ -1,13 +1,17 @@
 package ServerClient;
 
+import LN.Biblioteca;
 import LN.Exceptions.AdminException;
 import LN.Exceptions.MediaException;
 import LN.Exceptions.PermissaoException;
 import LN.Exceptions.UtilizadorException;
+import LN.Media;
+import LN.Residentes.Utilizador;
 import UTILITIES.MediaKey;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ServerConnection implements Runnable {
@@ -16,8 +20,6 @@ public class ServerConnection implements Runnable {
     private PrintWriter out;
     private BufferedReader in;
 
-    private ObjectInputStream ios;
-    private ObjectOutputStream oos;
 
     private ReentrantLock server_lock;
 
@@ -28,6 +30,10 @@ public class ServerConnection implements Runnable {
         this.client_socket = client_socket;
         this.server_lock = server_lock;
     }
+
+
+    private ObjectInputStream ios;
+    private ObjectOutputStream oos;
 
     private void outPutObject(Object o) throws IOException {
         oos.writeObject(o);
@@ -141,20 +147,27 @@ public class ServerConnection implements Runnable {
 
                 //este metodos usaram o serializable
 
+
+            case "getUtilizador":
+                writing1();
+                outPutObject(model.getUtilizador(split[1]));
+                break;
+
+            case "getMedias":
+                writing1();
+                outPutObject(model.getMedias());
+                break;
+
+            case "getBibliotecaByNome":
+                writing1();
+                outPutObject(model.getBibliotecaByNome(split[1]));
+                break;
+
             case "getBibliotecas":
                 writing1();
                 outPutObject(model.getBibliotecas());
                 break;
 
-            case "getUtilizadorDAO":
-                writing1();
-                outPutObject(model.getUtilizadorDAO());
-                break;
-
-            case "getMediaDAO":
-                writing1();
-                outPutObject(model.getMediaDAO());
-                break;
 
             default:
                 out.println("WRONG");
@@ -164,8 +177,8 @@ public class ServerConnection implements Runnable {
     @Override
     public void run() {
         try {
-            ObjectInputStream ios = new ObjectInputStream(client_socket.getInputStream());
-            ObjectOutputStream oos = new ObjectOutputStream(client_socket.getOutputStream());
+            ios = new ObjectInputStream(client_socket.getInputStream());
+            oos = new ObjectOutputStream(client_socket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(client_socket.getInputStream()));
             out = new PrintWriter(client_socket.getOutputStream());
 

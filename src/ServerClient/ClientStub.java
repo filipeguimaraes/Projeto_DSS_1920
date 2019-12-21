@@ -10,11 +10,10 @@ import LN.Media;
 import LN.Residentes.Utilizador;
 import UTILITIES.MediaKey;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +29,7 @@ public class ClientStub implements MediaCenterSignatures {
     public static ClientStub getInstance() {
         if (inst == null) {
             try {
-                inst = new ClientStub(new Socket("localhost",12055));
+                inst = new ClientStub(new Socket("localhost", 12055));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -40,8 +39,10 @@ public class ClientStub implements MediaCenterSignatures {
 
     public ClientStub(Socket socket) throws IOException {
         this.socket = socket;
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream());
+        in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+        out = new PrintWriter(this.socket.getOutputStream());
+        ios = new ObjectInputStream(this.socket.getInputStream());
+        oos = new ObjectOutputStream(this.socket.getOutputStream());
     }
 
     private void reading1() throws IOException {
@@ -61,7 +62,7 @@ public class ClientStub implements MediaCenterSignatures {
     @Override
     public void upload(String path, String nome, String col, String artista, String cat) throws IOException {
         writing1();
-        out.println("upload"+"«"+path+"«"+nome+"«"+col+"«"+artista+"«"+cat);
+        out.println("upload" + "«" + path + "«" + nome + "«" + col + "«" + artista + "«" + cat);
     }
 
     @Override
@@ -82,7 +83,7 @@ public class ClientStub implements MediaCenterSignatures {
 
     @Override
     public void setEmailOn(String email) {
-        out.println("setEmailOn«"+email);
+        out.println("setEmailOn«" + email);
         out.flush();
     }
 
@@ -112,29 +113,37 @@ public class ClientStub implements MediaCenterSignatures {
 
     @Override
     public void iniciarSessao(String email, String password) throws UtilizadorException, AdminException, PermissaoException {
-        out.println("iniciarSessao"+"«"+email+"«"+password);
+        out.println("iniciarSessao" + "«" + email + "«" + password);
         out.flush();
     }
 
     @Override
     public void registaUtilizador(String nome, String email, String password) {
-        out.println("registaUtilizador"+"«"+nome+"«"+email+"«"+password);
+        out.println("registaUtilizador" + "«" + nome + "«" + email + "«" + password);
         out.flush();
     }
 
     @Override
     public String copiaFicheiro(String path) throws IOException {
+
+
         return null;
     }
 
     @Override
-    public boolean eAdmin() {
+    public boolean eAdmin() throws IOException {
+        out.println("eAdmin");
+        out.flush();
+
         reading1();
         return Boolean.parseBoolean(in.readLine());
     }
 
     @Override
     public boolean eUtilizador() throws IOException {
+        out.println("eUtilizador");
+        out.flush();
+
         reading1();
         return Boolean.parseBoolean(in.readLine());
     }
@@ -142,46 +151,89 @@ public class ClientStub implements MediaCenterSignatures {
 
     @Override
     public boolean eConvidado() throws IOException {
+        out.println("eConvidado");
+        out.flush();
+
         reading1();
         return Boolean.parseBoolean(in.readLine());
     }
 
     @Override
-    public Utilizador getUtilizador(String email) {
-        return null;
-    }
+    public Utilizador getUtilizador(String email) throws IOException {
+        out.println("getUtilizador "+email);
+        out.flush();
 
-    @Override
-    public List<Media> getMedias() {
-        return null;
-    }
-
-    @Override
-    public Biblioteca getBibliotecaByNome(String selectedItem) {
-        return null;
-    }
-
-    @Override
-    public BibliotecaDAO getBibliotecas() throws IOException {
         reading1();
-        return null;
+        try {
+            return (Utilizador) inPutObject();
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
     }
 
     @Override
-    public Map<String, Utilizador> getUtilizadorDAO() throws IOException {
+    public List<Media> getMedias() throws IOException {
+        out.println("getMedias");
+        out.flush();
+
         reading1();
-        return null;
+        try {
+            return (List<Media>) inPutObject();
+        } catch (ClassNotFoundException e) {
+            return new ArrayList<>();
+        }
     }
+
+    @Override
+    public Biblioteca getBibliotecaByNome(String selectedItem) throws IOException {
+        out.println("getBibliotecaByNome "+selectedItem);
+        out.flush();
+
+        reading1();
+        try {
+            return (Biblioteca) inPutObject();
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
+
 
     @Override
     public String getEmailOn() throws IOException {
+        out.println("getEmailOn");
+        out.flush();
+
         reading1();
-        return null;
+        try {
+            return (String) inPutObject();
+        } catch (ClassNotFoundException ignore) {
+            return "";
+        }
     }
 
     @Override
-    public Map<MediaKey, Media> getMediaDAO() throws IOException {
+    public List<Biblioteca> getBibliotecas() throws IOException {
+        out.println("getBibliotecas");
+        out.flush();
+
         reading1();
-        return null;
+        try {
+            return (List<Biblioteca>) inPutObject();
+        } catch (ClassNotFoundException e) {
+            return new ArrayList<>();
+        }
+    }
+
+
+    private ObjectInputStream ios;
+    private ObjectOutputStream oos;
+
+    private void outPutObject(Object o) throws IOException {
+        oos.writeObject(o);
+        oos.flush();
+    }
+
+    private Object inPutObject() throws IOException, ClassNotFoundException {
+        return ios.readObject();
     }
 }
