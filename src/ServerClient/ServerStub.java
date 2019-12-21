@@ -1,6 +1,7 @@
 package ServerClient;
 
 import DAO.BibliotecaDAO;
+import LN.Biblioteca;
 import LN.Exceptions.AdminException;
 import LN.Exceptions.MediaException;
 import LN.Exceptions.PermissaoException;
@@ -11,6 +12,7 @@ import LN.Residentes.Utilizador;
 import UTILITIES.MediaKey;
 
 import java.io.*;
+import java.util.List;
 import java.util.Map;
 
 public class ServerStub implements MediaCenterSignatures {
@@ -28,15 +30,11 @@ public class ServerStub implements MediaCenterSignatures {
 
     @Override
     public void upload(String path, String nome, String col, String artista, String cat) throws MediaException, IOException {
-
-        //vai dar cagada devido ao copiar ficheiro que ainda nao esta implementado para o server/client
         model.upload(path, nome, col, artista, cat);
     }
 
     @Override
     public boolean validaFich(String path) {
-
-        //deve dar bosta
         return model.validaFich(path);
     }
 
@@ -115,14 +113,20 @@ public class ServerStub implements MediaCenterSignatures {
     }
 
     @Override
-    public BibliotecaDAO getBibliotecas() {
-        return null;
+    public Utilizador getUtilizador(String email) {
+        return model.getUtilizador(email);
     }
 
     @Override
-    public Map<String, Utilizador> getUtilizadorDAO() {
-        return null;
+    public List<Media> getMedias() {
+        return model.getMedias();
     }
+
+    @Override
+    public Biblioteca getBibliotecaByNome(String selectedItem) {
+        return model.getBibliotecaByNome(selectedItem);
+    }
+
 
     @Override
     public String getEmailOn() {
@@ -130,7 +134,7 @@ public class ServerStub implements MediaCenterSignatures {
     }
 
     @Override
-    public Map<MediaKey, Media> getMediaDAO() {
-        return null;
+    public List<Biblioteca> getBibliotecas() {
+        return model.getBibliotecas();
     }
 }
