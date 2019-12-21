@@ -65,8 +65,8 @@ public class ServerConnection implements Runnable {
             case "upload":
                 server_lock.lock();
                 try {
-                    reading1();
                     model.upload(split[1], split[2], split[3], split[4], split[5]);
+                    writing1();
                 } catch (MediaException | IOException e) {
                     server_lock.unlock();
                     throw new MediaException(e.getMessage());
@@ -77,6 +77,7 @@ public class ServerConnection implements Runnable {
             case "iniciarSessao":
                 try {
                     model.iniciarSessao(split[1],split[2]);
+                    writing1();
                 } catch (UtilizadorException e) {
                     throw new UtilizadorException(e.getMessage());
                 } catch (AdminException e) {

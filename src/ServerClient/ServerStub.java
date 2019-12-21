@@ -137,4 +137,9 @@ public class ServerStub implements MediaCenterSignatures {
     public List<Biblioteca> getBibliotecas() {
         return model.getBibliotecas();
     }
+
+    @Override
+    public void alteraCategoria(String text, MediaKey mediaKey) {
+        model.alteraCategoria(text, mediaKey);
+    }
 }

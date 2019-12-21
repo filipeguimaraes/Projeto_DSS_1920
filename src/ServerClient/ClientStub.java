@@ -49,12 +49,12 @@ public class ClientStub implements MediaCenterSignatures {
         out.println("READY");
         out.flush();
         String s = in.readLine();
-        if (!s.equals("START")) throw new IOException("protocol failed 1");
+        if (!s.equals("START")) throw new IOException("protocol failed 1 - "+s);
     }
 
     private void writing1() throws IOException {
         String s = in.readLine();
-        if (!s.equals("READY")) throw new IOException("protocol failed 2");
+        if (!s.equals("READY")) throw new IOException("protocol failed 2 - "+s);
         out.println("START");
         out.flush();
     }
@@ -112,9 +112,10 @@ public class ClientStub implements MediaCenterSignatures {
     }
 
     @Override
-    public void iniciarSessao(String email, String password) throws UtilizadorException, AdminException, PermissaoException {
+    public void iniciarSessao(String email, String password) throws UtilizadorException, AdminException, PermissaoException, IOException {
         out.println("iniciarSessao" + "«" + email + "«" + password);
         out.flush();
+        reading1();
     }
 
     @Override
@@ -160,7 +161,7 @@ public class ClientStub implements MediaCenterSignatures {
 
     @Override
     public Utilizador getUtilizador(String email) throws IOException {
-        out.println("getUtilizador "+email);
+        out.println("getUtilizador«"+email);
         out.flush();
 
         reading1();
@@ -186,7 +187,7 @@ public class ClientStub implements MediaCenterSignatures {
 
     @Override
     public Biblioteca getBibliotecaByNome(String selectedItem) throws IOException {
-        out.println("getBibliotecaByNome "+selectedItem);
+        out.println("getBibliotecaByNome«"+selectedItem);
         out.flush();
 
         reading1();
@@ -222,6 +223,11 @@ public class ClientStub implements MediaCenterSignatures {
         } catch (ClassNotFoundException e) {
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public void alteraCategoria(String text, MediaKey mediaKey) {
+
     }
 
 
