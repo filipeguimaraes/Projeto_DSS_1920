@@ -7,10 +7,7 @@ package LN;
 
 
 import DAO.*;
-import LN.Exceptions.AdminException;
-import LN.Exceptions.MediaException;
-import LN.Exceptions.PermissaoException;
-import LN.Exceptions.UtilizadorException;
+import LN.Exceptions.*;
 import LN.Residentes.Administrador;
 import LN.Residentes.Utilizador;
 import UTILITIES.MediaKey;
@@ -27,7 +24,7 @@ import java.util.regex.Pattern;
 
 public class MediaCenter {
 
-//    private static MediaCenter inst = null;
+    private static MediaCenter inst = null;
 
     private Administrador admin;
     private String pathParaMedia;
@@ -41,7 +38,6 @@ public class MediaCenter {
     private static Integer utilizador = 2;
     private static Integer convidado = 3;
 
-    /*
     public static MediaCenter getInstance() {
         if (inst == null) {
             inst = new MediaCenter();
@@ -49,7 +45,6 @@ public class MediaCenter {
         return inst;
     }
 
-     */
 
 
     public MediaCenter() {
@@ -82,13 +77,12 @@ public class MediaCenter {
         Utilizador u = this.utilizadorDAO.get(this.getEmailOn());
         Biblioteca b = this.bibliotecas.get(u.getBiblioteca().getCod());
         Colecao colecao = b.getColecaoByNome(col);
-        String codCol;
 
         if (colecao == null) {
-            codCol = String.valueOf((ColecaoDAO.getInstance().size() * 10) + 10);
+            String codCol = String.valueOf((ColecaoDAO.getInstance().size() * 10) + 10);
             colecao = new Colecao(codCol, col);
             b.adicionaColecao(colecao);
-        } else codCol = colecao.getCodCol();
+        }
 
         if (!existe) {
             String pathNovo = copiaFicheiro(path);
@@ -98,7 +92,7 @@ public class MediaCenter {
 
         Media m = this.mediaDAO.get(chave);
         colecao.adicionaMedia(m);
-        m.alteraCategoriaPorUtilizador(u, cat);
+        m.alteraCategoriaPorUtilizador(u,cat);
     }
 
     /**
@@ -259,7 +253,7 @@ public class MediaCenter {
     public void alteraCategoria(String categoria, MediaKey media) {
         this.mediaDAO
                 .get(media)
-                .alteraCategoriaPorUtilizador(this.utilizadorDAO.get(emailOn), categoria);
+                .alteraCategoriaPorUtilizador(this.utilizadorDAO.get(emailOn),categoria);
     }
 
     public boolean eAdmin() {
@@ -278,15 +272,15 @@ public class MediaCenter {
         return emailOn;
     }
 
-    public Biblioteca getBibliotecaByNome(String nome) {
+    public Biblioteca getBibliotecaByNome(String nome){
         return this.bibliotecas.getByNome(nome);
     }
 
-    public List<Biblioteca> getBibliotecas() {
+    public List<Biblioteca> getBibliotecas(){
         return this.bibliotecas.values();
     }
 
-    public Utilizador getUtilizador(String email) {
+    public Utilizador getUtilizador(String email){
         return this.utilizadorDAO.get(email);
     }
 

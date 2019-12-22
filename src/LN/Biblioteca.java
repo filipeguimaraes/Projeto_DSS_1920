@@ -7,10 +7,9 @@ package LN;
 
 import DAO.ColecaoDAO;
 
-import java.io.Serializable;
 import java.util.Map;
 
-public class Biblioteca implements Serializable {
+public class Biblioteca {
 
     private ColecaoDAO colecoes;
     private String cod;

@@ -5,10 +5,9 @@
  */
 package DAO;
 
-import java.io.Serializable;
 import java.sql.*;
 
-public class UtilitarioDAO implements  Serializable {
+public class UtilitarioDAO {
     private static UtilitarioDAO inst = null;
     private String url = "jdbc:mysql://localhost/mediacenter?" +
             "serverTimezone=UTC&user=root&password=bolinhosdeatum";

@@ -1,8 +1,6 @@
 package GUI.controller;
 
 import LN.MediaCenter;
-import ServerClient.ClientStub;
-import ServerClient.MediaCenterSignatures;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -14,7 +12,7 @@ import java.io.IOException;
 
 public class ControllerCreateAccount {
 
-    private static MediaCenterSignatures model = ClientStub.getInstance();
+    private MediaCenter model = MediaCenter.getInstance();
 
 
     @FXML

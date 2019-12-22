@@ -7,14 +7,13 @@ package DAO;
 
 import LN.Biblioteca;
 
-import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class BibliotecaDAO implements Map<String, Biblioteca>, Serializable {
+public class BibliotecaDAO implements Map<String, Biblioteca> {
     private static BibliotecaDAO inst = null;
     private String url = "jdbc:mysql://localhost/mediacenter?" +
             "serverTimezone=UTC&user=root&password=bolinhosdeatum";

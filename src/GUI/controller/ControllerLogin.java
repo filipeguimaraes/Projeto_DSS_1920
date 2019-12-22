@@ -9,8 +9,6 @@ import LN.Exceptions.AdminException;
 import LN.Exceptions.PermissaoException;
 import LN.Exceptions.UtilizadorException;
 import LN.MediaCenter;
-import ServerClient.ClientStub;
-import ServerClient.MediaCenterSignatures;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,7 +28,7 @@ import java.util.ResourceBundle;
 
 public class ControllerLogin implements Initializable {
 
-    private static MediaCenterSignatures model = ClientStub.getInstance();
+    private static MediaCenter model = MediaCenter.getInstance();
 
     @FXML
     private TextField email;

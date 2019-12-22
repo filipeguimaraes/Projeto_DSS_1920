@@ -2,8 +2,6 @@ package GUI.controller;
 
 import LN.Exceptions.MediaException;
 import LN.MediaCenter;
-import ServerClient.ClientStub;
-import ServerClient.MediaCenterSignatures;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -18,7 +16,7 @@ import java.io.IOException;
 
 public class ControllerMediaUpload {
 
-    private static MediaCenterSignatures model = ClientStub.getInstance();
+    private static MediaCenter model = MediaCenter.getInstance();
 
     @FXML
     private TextField nome;
@@ -51,6 +49,9 @@ public class ControllerMediaUpload {
             try {
                 String path = selectedFile.getPath();
                 model.upload(path, nome.getText(), col.getText(), artista.getText(), categoria.getText());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setContentText("Upload feito com sucesso, por favor carregue em \"refresh\"");
+                alert.showAndWait();
             } catch (IOException | MediaException m) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText(m.getMessage());

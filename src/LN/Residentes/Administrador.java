@@ -7,8 +7,6 @@ package LN.Residentes;
 
 import DAO.UtilitarioDAO;
 
-import java.io.Serializable;
-
 public class Administrador {
 
     private String email;

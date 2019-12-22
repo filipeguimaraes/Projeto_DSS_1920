@@ -8,10 +8,8 @@ package LN.Residentes;
 import DAO.BibliotecaDAO;
 import LN.Biblioteca;
 
-import java.io.Serializable;
 
-
-public class Utilizador implements Serializable {
+public class Utilizador {
 
     private Biblioteca biblioteca;
     private String nome;

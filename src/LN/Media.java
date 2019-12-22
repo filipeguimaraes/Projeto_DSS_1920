@@ -10,9 +10,7 @@ import DAO.CategoriaDAO;
 import LN.Residentes.Utilizador;
 import UTILITIES.MediaKey;
 
-import java.io.Serializable;
-
-public class Media implements Serializable {
+public class Media {
 
     private String nomeMedia;
     private String path;

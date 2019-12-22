@@ -3,12 +3,11 @@ package DAO;
 import LN.Media;
 import UTILITIES.MediaKey;
 
-import java.io.Serializable;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ColecaoMediaDAO implements Serializable {
+public class ColecaoMediaDAO {
 
     private static ColecaoMediaDAO inst = null;
     private String url = "jdbc:mysql://localhost/mediacenter?" +

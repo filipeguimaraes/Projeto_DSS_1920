@@ -8,11 +8,10 @@ package DAO;
 import LN.Media;
 import UTILITIES.MediaKey;
 
-import java.io.Serializable;
 import java.sql.*;
 import java.util.*;
 
-public class MediaDAO implements Map<MediaKey, Media>, Serializable {
+public class MediaDAO implements Map<MediaKey, Media> {
     private static MediaDAO inst = null;
     private String url = "jdbc:mysql://localhost/mediacenter?" +
             "serverTimezone=UTC&user=root&password=bolinhosdeatum";

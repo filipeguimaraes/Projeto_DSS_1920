@@ -9,8 +9,6 @@ import LN.Biblioteca;
 import LN.Colecao;
 import LN.Media;
 import LN.MediaCenter;
-import ServerClient.ClientStub;
-import ServerClient.MediaCenterSignatures;
 import UTILITIES.MediaKey;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -38,7 +36,7 @@ import java.util.stream.Collectors;
 
 public class ControllerMainPage implements Initializable {
 
-    private static MediaCenterSignatures model = ClientStub.getInstance();
+    private static MediaCenter model = MediaCenter.getInstance();
 
     @FXML
     private Label bemVindo;
@@ -73,7 +71,7 @@ public class ControllerMainPage implements Initializable {
 
 
     @FXML
-    void handleCategoriaButton() throws IOException {
+    void handleCategoriaButton() {
         if (model.eConvidado()){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Para realizar esta operação precisa de ter sessão iniciada!");
@@ -106,7 +104,7 @@ public class ControllerMainPage implements Initializable {
     }
 
     @FXML
-    void handleRefreshButton() throws IOException {
+    void handleRefreshButton() {
         List<Media> list = model.getMedias();
         bibliotecas.getSelectionModel().clearSelection();
         colecoes.getItems().clear();
@@ -173,7 +171,7 @@ public class ControllerMainPage implements Initializable {
                 List<Media> list = new ArrayList<>(colecao.getMedias().values());
                 setTabelaMedia(list);
             }
-        } catch (NullPointerException | IOException e) {
+        } catch (NullPointerException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("Nenhuma biblioteca selecionada!");
             alert.showAndWait();
@@ -183,7 +181,7 @@ public class ControllerMainPage implements Initializable {
     }
 
 
-    public void setBemVindo() throws IOException {
+    public void setBemVindo() {
         if (model.eUtilizador()) {
             bemVindo.setText("Bem Vindo/a, " +
                     model.getUtilizador(model.getEmailOn()).getNome() + "!");
@@ -191,7 +189,7 @@ public class ControllerMainPage implements Initializable {
 
     }
 
-    public void setColunaCategoria() throws IOException {
+    public void setColunaCategoria() {
         String email = model.getEmailOn();
         if (email != null) {
             categoria.setCellValueFactory(
@@ -200,7 +198,7 @@ public class ControllerMainPage implements Initializable {
         }
     }
 
-    public void setTabelaMedia(List<Media> list) throws IOException {
+    public void setTabelaMedia(List<Media> list) {
         tabelaMedias.getItems().clear();
         nomeMedia.setCellValueFactory(new PropertyValueFactory<>("nomeMedia"));
         artista.setCellValueFactory(new PropertyValueFactory<>("artista"));
@@ -211,7 +209,7 @@ public class ControllerMainPage implements Initializable {
         tabelaMedias.setItems(l);
     }
 
-    public void setBibliotecas() throws IOException {
+    public void setBibliotecas() {
         List<String> bib = new ArrayList<>();
         bib.add("Biblioteca Geral");
         bib.addAll(model.getBibliotecas()
@@ -223,7 +221,7 @@ public class ControllerMainPage implements Initializable {
         bibliotecas.setItems(l);
     }
 
-    public void setColecoes() throws IOException {
+    public void setColecoes() {
         colecoes.getSelectionModel().clearSelection();
         tabelaMedias.getItems().clear();
         String nomeBib = bibliotecas.getSelectionModel().getSelectedItem();
@@ -245,14 +243,8 @@ public class ControllerMainPage implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            setBemVindo();
-            setBibliotecas();
-        } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Problemas com o servidor, contacte o administrador do sistema!"+e.getMessage());
-            alert.showAndWait();
-        }
+        setBemVindo();
+        setBibliotecas();
     }
 
 }
