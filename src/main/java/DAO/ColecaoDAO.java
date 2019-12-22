@@ -6,14 +6,14 @@
 package DAO;
 
 import LN.Colecao;
+import UTILITIES.CONSTANTS;
 
 import java.sql.*;
 import java.util.*;
 
 public class ColecaoDAO implements Map<String, Colecao> {
     private static ColecaoDAO inst = null;
-    private String url = "jdbc:mysql://localhost/MEDIACENTER?" +
-            "serverTimezone=UTC&user=root&password=dockermysql";
+    private String url = CONSTANTS.DATABASE_URL;
 
     public ColecaoDAO() {
         try {

@@ -15,6 +15,8 @@
 
 ### Notas
 
+Existe uma classe `UTILITIES.CONSTANTS` que tem uma variavel `DATABASE_URL` que é preciso alterar a parte da password para consoante o nosso programa.
+
 Podemos saber qual é a pasta do MySQL correndo:
 
 ```sql

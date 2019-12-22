@@ -1,13 +1,13 @@
 package DAO;
 
+import UTILITIES.CONSTANTS;
 import UTILITIES.MediaKey;
 
 import java.sql.*;
 
 public class CategoriaDAO {
     private static CategoriaDAO inst = null;
-    private String url = "jdbc:mysql://localhost/MEDIACENTER?" +
-            "serverTimezone=UTC&user=root&password=dockermysql";
+    private String url = CONSTANTS.DATABASE_URL;
 
     public CategoriaDAO() {
         try {

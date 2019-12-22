@@ -6,6 +6,7 @@
 package DAO;
 
 import LN.Biblioteca;
+import UTILITIES.CONSTANTS;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,8 +16,7 @@ import java.util.Set;
 
 public class BibliotecaDAO implements Map<String, Biblioteca> {
     private static BibliotecaDAO inst = null;
-    private String url = "jdbc:mysql://localhost/MEDIACENTER?" +
-            "serverTimezone=UTC&user=root&password=dockermysql";
+    private String url = CONSTANTS.DATABASE_URL;
 
     public BibliotecaDAO() {
         try {

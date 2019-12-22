@@ -1,6 +1,7 @@
 package DAO;
 
 import LN.Media;
+import UTILITIES.CONSTANTS;
 import UTILITIES.MediaKey;
 
 import java.sql.*;
@@ -10,8 +11,7 @@ import java.util.Map;
 public class ColecaoMediaDAO {
 
     private static ColecaoMediaDAO inst = null;
-    private String url = "jdbc:mysql://localhost/MEDIACENTER?" +
-            "serverTimezone=UTC&user=root&password=dockermysql";
+    private String url = CONSTANTS.DATABASE_URL;
 
     public ColecaoMediaDAO() {
         try {

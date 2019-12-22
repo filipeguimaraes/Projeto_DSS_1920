@@ -5,12 +5,13 @@
  */
 package DAO;
 
+import UTILITIES.CONSTANTS;
+
 import java.sql.*;
 
 public class UtilitarioDAO {
     private static UtilitarioDAO inst = null;
-    private String url = "jdbc:mysql://localhost/MEDIACENTER?" +
-            "serverTimezone=UTC&user=root&password=dockermysql";
+    private String url = CONSTANTS.DATABASE_URL;
 
     public UtilitarioDAO() {
         try {
