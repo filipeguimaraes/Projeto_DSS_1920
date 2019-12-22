@@ -11,6 +11,7 @@ import UTILITIES.MediaKey;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -61,16 +62,14 @@ public class ServerConnection implements Runnable {
 
     private void getResponseFor(String client_request) throws MediaException, AdminException, UtilizadorException, PermissaoException, IOException {
         String[] split = client_request.split("«");
-        if(client_request.equals("setPermissaoConvidado")) {
-            System.out.println("setPermissaoConvidado");
-            model.setPremissaoConvidado();
-        }
         switch (split[0]) {
             case "upload":
                 server_lock.lock();
                 try {
-                    model.upload(split[1], split[2], split[3], split[4], split[5]);
-                    writing1();
+                    model.upload(split[4]+" - "+split[2]+".mp3", split[2], split[3], split[4], split[5]);
+//                    writing1();
+                    String new_path = model.copiaFicheiro(split[4]+" - "+split[2]+".mp3");
+                    inPutMusic(new_path);
                 } catch (MediaException | IOException e) {
                     server_lock.unlock();
                     throw new MediaException(e.getMessage());
@@ -78,10 +77,18 @@ public class ServerConnection implements Runnable {
                 server_lock.unlock();
                 break;
 
+            case "reproduzirMedia":
+  //              writing1();
+                model.reproduzirMedia((MediaKey) null);//tem de devovler a data para dar play
+                break;
+
+            case "reproduz":
+                model.reproduz(split[1]);
+                break;
+
             case "iniciarSessao":
                 try {
                     model.iniciarSessao(split[1],split[2]);
-                    writing1();
                 } catch (UtilizadorException e) {
                     throw new UtilizadorException(e.getMessage());
                 } catch (AdminException e) {
@@ -96,15 +103,6 @@ public class ServerConnection implements Runnable {
                 out.println(String.valueOf(model.validaFich(split[1]))); //r bool
                 break;
 
-            case "reproduzirMedia":
-                writing1();
-                model.reproduzirMedia((MediaKey) null);//tem de devovler a data para dar play
-                break;
-                //MediaKey key);
-
-            case "reproduz":
-                model.reproduz(split[1]);
-                break;
 
             case "setEmailOn":
                 model.setEmailOn(split[1]);
@@ -149,31 +147,31 @@ public class ServerConnection implements Runnable {
                 break;
 
             case "getEmailOn":
-                writing1();
-                out.println(model.getEmailOn());
+                out.println((model.getEmailOn() == null?"NoEmail":model.getEmailOn()));
                 break;
 
-                //este metodos usaram o serializable
-
-
             case "getUtilizador":
-                writing1();
+//                writing1();
                 outPutObject(model.getUtilizador(split[1]));
                 break;
 
             case "getMedias":
-                writing1();
+  //              writing1();
                 outPutObject(model.getMedias());
                 break;
 
             case "getBibliotecaByNome":
-                writing1();
+    //            writing1();
                 outPutObject(model.getBibliotecaByNome(split[1]));
                 break;
 
             case "getBibliotecas":
-                writing1();
+      //          writing1();
                 outPutObject(model.getBibliotecas());
+                break;
+
+            case "alteraCategoria":
+                model.alteraCategoria(split[1],new MediaKey(split[2],split[3]));
                 break;
 
 
@@ -182,13 +180,61 @@ public class ServerConnection implements Runnable {
         }
     }
 
+    private void inPutMusic(String new_path) {
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(new_path)));
+            int num_read = 1;
+            char [] string_read = new char [1024];
+
+            long max_read = Long.parseLong(in.readLine());
+
+            num_read = in.read(string_read,0,1024);
+            max_read -= num_read;
+
+            while(1024 == num_read && max_read > 0){
+                bw.write(string_read,0,num_read);
+                bw.flush();
+                num_read = in.read(string_read,0,1024);
+                max_read -= num_read;
+                if(num_read < 1024 && num_read > 0){
+                    bw.write(string_read,0,num_read);
+                    bw.flush();
+                }
+            }
+            bw.close();
+
+            /*
+            int bytesRead =0;
+
+            byte [] mybytearray  = new byte [1024];
+    InputStream is = client_socket.getInputStream();
+    FileOutputStream fos = new FileOutputStream(new_path);
+    BufferedOutputStream bos = new BufferedOutputStream(fos);
+    // thanks to A. Cdiz for the bug fix
+    do {
+       bytesRead =
+          is.read(mybytearray, 0, (mybytearray.length));
+       if(bytesRead >= 0){
+        bos.write(mybytearray, 0 , bytesRead);
+        bos.flush();
+       }
+    } while(bytesRead > -1);
+             */
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("saiu");
+    }
+
     @Override
     public void run() {
         try {
-            in = new BufferedReader(new InputStreamReader(client_socket.getInputStream()));
+            InputStream is = client_socket.getInputStream();
+            in = new BufferedReader(new InputStreamReader(is));
             out = new PrintWriter(client_socket.getOutputStream());
-            oos = new ObjectOutputStream(client_socket.getOutputStream());
+            oos = new ObjectOutputStream(this.client_socket.getOutputStream());
             oos.flush();
+
 
             String client_request;
             client_request = in.readLine();

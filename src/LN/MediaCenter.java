@@ -90,11 +90,10 @@ public class MediaCenter {
             b.adicionaColecao(colecao);
         } else codCol = colecao.getCodCol();
 
-        if (!existe) {
-            String pathNovo = copiaFicheiro(path);
-            Media auxiliar = new Media(nome, pathNovo, artista);
-            this.mediaDAO.put(chave, auxiliar);
-        }
+
+        String pathNovo = copiaFicheiro(path);
+        Media auxiliar = new Media(nome, pathNovo, artista);
+        this.mediaDAO.put(chave, auxiliar);
 
         Media m = this.mediaDAO.get(chave);
         colecao.adicionaMedia(m);
@@ -228,9 +227,14 @@ public class MediaCenter {
      * @param path Caminho do ficheiro de destino
      */
     public String copiaFicheiro(String path) throws IOException {
+        /*
         File origem = new File(path);
         String nome = origem.getName();
-        File destino = new File(pathParaMedia + nome);
+         */
+
+        File destino = new File(pathParaMedia + path);
+
+        /*
         FileChannel entrada = null;
         FileChannel saida = null;
 
@@ -244,6 +248,7 @@ public class MediaCenter {
             if (saida != null && saida.isOpen())
                 saida.close();
         }
+        */
 
         String aux = destino.getPath().replaceAll(Pattern.quote("\\"), "/");
 

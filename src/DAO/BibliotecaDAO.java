@@ -17,7 +17,7 @@ import java.util.Set;
 public class BibliotecaDAO implements Map<String, Biblioteca>, Serializable {
     private static BibliotecaDAO inst = null;
     private String url = "jdbc:mysql://localhost/mediacenter?" +
-            "serverTimezone=UTC&user=root&password=bolinhosdeatum";
+            "serverTimezone=UTC&user=root&password=password";
 
     public BibliotecaDAO() {
         try {

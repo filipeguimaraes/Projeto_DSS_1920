@@ -21,7 +21,7 @@ public class UtilizadorDAO implements Map<String, Utilizador>, Serializable {
     private static UtilizadorDAO inst = null;
 
     private String url = "jdbc:mysql://localhost/mediacenter?" +
-            "serverTimezone=UTC&user=root&password=bolinhosdeatum";
+            "serverTimezone=UTC&user=root&password=password";
 
     public UtilizadorDAO() {
         try {

@@ -41,14 +41,11 @@ public class ServerStub implements MediaCenterSignatures {
     @Override
     public void reproduzirMedia(MediaKey key) {
 
-        //provavelment errado
-        //reproduz(model.getMediaDAO().get(key).getPath());
     }
 
     @Override
     public void reproduz(String path) {
 
-        //isto é tricky pq tenho de passar a musica ao user e depois ele pode ouvir
     }
 
     @Override

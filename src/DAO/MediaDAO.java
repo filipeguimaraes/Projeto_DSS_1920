@@ -15,7 +15,7 @@ import java.util.*;
 public class MediaDAO implements Map<MediaKey, Media>, Serializable {
     private static MediaDAO inst = null;
     private String url = "jdbc:mysql://localhost/mediacenter?" +
-            "serverTimezone=UTC&user=root&password=bolinhosdeatum";
+            "serverTimezone=UTC&user=root&password=password";
 
     public MediaDAO() {
         try {

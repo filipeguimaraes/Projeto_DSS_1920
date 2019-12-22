@@ -8,7 +8,7 @@ import java.sql.*;
 public class CategoriaDAO implements Serializable {
     private static CategoriaDAO inst = null;
     private String url = "jdbc:mysql://localhost/mediacenter?" +
-            "serverTimezone=UTC&user=root&password=bolinhosdeatum";
+            "serverTimezone=UTC&user=root&password=password";
 
     public CategoriaDAO() {
         try {

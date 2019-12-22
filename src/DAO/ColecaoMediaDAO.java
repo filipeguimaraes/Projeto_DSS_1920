@@ -12,7 +12,7 @@ public class ColecaoMediaDAO implements Serializable {
 
     private static ColecaoMediaDAO inst = null;
     private String url = "jdbc:mysql://localhost/mediacenter?" +
-            "serverTimezone=UTC&user=root&password=bolinhosdeatum";
+            "serverTimezone=UTC&user=root&password=password";
 
     public ColecaoMediaDAO() {
         try {

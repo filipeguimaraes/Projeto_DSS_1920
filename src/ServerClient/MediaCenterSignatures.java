@@ -60,5 +60,5 @@ public interface MediaCenterSignatures {
 
         List<Biblioteca> getBibliotecas() throws IOException;
 
-        void alteraCategoria(String text, MediaKey mediaKey);
+        void alteraCategoria(String text, MediaKey mediaKey) throws IOException;
 }

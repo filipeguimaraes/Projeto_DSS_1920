@@ -63,15 +63,59 @@ public class ClientStub implements MediaCenterSignatures {
     }
 
     @Override
-    public void upload(String path, String nome, String col, String artista, String cat) throws IOException {
-        writing1();
+    public void upload(String path, String nome, String col, String artista, String cat) throws IOException, MediaException {
         out.println("upload" + "«" + path + "«" + nome + "«" + col + "«" + artista + "«" + cat);
+        uploadMusic(path);
+        System.out.println("ENDED UPLOAD");
     }
+    private void uploadMusic(String path) {
+        try {
+            BufferedWriter bw = new BufferedWriter(out);
+            File f = new File(path);
+            BufferedReader br = new BufferedReader(new FileReader(new File(path)));
 
-    @Override
-    public boolean validaFich(String path) throws IOException {
-        reading1();
-        return Boolean.parseBoolean(in.readLine());
+            long max_read = f.length();
+
+            out.println(max_read);
+            out.flush();
+
+            int num_read = 1;
+            char [] string_read = new char [1024];
+
+            System.out.println("-- 1-- "+max_read);
+
+
+            num_read = br.read(string_read,0,1024);
+            max_read -= num_read;
+            while(0 < num_read && max_read>0){
+                bw.write(string_read,0,num_read);
+                bw.flush();
+                num_read = br.read(string_read,0,1024);
+                max_read -= num_read;
+            }
+
+            br.close();
+            /*
+
+            // sendfile
+      File myFile = new File (path);
+      byte [] mybytearray  = new byte [(int)myFile.length()];
+      FileInputStream fis = new FileInputStream(myFile);
+      BufferedInputStream bis = new BufferedInputStream(fis);
+      bis.read(mybytearray,0,mybytearray.length);
+      OutputStream os = socket.getOutputStream();
+      System.out.println("Sending...");
+      os.write(mybytearray,0,mybytearray.length);
+      os.flush();
+      socket.shutdownOutput();
+        out = new PrintWriter(socket.getOutputStream());
+             */
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("-- 3-- ");
     }
 
     @Override
@@ -82,6 +126,12 @@ public class ClientStub implements MediaCenterSignatures {
     @Override
     public void reproduz(String path) {
 
+    }
+
+    @Override
+    public boolean validaFich(String path) throws IOException {
+        reading1();
+        return Boolean.parseBoolean(in.readLine());
     }
 
     @Override
@@ -112,15 +162,12 @@ public class ClientStub implements MediaCenterSignatures {
     public void setPremissaoConvidado() {
         out.println("setPremissaoConvidado");
         out.flush();
-        System.out.println("1234");
-
     }
 
     @Override
     public void iniciarSessao(String email, String password) throws UtilizadorException, AdminException, PermissaoException, IOException {
         out.println("iniciarSessao" + "«" + email + "«" + password);
         out.flush();
-        reading1();
     }
 
     @Override
@@ -169,7 +216,7 @@ public class ClientStub implements MediaCenterSignatures {
         out.println("getUtilizador«"+email);
         out.flush();
 
-        reading1();
+//        reading1();
         try {
             return (Utilizador) inPutObject();
         } catch (ClassNotFoundException e) {
@@ -182,7 +229,7 @@ public class ClientStub implements MediaCenterSignatures {
         out.println("getMedias");
         out.flush();
 
-        reading1();
+//        reading1();
         try {
             return (List<Media>) inPutObject();
         } catch (ClassNotFoundException e) {
@@ -195,7 +242,7 @@ public class ClientStub implements MediaCenterSignatures {
         out.println("getBibliotecaByNome«"+selectedItem);
         out.flush();
 
-        reading1();
+//        reading1();
         try {
             return (Biblioteca) inPutObject();
         } catch (ClassNotFoundException e) {
@@ -209,12 +256,8 @@ public class ClientStub implements MediaCenterSignatures {
         out.println("getEmailOn");
         out.flush();
 
-        reading1();
-        try {
-            return (String) inPutObject();
-        } catch (ClassNotFoundException ignore) {
-            return "";
-        }
+        String input = in.readLine();
+        return input.equals("NoEmail") ? null : input;
     }
 
     @Override
@@ -222,7 +265,7 @@ public class ClientStub implements MediaCenterSignatures {
         out.println("getBibliotecas");
         out.flush();
 
-        reading1();
+//        reading1();
         try {
             return (List<Biblioteca>) inPutObject();
         } catch (ClassNotFoundException e) {
@@ -231,8 +274,9 @@ public class ClientStub implements MediaCenterSignatures {
     }
 
     @Override
-    public void alteraCategoria(String text, MediaKey mediaKey) {
-
+    public void alteraCategoria(String text, MediaKey mediaKey) throws IOException {
+        out.println("alteraCategoria«"+text+"«"+mediaKey.getNome()+"«"+mediaKey.getArtista());
+        out.flush();
     }
 
 
