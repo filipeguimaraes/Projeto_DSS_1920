@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Media Center
 > Projeto de DSS 19/20
 
@@ -48,4 +47,4 @@ mvn clean compile exec:java
 
 ## Disclaimer 
 This is not a final product.
->>>>>>> master
+
