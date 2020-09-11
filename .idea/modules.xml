@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Projeto_DSS_1920.iml" filepath="$PROJECT_DIR$/Projeto_DSS_1920.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java-tmpl.iml" filepath="$PROJECT_DIR$/java-tmpl.iml" />
     </modules>
   </component>
 </project>
