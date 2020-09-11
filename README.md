@@ -8,6 +8,7 @@
 - Maven
 - Java 11 ou superior
 - MySQL 8 ou superior
+- VLC
 
 ## Setup
 
@@ -30,9 +31,6 @@ SHOW VARIABLES LIKE "secure_file_priv";
 ```
 mvn clean compile exec:java
 ```
-
-## DEPENDENCIES
-- VLC
 
 ## Disclaimer 
 This is not a final product.
